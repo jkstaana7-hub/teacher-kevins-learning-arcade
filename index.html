@@ -85,7 +85,7 @@
 <section class="stats-section">
 
   <div class="stat-card">
-    <h3>3</h3>
+    <h3>4</h3>
     <p>Learning Games</p>
   </div>
 
@@ -109,13 +109,13 @@
     <div class="top-game-card">
       <span>#1</span>
       <strong>Froggy Jumps</strong>
-      <a href="froggy_jumps_final.html">Play</a>
+      <a href="games/froggy_jumps_final.html">Play</a>
     </div>
 
     <div class="top-game-card">
       <span>#2</span>
       <strong>Word Search Generator</strong>
-      <a href="word_search_final.html">Open</a>
+      <a href="games/word_search_final.html">Open</a>
     </div>
 
     <div class="top-game-card">
@@ -172,7 +172,7 @@
 
   </div>
 </section>
-<<section class="search-section">
+<section class="search-section">
 
   <h2>Find a Game</h2>
 
@@ -189,6 +189,7 @@
     <button onclick="filterGames('memory')">Memory</button>
     <button onclick="filterGames('word')">Word Search</button>
     <button onclick="filterGames('teacher')">Teacher Tools</button>
+    <button onclick="filterGames('spelling')">Spelling</button>
   </div>
 
 </section>
@@ -219,13 +220,19 @@
       <a href="games/word_search_final.html" class="card-btn">Open Tool</a>
     </div>
 
-    <div class="game-card">
-  <img src="images/spelling-thumbnail.png" alt="Spelling & Sentence Space Adventure">
-  <div>
-    <h3>🚀 Spelling & Sentence Space Adventure</h3>
-    <p>Connect stars to spell words and build sentences.</p>
-  </div>
-  <a href="games/spelling_sentence_builder_final.html" class="play-btn">Play</a>
+    <div class="game-card" data-category="spelling sentence">
+  <img src="images/spelling-thumbnail.png"
+       alt="Spelling & Sentence Space Adventure"
+       class="game-img">
+
+  <h3>🚀 Spelling & Sentence Space Adventure</h3>
+
+  <p>Connect stars to spell words and build sentences.</p>
+
+  <a href="games/spelling_sentence_builder_final.html"
+     class="card-btn">
+     Play Now
+  </a>
 </div>
 
   </div>

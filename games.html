@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Games Library | Teacher Kevin's Learning Arcade</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="navbar">
+      <div class="logo">🎮 Teacher Kevin's Learning Arcade</div>
+
+      <button class="menu-btn" onclick="toggleMenu()">☰</button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="games.html">Games</a></li>
+        <li><a href="index.html#tools">Teacher Tools</a></li>
+        <li><a href="index.html#badges">Badges</a></li>
+        <li><a href="#footer">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="library-hero">
+    <h1>Games Library</h1>
+    <p>Browse all educational games and classroom tools.</p>
+  </section>
+
+  <section class="search-section">
+
+    <h2>Find a Game</h2>
+
+    <input
+      type="text"
+      id="gameSearch"
+      placeholder="Search games..."
+      class="search-box"
+      onkeyup="searchGames()">
+
+    <div class="category-buttons">
+      <button onclick="filterGames('all')">All Games</button>
+      <button onclick="filterGames('frog')">Frog</button>
+      <button onclick="filterGames('memory')">Memory</button>
+      <button onclick="filterGames('word')">Word Search</button>
+      <button onclick="filterGames('teacher')">Teacher Tools</button>
+    </div>
+
+  </section>
+
+  <section class="section" id="games">
+    <h2>All Games</h2>
+    <p class="section-subtitle">Choose a game and start learning.</p>
+
+    <div class="card-grid">
+
+      <div class="game-card" data-category="frog quiz">
+        <img src="images/froggy-thumbnail.png" alt="Froggy Jumps game" class="game-img">
+        <h3>Froggy Jumps</h3>
+        <p>Jump across lily pads and answer questions to reach the finish line.</p>
+        <a href="games/froggy_jumps_final.html" class="card-btn">Play Now</a>
+      </div>
+
+      <div class="game-card" data-category="memory phrasal">
+        <img src="images/phrasal-thumbnail.png" alt="Phrasal Verbs Memory game" class="game-img">
+        <h3>Phrasal Verbs Memory</h3>
+        <p>Match phrasal verbs with their meanings before time runs out.</p>
+        <a href="games/phrasal_memory_final.html" class="card-btn">Play Now</a>
+      </div>
+
+      <div class="game-card" data-category="word teacher">
+        <img src="images/wordsearch-thumbnail.png" alt="Word Search Generator" class="game-img">
+        <h3>Word Search Generator</h3>
+        <p>Create custom word search puzzles for your students.</p>
+        <a href="games/word_search_final.html" class="card-btn">Open Tool</a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer id="footer">
+    <p>Teacher Kevin's Learning Arcade</p>
+    <p>www.yourwebsite.com</p>
+    <p>© 2026 Teacher Kevin. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

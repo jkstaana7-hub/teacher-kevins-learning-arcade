@@ -548,4 +548,57 @@ footer {
   .library-hero h1 {
     font-size: 38px;
   }
+}.contact-section{
+    max-width:800px;
+    margin:80px auto;
+    background:#fff;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,.1);
+}
+
+.contact-section h2{
+    text-align:center;
+    margin-bottom:10px;
+    color:#1e3a8a;
+}
+
+.contact-section p{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.contact-form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.contact-form input,
+.contact-form textarea{
+    padding:15px;
+    border:2px solid #ddd;
+    border-radius:10px;
+    font-size:16px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus{
+    outline:none;
+    border-color:#2563eb;
+}
+
+.contact-form button{
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:18px;
+    font-weight:bold;
+}
+
+.contact-form button:hover{
+    background:#1d4ed8;
 }

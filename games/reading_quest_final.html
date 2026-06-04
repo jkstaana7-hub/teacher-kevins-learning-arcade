@@ -117,7 +117,51 @@ function getScores(){try{return JSON.parse(localStorage.getItem('rqScores')||'[]
 function scoreTable(rows){if(!rows.length)return '<div class="card">No scores yet.</div>';return `<table class="mini-table"><thead><tr><th>Rank</th><th>Student</th><th>Story</th><th>Score</th><th>Date</th></tr></thead><tbody>${rows.map((x,i)=>`<tr><td>#${i+1}</td><td>${x.studentName||'Unknown'}</td><td>${x.title||''}</td><td><b>${x.score}/${x.total}</b> (${x.pct}%)</td><td>${x.date||''}</td></tr>`).join('')}</tbody></table>`;}
 function progressTable(rows){const map={};rows.forEach(x=>{const n=x.studentName||'Unknown';if(!map[n])map[n]={count:0,totalPct:0,best:0};map[n].count++;map[n].totalPct+=Number(x.pct||0);map[n].best=Math.max(map[n].best,Number(x.pct||0));});const list=Object.entries(map).map(([name,v])=>({name,count:v.count,avg:Math.round(v.totalPct/v.count),best:v.best})).sort((a,b)=>b.avg-a.avg);if(!list.length)return '<div class="card">No progress yet.</div>';return `<table class="mini-table"><thead><tr><th>Student</th><th>Stories Done</th><th>Average</th><th>Best</th></tr></thead><tbody>${list.map(x=>`<tr><td>${x.name}</td><td>${x.count}</td><td>${x.avg}%</td><td>${x.best}%</td></tr>`).join('')}</tbody></table>`;}
 function renderLeaderboard(){const profile=getStudentProfile();updateProfileStatus();let arr=getScores();arr.sort((a,b)=>(b.pct-a.pct)||(b.timestamp-a.timestamp));$('leaderboardList').innerHTML=arr.length?arr.slice(0,20).map((x,i)=>`<div class="card"><h3>#${i+1} ${x.studentName||'Unknown'}</h3><p><b>${x.score}/${x.total}</b> • ${x.pct}%</p><p>${x.title}</p><p><b>Class:</b> ${x.classCode||'NOCLASS'} • ${x.date}</p></div>`).join(''):'<div class="card">No scores yet.</div>';const code=cleanCode(($('leaderboardClassCode')&&$('leaderboardClassCode').value)||profile.classCode||'');renderClassScores(code,true);renderHallOfFame(arr);}
-function renderClassScores(code,tryFirebase=true){code=cleanCode(code);if($('leaderboardClassCode')&&code)$('leaderboardClassCode').value=code;let rows=getScores().filter(x=>cleanCode(x.classCode||'NOCLASS')===(code||cleanCode(x.classCode||'NOCLASS')));rows.sort((a,b)=>(b.pct-a.pct)||(b.timestamp-a.timestamp));$('classLeaderboard').innerHTML=code?scoreTable(rows.slice(0,20)):'<div class="card">Enter a class code to view class results.</div>';$('studentProgress').innerHTML=code?progressTable(rows):'<div class="card">Enter a class code to view student progress.</div>';if(tryFirebase&&db&&code){db.ref('classScores/'+code).once('value').then(snap=>{const remote=[];snap.forEach(ch=>remote.push(ch.val()));if(remote.length){remote.sort((a,b)=>(b.pct-a.pct)||(b.timestamp-a.timestamp));$('classLeaderboard').innerHTML=scoreTable(remote.slice(0,30));$('studentProgress').innerHTML=progressTable(remote);}}).catch(()=>toast('Could not load Firebase class scores.'));}}
+function renderClassScores(code, tryFirebase = true) {
+  code = cleanCode(code);
+
+  if ($('leaderboardClassCode') && code) {
+    $('leaderboardClassCode').value = code;
+  }
+
+  let rows = getScores().filter(x => cleanCode(x.classCode || 'NOCLASS') === code);
+
+  rows.sort((a, b) => (b.pct - a.pct) || (b.timestamp - a.timestamp));
+
+  $('classLeaderboard').innerHTML = code
+    ? scoreTable(rows.slice(0, 20))
+    : '<div class="card">Enter a class code to view class results.</div>';
+
+  $('studentProgress').innerHTML = code
+    ? progressTable(rows)
+    : '<div class="card">Enter a class code to view student progress.</div>';
+
+  if (tryFirebase && db && code) {
+    db.ref('classScores/' + code).once('value')
+      .then(snap => {
+        const remote = [];
+
+        snap.forEach(child => {
+          remote.push(child.val());
+        });
+
+        remote.sort((a, b) => (b.pct - a.pct) || (b.timestamp - a.timestamp));
+
+        $('classLeaderboard').innerHTML = remote.length
+          ? scoreTable(remote.slice(0, 30))
+          : '<div class="card">No Firebase scores found for this class.</div>';
+
+        $('studentProgress').innerHTML = remote.length
+          ? progressTable(remote)
+          : '<div class="card">No Firebase progress found for this class.</div>';
+
+        toast('Loaded ' + remote.length + ' Firebase score(s) for class: ' + code);
+      })
+      .catch(error => {
+        toast('Could not load Firebase class scores: ' + error.message);
+      });
+  }
+}
 function renderHallOfFame(arr){const best=[...arr].sort((a,b)=>b.pct-a.pct).slice(0,3);const most={};arr.forEach(x=>{const n=x.studentName||'Unknown';most[n]=(most[n]||0)+1});const mostList=Object.entries(most).sort((a,b)=>b[1]-a[1]).slice(0,3);$('hallOfFame').innerHTML=`<div class="card"><h3>🏆 Highest Scores</h3>${best.length?best.map((x,i)=>`<p>#${i+1} ${x.studentName||'Unknown'} — ${x.pct}% (${x.classCode||'NOCLASS'})</p>`).join(''):'<p>No scores yet.</p>'}</div><div class="card"><h3>📚 Most Stories Read</h3>${mostList.length?mostList.map((x,i)=>`<p>#${i+1} ${x[0]} — ${x[1]} stories</p>`).join(''):'<p>No scores yet.</p>'}</div><div class="card"><h3>👨‍🏫 Main Record</h3><p>The class leaderboard is the teacher’s official record. Hall of Fame is only for fun motivation.</p></div>`;}
 function updateQuestionEditor(){const n=Number($('questionCount').value);let html='';for(let i=1;i<=n;i++)html+=`<div class="qa"><h4>Question ${i}</h4><input class="qText" placeholder="Question"><input class="cA" placeholder="Choice A"><input class="cB" placeholder="Choice B"><input class="cC" placeholder="Choice C"><select class="ans"><option value="A">Correct Answer: A</option><option value="B">Correct Answer: B</option><option value="C">Correct Answer: C</option></select></div>`;$('questionEditor').innerHTML=html;}
 function saveTeacherStory(){const title=$('storyTitle').value.trim();const slides=$('storySlides').value.split(/\n+/).map(x=>x.trim()).filter(Boolean);if(!title||slides.length<5)return toast('Please add a title and at least 5 slides.');const qs=[...document.querySelectorAll('.qa')].map(box=>({q:box.querySelector('.qText').value.trim(),choices:[box.querySelector('.cA').value.trim(),box.querySelector('.cB').value.trim(),box.querySelector('.cC').value.trim()],answer:box.querySelector('.ans').value})).filter(q=>q.q&&q.choices.every(Boolean));if(qs.length<1)return toast('Please add at least 1 complete question.');const story={id:'custom-'+Date.now(),title,level:$('storyLevel').value,category:$('storyCategory').value.trim()||'Teacher Story',slides,questions:qs,teacherName:$('teacherName').value.trim(),email:$('teacherEmail').value.trim(),school:$('teacherSchool').value.trim(),createdAt:Date.now()};const local=loadLocalStories();local.push(story);saveLocalStories(local);if(db)db.ref('stories').push(story).then(()=>toast('Saved locally and to Firebase!')).catch(()=>toast('Saved locally. Firebase needs checking.'));else toast('Saved locally. Firebase is not connected.');refreshStories();}

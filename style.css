@@ -635,4 +635,13 @@ footer {
   .featured-image {
     max-height: 260px;
   }
+}.featured-badge{
+  background:#ff9800;
+  color:white;
+  padding:4px 10px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:bold;
+  display:inline-block;
+  margin-bottom:10px;
 }

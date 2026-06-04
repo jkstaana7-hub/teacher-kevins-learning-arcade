@@ -1,5 +1,10 @@
 const gameData = [
   {
+    title: "📖 Reading Quest",
+    link: "games/reading_quest_final.html",
+    action: "Play"
+  },
+  {
     title: "Shopping Superstar!",
     link: "games/shopping_superstar_final.html",
     action: "Play"

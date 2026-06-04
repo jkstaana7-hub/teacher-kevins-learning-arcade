@@ -95,7 +95,24 @@ function chooseAnswer(btn){
  setTimeout(()=>{quizIndex++;if(quizIndex<activeQuizQuestions.length)renderCurrentQuestion();else finishQuiz();},900);
 }
 function finishQuiz(){const total=activeQuizQuestions.length||currentStory.questions.length;const pct=Math.round(score/total*100);const profile=getStudentProfile();$('scoreText').textContent=`${score}/${total}`;$('percentText').textContent=pct+'%';$('starText').textContent=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':'⭐';$('encourageText').textContent=pct>=90?'Excellent reading!':pct>=70?'Good job! Keep practicing.':'Keep practicing. You can do it!';$('resultMeta').innerHTML=`Student: <b>${profile.nickname||'Unknown'}</b> • Class: <b>${profile.classCode||'No class'}</b><br>Story: <b>${currentStory.title}</b>`;saveScore({studentName:profile.nickname||'Unknown',classCode:profile.classCode||'NOCLASS',teacher:profile.teacher||'',storyId:currentStory.id,title:currentStory.title,level:currentStory.level,category:currentStory.category,score,total,pct,date:new Date().toLocaleString(),timestamp:Date.now()});showScreen('result');}
-function saveScore(item){const arr=JSON.parse(localStorage.getItem('rqScores')||'[]');arr.push(item);localStorage.setItem('rqScores',JSON.stringify(arr.slice(-300)));if(db){const code=cleanCode(item.classCode||'NOCLASS');db.ref('classScores/'+code).push(item).catch(()=>{});db.ref('hallOfFame').push(item).catch(()=>{});}}
+function saveScore(item){
+  const arr = JSON.parse(localStorage.getItem('rqScores') || '[]');
+  arr.push(item);
+  localStorage.setItem('rqScores', JSON.stringify(arr.slice(-300)));
+
+  if(db){
+    const code = cleanCode(item.classCode || 'NOCLASS');
+
+    db.ref('classScores/' + code).push(item)
+      .then(() => toast('Score saved to Firebase class: ' + code))
+      .catch((error) => toast('Firebase score save failed: ' + error.message));
+
+    db.ref('hallOfFame').push(item)
+      .catch((error) => console.log('Hall of Fame save failed:', error.message));
+  } else {
+    toast('Score saved locally only. Firebase is not connected.');
+  }
+}
 function getScores(){try{return JSON.parse(localStorage.getItem('rqScores')||'[]')}catch(e){return []}}
 function scoreTable(rows){if(!rows.length)return '<div class="card">No scores yet.</div>';return `<table class="mini-table"><thead><tr><th>Rank</th><th>Student</th><th>Story</th><th>Score</th><th>Date</th></tr></thead><tbody>${rows.map((x,i)=>`<tr><td>#${i+1}</td><td>${x.studentName||'Unknown'}</td><td>${x.title||''}</td><td><b>${x.score}/${x.total}</b> (${x.pct}%)</td><td>${x.date||''}</td></tr>`).join('')}</tbody></table>`;}
 function progressTable(rows){const map={};rows.forEach(x=>{const n=x.studentName||'Unknown';if(!map[n])map[n]={count:0,totalPct:0,best:0};map[n].count++;map[n].totalPct+=Number(x.pct||0);map[n].best=Math.max(map[n].best,Number(x.pct||0));});const list=Object.entries(map).map(([name,v])=>({name,count:v.count,avg:Math.round(v.totalPct/v.count),best:v.best})).sort((a,b)=>b.avg-a.avg);if(!list.length)return '<div class="card">No progress yet.</div>';return `<table class="mini-table"><thead><tr><th>Student</th><th>Stories Done</th><th>Average</th><th>Best</th></tr></thead><tbody>${list.map(x=>`<tr><td>${x.name}</td><td>${x.count}</td><td>${x.avg}%</td><td>${x.best}%</td></tr>`).join('')}</tbody></table>`;}

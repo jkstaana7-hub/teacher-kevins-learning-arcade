@@ -175,7 +175,37 @@ function renderHallOfFame(arr){const best=[...arr].sort((a,b)=>b.pct-a.pct).slic
 function updateQuestionEditor(){const n=Number($('questionCount').value);let html='';for(let i=1;i<=n;i++)html+=`<div class="qa"><h4>Question ${i}</h4><input class="qText" placeholder="Question"><input class="cA" placeholder="Choice A"><input class="cB" placeholder="Choice B"><input class="cC" placeholder="Choice C"><select class="ans"><option value="A">Correct Answer: A</option><option value="B">Correct Answer: B</option><option value="C">Correct Answer: C</option></select></div>`;$('questionEditor').innerHTML=html;}
 function saveTeacherStory(){const title=$('storyTitle').value.trim();const slides=$('storySlides').value.split(/\n+/).map(x=>x.trim()).filter(Boolean);if(!title||slides.length<5)return toast('Please add a title and at least 5 slides.');const qs=[...document.querySelectorAll('.qa')].map(box=>({q:box.querySelector('.qText').value.trim(),choices:[box.querySelector('.cA').value.trim(),box.querySelector('.cB').value.trim(),box.querySelector('.cC').value.trim()],answer:box.querySelector('.ans').value})).filter(q=>q.q&&q.choices.every(Boolean));if(qs.length<1)return toast('Please add at least 1 complete question.');const story={id:'custom-'+Date.now(),title,level:$('storyLevel').value,category:$('storyCategory').value.trim()||'Teacher Story',slides,questions:qs,teacherName:$('teacherName').value.trim(),email:$('teacherEmail').value.trim(),school:$('teacherSchool').value.trim(),createdAt:Date.now()};const local=loadLocalStories();local.push(story);saveLocalStories(local);if(db)db.ref('stories').push(story).then(()=>toast('Saved locally and to Firebase!')).catch(()=>toast('Saved locally. Firebase needs checking.'));else toast('Saved locally. Firebase is not connected.');refreshStories();}
 function renderSaved(){const local=loadLocalStories();$('savedList').innerHTML=local.length?local.map(s=>`<div class="card"><h3>${s.title}</h3><span class="tag">${s.level}</span><button class="small primary read-story" data-id="${s.id}">Read</button></div>`).join(''):'<div class="card">No custom stories saved yet.</div>';}
-function loadCommunity(){if(!db){$('communityGrid').innerHTML='<div class="card">Firebase is not connected yet.</div>';return}$('communityGrid').innerHTML='<div class="card">Loading...</div>';db.ref('stories').once('value').then(snap=>{const list=[];snap.forEach(ch=>list.push({...ch.val(),id:ch.key}));$('communityGrid').innerHTML=list.length?list.reverse().map(cardHTML).join(''):'<div class="card">No community stories yet.</div>';allStories=[...BUILT_IN_STORIES,...loadLocalStories(),...list];}).catch(()=>{$('communityGrid').innerHTML='<div class="card">Could not load Firebase stories. Check rules.</div>';})}
+function loadCommunity(){
+  if(!db){
+    $('communityGrid').innerHTML='<div class="card">Firebase is not connected yet.</div>';
+    return;
+  }
+
+  $('communityGrid').innerHTML='<div class="card">Loading community stories...</div>';
+
+  db.ref('stories').once('value').then(snap=>{
+    const list=[];
+
+    snap.forEach(ch=>{
+      const story = ch.val();
+      if(story && story.title && story.slides && story.questions){
+        list.push({...story, firebaseKey:ch.key});
+      }
+    });
+
+    list.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+
+    $('communityGrid').innerHTML = list.length
+      ? list.map(cardHTML).join('')
+      : '<div class="card">No community stories yet.</div>';
+
+    allStories = [...BUILT_IN_STORIES, ...loadLocalStories(), ...list];
+
+    toast('Loaded ' + list.length + ' community stories from Firebase.');
+  }).catch(error=>{
+    $('communityGrid').innerHTML='<div class="card">Could not load Firebase stories: '+error.message+'</div>';
+  });
+}
 function clearForm(){['teacherName','teacherEmail','teacherSchool','storyTitle','storyCategory','storySlides'].forEach(id=>$(id).value='');updateQuestionEditor();}
 function setup(){for(let i=1;i<=10;i++)$('questionCount').innerHTML+=`<option value="${i}">${i}</option>`;$('questionCount').value='3';updateQuestionEditor();refreshStories();loadVoices();speechSynthesis.onvoiceschanged=loadVoices;document.body.addEventListener('click',e=>{const go=e.target.closest('[data-go]');if(go)showScreen(go.dataset.go);const read=e.target.closest('.read-story');if(read)openStory(read.dataset.id);const sp=e.target.closest('.speak-text');if(sp)speak(sp.dataset.text);const ans=e.target.closest('.answer');if(ans)chooseAnswer(ans);});$('searchBox').addEventListener('input',renderLibrary);$('levelFilter').addEventListener('change',renderLibrary);$('categoryFilter').addEventListener('change',renderLibrary);$('prevSlide').addEventListener('click',()=>{if(currentSlide>0){currentSlide--;renderSlide();}});$('nextSlide').addEventListener('click',()=>{if(currentSlide<currentStory.slides.length-1){currentSlide++;renderSlide();}else toast('Last slide. Start the quiz!')});$('speakSlide').addEventListener('click',()=>speak($('slideText').textContent));$('startQuiz').addEventListener('click',renderQuiz);$('finishQuiz').addEventListener('click',finishQuiz);$('pauseSpeech').addEventListener('click',()=>speechSynthesis.pause());$('resumeSpeech').addEventListener('click',()=>speechSynthesis.resume());$('stopSpeech').addEventListener('click',()=>speechSynthesis.cancel());$('sizeSelect').addEventListener('change',e=>document.documentElement.style.setProperty('--read-size',e.target.value));$('questionCount').addEventListener('change',updateQuestionEditor);$('saveStory').addEventListener('click',saveTeacherStory);$('clearForm').addEventListener('click',clearForm);$('loadCommunity').addEventListener('click',loadCommunity);$('saveProfile').addEventListener('click',saveStudentProfile);$('clearProfile').addEventListener('click',clearStudentProfile);$('loadClassScores').addEventListener('click',()=>renderClassScores($('leaderboardClassCode').value,true));updateProfileStatus();}
 document.addEventListener('DOMContentLoaded',setup);

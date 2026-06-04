@@ -31,7 +31,7 @@
       <h1>Teacher Kevin’s Learning Arcade</h1>
       <p>
         Interactive English games, classroom tools, and printable activities
-        for Kindergarten and Primary students.
+        for Kindergarten, Primary, and Secondary students.
       </p>
 
       <div class="hero-buttons">
@@ -52,18 +52,19 @@
 
       <div class="featured-text">
         <span class="featured-label">⭐ Featured Game</span>
-        <h2>Shopping Superstar!</h2>
+        <h2>📖 Reading Quest</h2>
         <p>
-          Spell words, earn money, unlock items, shop, and practice real shopping conversations.
+          Read stories, listen aloud, answer questions, and track class progress
+          with student nicknames, class codes, and teacher dashboards.
         </p>
 
-        <a href="games/shopping_superstar_final.html" class="btn primary">
+        <a href="games/reading_quest_final.html" class="btn primary">
           Play Now
         </a>
       </div>
 
-      <img src="images/shopping-superstar-thumbnail.png"
-           alt="Shopping Superstar Game"
+      <img src="images/reading-quest-thumbnail.png"
+           alt="Reading Quest Game"
            class="featured-image">
 
     </div>
@@ -71,7 +72,7 @@
 
   <section class="stats-section">
     <div class="stat-card">
-      <h3>6</h3>
+      <h3>7</h3>
       <p>Learning Games</p>
     </div>
 
@@ -81,23 +82,31 @@
     </div>
 
     <div class="stat-card">
-      <h3>K–Primary</h3>
+      <h3>K–Secondary</h3>
       <p>Student Level</p>
     </div>
   </section>
 
   <section class="top-games">
-  <h2>🏆 Top Games</h2>
+    <h2>🏆 Top Games</h2>
 
-  <div class="top-game-list" id="topGamesList">
-    <!-- Top 3 games will appear here automatically -->
-  </div>
-</section>
+    <div class="top-game-list" id="topGamesList">
+      <!-- Top 3 games will appear here automatically -->
+    </div>
+  </section>
 
   <section class="recent-section">
     <h2>🆕 Recently Added</h2>
 
     <div class="recent-grid">
+
+      <div class="recent-card">
+        <img src="images/reading-quest-thumbnail.png" alt="Reading Quest">
+        <div>
+          <h3>Reading Quest</h3>
+          <p>Read stories, listen aloud, and answer comprehension questions</p>
+        </div>
+      </div>
 
       <div class="recent-card">
         <img src="images/shopping-superstar-thumbnail.png" alt="Shopping Superstar">
@@ -169,6 +178,7 @@
       <button onclick="filterGames('spelling')">Spelling</button>
       <button onclick="filterGames('clothes')">Clothes</button>
       <button onclick="filterGames('shopping')">Shopping</button>
+      <button onclick="filterGames('reading')">Reading</button>
     </div>
   </section>
 
@@ -177,6 +187,19 @@
     <p class="section-subtitle">Choose a game and start learning.</p>
 
     <div class="card-grid">
+
+      <div class="game-card" data-category="reading listening comprehension teacher">
+        <img src="images/reading-quest-thumbnail.png"
+             alt="Reading Quest"
+             class="game-img">
+
+        <h3>📖 Reading Quest: Read, Listen and Answer</h3>
+        <p>Read stories, listen aloud, answer questions, and track student progress.</p>
+
+        <a href="games/reading_quest_final.html" class="card-btn">
+          Play Now
+        </a>
+      </div>
 
       <div class="game-card" data-category="shopping spelling conversation clothes food teacher">
         <img src="images/shopping-superstar-thumbnail.png"
@@ -246,6 +269,7 @@
     <p class="section-subtitle">Helpful classroom tools in one place.</p>
 
     <div class="tool-grid">
+      <div class="tool-card">📖 Reading Quest Dashboard</div>
       <div class="tool-card">📝 Create Word Search</div>
       <div class="tool-card">📊 View Leaderboard</div>
       <div class="tool-card">📄 Download Worksheets</div>
@@ -259,6 +283,7 @@
 
     <div class="badge-grid">
       <div class="badge">⭐ Perfect Score</div>
+      <div class="badge">📖 Reading Champion</div>
       <div class="badge">🏆 Word Master</div>
       <div class="badge">⚡ Speed Finder</div>
       <div class="badge">👑 Learning Champion</div>

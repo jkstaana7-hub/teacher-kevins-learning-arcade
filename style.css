@@ -601,4 +601,38 @@ footer {
 
 .contact-form button:hover{
     background:#1d4ed8;
+}/* Shopping Superstar small improvements */
+
+.featured-image {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 20px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.14);
+}
+
+.game-card[data-category*="shopping"] {
+  border: 2px solid #facc15;
+}
+
+.game-card[data-category*="shopping"] h3 {
+  color: #f97316;
+}
+
+.game-card[data-category*="shopping"] .card-btn {
+  background: linear-gradient(135deg, #f97316, #ec4899);
+}
+
+.game-card[data-category*="shopping"] .card-btn:hover {
+  background: linear-gradient(135deg, #ea580c, #db2777);
+}
+
+.recent-card img {
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .featured-image {
+    max-height: 260px;
+  }
 }

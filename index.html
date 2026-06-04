@@ -28,9 +28,7 @@
   <section class="hero">
     <div class="hero-text">
       <span class="hero-label">🎮 Educational Game Portal</span>
-
       <h1>Teacher Kevin’s Learning Arcade</h1>
-
       <p>
         Interactive English games, classroom tools, and printable activities
         for Kindergarten and Primary students.
@@ -54,31 +52,26 @@
 
       <div class="featured-text">
         <span class="featured-label">⭐ Featured Game</span>
-
-        <h2>Clothes & Weather</h2>
-
+        <h2>Shopping Superstar!</h2>
         <p>
-          Help students choose the correct clothes for sunny, rainy,
-          cold, school, beach, and bedtime situations.
+          Spell words, earn money, unlock items, shop, and practice real shopping conversations.
         </p>
 
-        <a href="games/clothes_weather_final.html"
-           class="btn primary">
-           Play Now
+        <a href="games/shopping_superstar_final.html" class="btn primary">
+          Play Now
         </a>
       </div>
 
-      <img src="images/clothes-weather-thumbnail.png"
-           alt="Clothes and Weather Game"
+      <img src="images/shopping-superstar-thumbnail.png"
+           alt="Shopping Superstar Game"
            class="featured-image">
 
     </div>
   </section>
 
   <section class="stats-section">
-
     <div class="stat-card">
-      <h3>5</h3>
+      <h3>6</h3>
       <p>Learning Games</p>
     </div>
 
@@ -91,7 +84,6 @@
       <h3>K–Primary</h3>
       <p>Student Level</p>
     </div>
-
   </section>
 
   <section class="top-games">
@@ -101,30 +93,36 @@
 
       <div class="top-game-card">
         <span>#1</span>
+        <strong>Shopping Superstar!</strong>
+        <a href="games/shopping_superstar_final.html">Play</a>
+      </div>
+
+      <div class="top-game-card">
+        <span>#2</span>
         <strong>Clothes & Weather</strong>
         <a href="games/clothes_weather_final.html">Play</a>
       </div>
 
       <div class="top-game-card">
-        <span>#2</span>
+        <span>#3</span>
         <strong>Froggy Jumps</strong>
         <a href="games/froggy_jumps_final.html">Play</a>
       </div>
 
       <div class="top-game-card">
-        <span>#3</span>
+        <span>#4</span>
         <strong>Word Search Generator</strong>
         <a href="games/word_search_final.html">Open</a>
       </div>
 
       <div class="top-game-card">
-        <span>#4</span>
+        <span>#5</span>
         <strong>Phrasal Verbs Memory</strong>
         <a href="games/phrasal_memory_final.html">Play</a>
       </div>
 
       <div class="top-game-card">
-        <span>#5</span>
+        <span>#6</span>
         <strong>🚀 Spelling & Sentence Space Adventure</strong>
         <a href="games/spelling_sentence_builder_final.html">Play</a>
       </div>
@@ -136,6 +134,14 @@
     <h2>🆕 Recently Added</h2>
 
     <div class="recent-grid">
+
+      <div class="recent-card">
+        <img src="images/shopping-superstar-thumbnail.png" alt="Shopping Superstar">
+        <div>
+          <h3>Shopping Superstar!</h3>
+          <p>Spell words, earn money, shop, and practice conversations</p>
+        </div>
+      </div>
 
       <div class="recent-card">
         <img src="images/clothes-weather-thumbnail.png" alt="Clothes & Weather">
@@ -181,7 +187,6 @@
   </section>
 
   <section class="search-section">
-
     <h2>Find a Game</h2>
 
     <input
@@ -199,8 +204,8 @@
       <button onclick="filterGames('teacher')">Teacher Tools</button>
       <button onclick="filterGames('spelling')">Spelling</button>
       <button onclick="filterGames('clothes')">Clothes</button>
+      <button onclick="filterGames('shopping')">Shopping</button>
     </div>
-
   </section>
 
   <section class="section" id="games">
@@ -208,6 +213,19 @@
     <p class="section-subtitle">Choose a game and start learning.</p>
 
     <div class="card-grid">
+
+      <div class="game-card" data-category="shopping spelling conversation clothes food teacher">
+        <img src="images/shopping-superstar-thumbnail.png"
+             alt="Shopping Superstar game"
+             class="game-img">
+
+        <h3>🛍️ Shopping Superstar!</h3>
+        <p>Spell words, earn money, unlock items, shop, and practice real conversations.</p>
+
+        <a href="games/shopping_superstar_final.html" class="card-btn">
+          Play Now
+        </a>
+      </div>
 
       <div class="game-card" data-category="frog quiz">
         <img src="images/froggy-thumbnail.png" alt="Froggy Jumps game" class="game-img">
@@ -236,12 +254,10 @@
              class="game-img">
 
         <h3>🚀 Spelling & Sentence Space Adventure</h3>
-
         <p>Connect stars to spell words and build sentences.</p>
 
-        <a href="games/spelling_sentence_builder_final.html"
-           class="card-btn">
-           Play Now
+        <a href="games/spelling_sentence_builder_final.html" class="card-btn">
+          Play Now
         </a>
       </div>
 
@@ -251,12 +267,10 @@
              class="game-img">
 
         <h3>👕 Clothes & Weather</h3>
-
         <p>Choose the correct clothes for different weather, places, and daily routines.</p>
 
-        <a href="games/clothes_weather_final.html"
-           class="card-btn">
-           Play Now
+        <a href="games/clothes_weather_final.html" class="card-btn">
+          Play Now
         </a>
       </div>
 
@@ -284,6 +298,7 @@
       <div class="badge">🏆 Word Master</div>
       <div class="badge">⚡ Speed Finder</div>
       <div class="badge">👑 Learning Champion</div>
+      <div class="badge">🛍️ Shopping Superstar</div>
     </div>
   </section>
 
@@ -292,9 +307,7 @@
     <a href="#games" class="btn primary">Start Playing</a>
   </section>
 
-  <!-- CONTACT FORM START -->
   <section id="contact" class="contact-section">
-
     <h2>📩 Contact Teacher Kevin</h2>
     <p>Have suggestions, feedback, or game ideas? Send me a message!</p>
 
@@ -316,9 +329,7 @@
       <button type="submit">Send Message</button>
 
     </form>
-
   </section>
-  <!-- CONTACT FORM END -->
 
   <footer id="footer">
     <p>Teacher Kevin's Learning Arcade</p>

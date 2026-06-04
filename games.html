@@ -20,7 +20,7 @@
         <li><a href="games.html">Games</a></li>
         <li><a href="index.html#tools">Teacher Tools</a></li>
         <li><a href="index.html#badges">Badges</a></li>
-        <li><a href="#footer">Contact</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
       </ul>
     </nav>
   </header>
@@ -47,6 +47,8 @@
       <button onclick="filterGames('memory')">Memory</button>
       <button onclick="filterGames('word')">Word Search</button>
       <button onclick="filterGames('clothes')">Clothes</button>
+      <button onclick="filterGames('spelling')">Spelling</button>
+      <button onclick="filterGames('shopping')">Shopping</button>
       <button onclick="filterGames('teacher')">Teacher Tools</button>
     </div>
 
@@ -57,6 +59,19 @@
     <p class="section-subtitle">Choose a game and start learning.</p>
 
     <div class="card-grid">
+
+      <div class="game-card" data-category="shopping spelling conversation clothes food teacher">
+        <img src="images/shopping-superstar-thumbnail.png"
+             alt="Shopping Superstar game"
+             class="game-img">
+
+        <h3>🛍️ Shopping Superstar!</h3>
+        <p>Spell words, earn money, unlock items, shop, and practice real conversations.</p>
+
+        <a href="games/shopping_superstar_final.html" class="card-btn">
+          Play Now
+        </a>
+      </div>
 
       <div class="game-card" data-category="frog quiz">
         <img src="images/froggy-thumbnail.png" alt="Froggy Jumps game" class="game-img">

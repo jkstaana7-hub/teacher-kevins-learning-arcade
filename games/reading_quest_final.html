@@ -22,7 +22,16 @@ function saveStudentProfile(){const nickname=$('studentNickname').value.trim();c
 function clearStudentProfile(){localStorage.removeItem('rqStudentProfile');['studentNickname','studentClassCode','studentTeacher'].forEach(id=>{if($(id))$(id).value=''});updateProfileStatus();toast('Student info cleared.')}
 function updateProfileStatus(){const p=getStudentProfile();if($('studentNickname')&&!$('studentNickname').value&&p.nickname){$('studentNickname').value=p.nickname;$('studentClassCode').value=p.classCode||'';$('studentTeacher').value=p.teacher||'';}if($('profileStatus'))$('profileStatus').innerHTML=p.nickname?`Current student: <b>${p.nickname}</b><br>Class code: <b>${p.classCode||'Not set'}</b>${p.teacher?`<br>Teacher: <b>${p.teacher}</b>`:''}`:'No student info saved yet.';if($('leaderboardClassCode')&&!$('leaderboardClassCode').value&&p.classCode)$('leaderboardClassCode').value=p.classCode;}
 function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active');window.scrollTo({top:0,behavior:'smooth'});if(id==='leaderboard')renderLeaderboard();if(id==='library')renderLibrary();}
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  if(id==='leaderboard')renderLeaderboard();
+  if(id==='library')renderLibrary();
+
+  if(id==='community')loadCommunity();
+}
 function loadLocalStories(){try{return JSON.parse(localStorage.getItem('rqStories')||'[]')}catch(e){return[]}}
 function saveLocalStories(arr){localStorage.setItem('rqStories',JSON.stringify(arr))}
 function refreshStories(){allStories=[...BUILT_IN_STORIES,...loadLocalStories()];fillFilters();renderLibrary();renderSaved();}

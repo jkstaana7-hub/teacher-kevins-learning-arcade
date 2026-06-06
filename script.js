@@ -1,10 +1,10 @@
 const gameData = [
   {
   title: "Conversation Quest",
-  link: "conversation quest/conversation_quest_final.html",
+  link: "conversation-quest/conversation_quest_final.html",
   action: "Play",
   category: "Conversation",
-  image: "conversation quest/images/conversation-quest-thumbnail.png"
+  image: "conversation-quest/images/conversation-quest-thumbnail.png"
   },
   {
     title: "📖 Reading Quest",

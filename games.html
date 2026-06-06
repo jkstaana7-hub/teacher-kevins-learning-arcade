@@ -31,7 +31,6 @@
   </section>
 
   <section class="search-section">
-
     <h2>Find a Game</h2>
 
     <input
@@ -43,16 +42,16 @@
 
     <div class="category-buttons">
       <button onclick="filterGames('all')">All Games</button>
+      <button onclick="filterGames('conversation')">Conversation</button>
+      <button onclick="filterGames('reading')">Reading</button>
+      <button onclick="filterGames('shopping')">Shopping</button>
       <button onclick="filterGames('frog')">Frog</button>
       <button onclick="filterGames('memory')">Memory</button>
       <button onclick="filterGames('word')">Word Search</button>
       <button onclick="filterGames('clothes')">Clothes</button>
       <button onclick="filterGames('spelling')">Spelling</button>
-      <button onclick="filterGames('shopping')">Shopping</button>
-      <button onclick="filterGames('reading')">Reading</button>
       <button onclick="filterGames('teacher')">Teacher Tools</button>
     </div>
-
   </section>
 
   <section class="section" id="games">
@@ -61,69 +60,143 @@
 
     <div class="card-grid">
 
+      <div class="game-card" data-category="conversation speaking teacher">
+        <img src="conversation quest/images/conversation-quest-thumbnail.png"
+             alt="Conversation Quest"
+             class="game-img">
+
+        <h3>🎤 Conversation Quest</h3>
+        <p>
+          Practice real-life conversations with voice playback, quizzes,
+          badges, teacher tools, and community sharing.
+        </p>
+
+        <a href="conversation quest/conversation_quest_final.html"
+           class="card-btn"
+           onclick="trackGamePlay('🎤 Conversation Quest')">
+          Play Now
+        </a>
+      </div>
+
+      <div class="game-card" data-category="reading listening comprehension teacher">
+        <img src="images/reading-quest-thumbnail.png"
+             alt="Reading Quest"
+             class="game-img">
+
+        <h3>📖 Reading Quest</h3>
+        <p>
+          Read stories, listen aloud, answer questions,
+          and track student progress.
+        </p>
+
+        <a href="games/reading_quest_final.html?v=5"
+           class="card-btn"
+           onclick="trackGamePlay('📖 Reading Quest')">
+          Play Now
+        </a>
+      </div>
+
       <div class="game-card" data-category="shopping spelling conversation clothes food teacher">
         <img src="images/shopping-superstar-thumbnail.png"
-             alt="Shopping Superstar game"
+             alt="Shopping Superstar"
              class="game-img">
 
         <h3>🛍️ Shopping Superstar!</h3>
-        <p>Spell words, earn money, unlock items, shop, and practice real conversations.</p>
+        <p>
+          Spell words, earn money, unlock items,
+          shop, and practice conversations.
+        </p>
 
-        <a href="games/shopping_superstar_final.html" class="card-btn">
+        <a href="games/shopping_superstar_final.html"
+           class="card-btn">
           Play Now
         </a>
       </div>
 
       <div class="game-card" data-category="frog quiz">
-        <img src="images/froggy-thumbnail.png" alt="Froggy Jumps game" class="game-img">
-        <h3>Froggy Jumps</h3>
-        <p>Jump across lily pads and answer questions to reach the finish line.</p>
-        <a href="games/froggy_jumps_final.html" class="card-btn">Play Now</a>
+        <img src="images/froggy-thumbnail.png"
+             alt="Froggy Jumps"
+             class="game-img">
+
+        <h3>🐸 Froggy Jumps</h3>
+        <p>
+          Jump across lily pads and answer questions
+          to reach the finish line.
+        </p>
+
+        <a href="games/froggy_jumps_final.html"
+           class="card-btn">
+          Play Now
+        </a>
       </div>
 
       <div class="game-card" data-category="memory phrasal">
-        <img src="images/phrasal-thumbnail.png" alt="Phrasal Verbs Memory game" class="game-img">
-        <h3>Phrasal Verbs Memory</h3>
-        <p>Match phrasal verbs with their meanings before time runs out.</p>
-        <a href="games/phrasal_memory_final.html" class="card-btn">Play Now</a>
+        <img src="images/phrasal-thumbnail.png"
+             alt="Phrasal Verbs Memory"
+             class="game-img">
+
+        <h3>🧠 Phrasal Verbs Memory</h3>
+        <p>
+          Match phrasal verbs with their meanings
+          before time runs out.
+        </p>
+
+        <a href="games/phrasal_memory_final.html"
+           class="card-btn">
+          Play Now
+        </a>
       </div>
 
       <div class="game-card" data-category="word teacher">
-        <img src="images/wordsearch-thumbnail.png" alt="Word Search Generator" class="game-img">
-        <h3>Word Search Generator</h3>
-        <p>Create custom word search puzzles for your students.</p>
-        <a href="games/word_search_final.html" class="card-btn">Open Tool</a>
+        <img src="images/wordsearch-thumbnail.png"
+             alt="Word Search Generator"
+             class="game-img">
+
+        <h3>🔍 Word Search Generator</h3>
+        <p>
+          Create custom word search puzzles
+          for your students.
+        </p>
+
+        <a href="games/word_search_final.html"
+           class="card-btn">
+          Open Tool
+        </a>
       </div>
 
       <div class="game-card" data-category="spelling sentence">
-        <img src="images/spelling-thumbnail.png" alt="Spelling and Sentence Space Adventure" class="game-img">
-        <h3>Spelling & Sentence Space Adventure</h3>
-        <p>Connect stars to spell words and build sentences.</p>
-        <a href="games/spelling_sentence_builder_final.html" class="card-btn">Play Now</a>
+        <img src="images/spelling-thumbnail.png"
+             alt="Spelling and Sentence Space Adventure"
+             class="game-img">
+
+        <h3>🚀 Spelling & Sentence Space Adventure</h3>
+        <p>
+          Connect stars to spell words
+          and build sentences.
+        </p>
+
+        <a href="games/spelling_sentence_builder_final.html"
+           class="card-btn">
+          Play Now
+        </a>
       </div>
 
       <div class="game-card" data-category="clothes weather">
-        <img src="images/clothes-weather-thumbnail.png" alt="Clothes and Weather game" class="game-img">
-        <h3>Clothes & Weather</h3>
-        <p>Choose the correct clothes for different weather, places, and daily routines.</p>
-        <a href="games/clothes_weather_final.html" class="card-btn">Play Now</a>
+        <img src="images/clothes-weather-thumbnail.png"
+             alt="Clothes and Weather"
+             class="game-img">
+
+        <h3>👕 Clothes & Weather</h3>
+        <p>
+          Choose the correct clothes for different weather,
+          places, and daily routines.
+        </p>
+
+        <a href="games/clothes_weather_final.html"
+           class="card-btn">
+          Play Now
+        </a>
       </div>
-
-     <div class="game-card" data-category="reading listening comprehension teacher">
-  <img src="images/reading-quest-thumbnail.png"
-       alt="Reading Quest"
-       class="game-img">
-
-  <h3>📖 Reading Quest: Read, Listen and Answer</h3>
-
-  <p>
-    Read stories, listen aloud, answer questions, and track student progress.
-  </p>
-
-  <a href="games/reading_quest_final.html?v=5" class="card-btn">
-    Play Now
-  </a>
-</div>
 
     </div>
   </section>

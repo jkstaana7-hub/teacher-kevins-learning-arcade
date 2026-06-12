@@ -77,7 +77,7 @@ const gameData = [
     image: "images/wordsearch-thumbnail.png",
     description: "Create custom word search puzzles and printable activities for your class.",
     recent: false,
-    popular: false,
+    popular: true,
     action: "Open Tool"
   },
   {
@@ -118,14 +118,16 @@ const gameData = [
     comingSoon: true
   },
   {
-    title: "🏫 Kindergarten Assessment Hub",
-    category: ["kindergarten", "teacher"],
-    keywords: "kindergarten assessment teacher pretest posttest future",
-    link: "#",
-    image: "images/hero-banner.png",
-    description: "Simple assessment platform for young learners. Coming soon.",
-    comingSoon: true
-  }
+  title: "🏫 Kindergarten Assessment Hub",
+  category: ["kindergarten", "teacher"],
+  keywords: "kindergarten assessment teacher tool pretest posttest question bank reports k1 k2 k3",
+  link: "tools/kindergarten_assessment_hub_final.html",
+  image: "images/kindergarten-assessment-hub-thumbnail.png",
+  description: "Create, organize, and deliver K1–K3 assessments with question banks and reports.",
+  recent: true,
+  popular: false,
+  action: "Open Tool"
+}
 ];
 
 let currentCategory = "all";

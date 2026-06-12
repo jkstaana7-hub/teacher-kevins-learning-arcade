@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kindergarten Assessment Hub V2F RC6 No Landing Image</title>
+  <style>
+    :root{
+      --bg1:#e0f7ff; --bg2:#fff0c7; --card:#ffffff; --ink:#263238;
+      --primary:#2f80ed; --green:#25b36b; --orange:#ff9f1c; --red:#ef476f;
+      --purple:#8e44ad; --muted:#607d8b; --soft:#f4fbff;
+      --shadow:0 14px 30px rgba(0,0,0,.16); --radius:28px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%; margin:0; font-family:Arial, Helvetica, sans-serif; color:var(--ink); overflow:hidden;}
+    body{
+      background: radial-gradient(circle at 12% 12%, #fff 0 0.2rem, transparent .22rem),
+                  radial-gradient(circle at 88% 18%, #fff 0 0.16rem, transparent .18rem),
+                  linear-gradient(135deg,var(--bg1),var(--bg2));
+      background-size: 64px 64px, 80px 80px, cover;
+    }
+    button,input,select,textarea{font-family:inherit}
+    button{border:0; cursor:pointer; font-weight:800; transition:.12s transform,.12s filter;}
+    button:active{transform:scale(.98)}
+    .app{height:100%; width:100%; padding:18px; display:flex; align-items:center; justify-content:center;}
+    .screen{display:none; width:min(1180px,100%); height:min(720px,100%); background:rgba(255,255,255,.86); border:5px solid rgba(255,255,255,.75); border-radius:34px; box-shadow:var(--shadow); overflow:hidden; position:relative;}
+    .screen.active{display:block;}
+    .inner{height:100%; padding:24px; overflow:auto;}
+    .hero{
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      text-align:center;
+      padding-bottom:0;
+      background:
+        radial-gradient(circle at 18% 78%, rgba(255,159,28,.30), transparent 24%),
+        radial-gradient(circle at 82% 22%, rgba(47,128,237,.24), transparent 26%),
+        radial-gradient(circle at 50% 50%, rgba(37,179,107,.18), transparent 42%),
+        linear-gradient(135deg,#e0f7ff,#fff0c7);
+    }
+    h1{font-size:clamp(38px,6vw,72px); margin:0; color:#1d5fbf; text-shadow:0 4px 0 rgba(255,255,255,.8)}
+    h2{font-size:clamp(26px,3.4vw,42px); margin:0 0 14px; color:#1d5fbf}
+    h3{font-size:22px; margin:8px 0 12px;}
+    .tagline{font-size:clamp(18px,2.4vw,30px); font-weight:800; color:#42526e; margin-bottom:12px;}
+    .topButtons{position:absolute; top:18px; right:18px; display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; z-index:5}
+    .btn{padding:14px 22px; border-radius:18px; font-size:18px; color:white; box-shadow:0 8px 16px rgba(0,0,0,.16);}
+    .btn.big{font-size:28px; padding:22px 38px; border-radius:26px; min-width:260px;}
+    .blue{background:var(--primary)} .green{background:var(--green)} .orange{background:var(--orange)} .red{background:var(--red)} .purple{background:var(--purple)} .gray{background:#78909c}
+    .row{display:flex; gap:14px; flex-wrap:wrap; align-items:center;}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+    .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+    .card{background:var(--card); border-radius:var(--radius); padding:18px; box-shadow:0 8px 18px rgba(0,0,0,.12); border:2px solid #e6f2ff;}
+    label{display:block; font-weight:800; margin:8px 0 6px; color:#405064;}
+    input,select,textarea{width:100%; padding:13px 14px; border-radius:16px; border:2px solid #d7e7f7; font-size:17px; background:#fff; outline:none;}
+    textarea{min-height:82px; resize:vertical;}
+    .header{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap;}
+    .pill{background:#edf7ff; color:#315a7a; border:2px solid #cae9ff; padding:10px 14px; border-radius:999px; font-weight:800;}
+    .muted{color:var(--muted); font-weight:700;}
+    .choiceEditor{border:4px dashed #cfe6ff; border-radius:24px; min-height:170px; padding:14px; background:#fbfdff; display:flex; flex-direction:column; gap:10px; align-items:center; justify-content:center; text-align:center; position:relative; cursor:pointer; transition:.15s border,.15s background,.15s transform;}
+    .choiceEditor:hover,.choiceEditor:focus,.choiceEditor.activePaste{border-color:#2f80ed; background:#f1f9ff; outline:none; transform:translateY(-1px);}
+    .pasteHint{font-size:18px; color:#31465a; line-height:1.35;}
+    .pasteHint strong{display:block; font-size:24px; color:#1d5fbf; margin-bottom:4px;}
+    .uploadBtn{display:inline-block; background:#78909c; color:#fff; padding:9px 13px; border-radius:12px; font-size:14px; font-weight:800; box-shadow:0 6px 12px rgba(0,0,0,.14); cursor:pointer;}
+    .choiceEditor img{max-height:120px; max-width:100%; object-fit:contain; display:none;}
+    .choiceEditor.hasImage img{display:block;}
+    .choiceEditor.hasImage .pasteHint{display:none;}
+    .choiceEditor input[type=file]{display:none;}
+    .mini{font-size:14px; padding:9px 12px; border-radius:12px;}
+    .questionList{max-height:260px; overflow:auto; display:flex; flex-direction:column; gap:10px;}
+    .qItem{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 12px; border-radius:16px; background:#f4fbff; border:2px solid #dcefff;}
+    .qItem b{color:#1d5fbf}
+    .studentForm{max-width:820px; margin:0 auto;}
+    .playTop{height:78px; display:flex; justify-content:space-between; align-items:center; padding:18px 24px; border-bottom:3px solid #e0f1ff; background:#fff;}
+    .playArea{height:calc(100% - 78px); display:grid; grid-template-rows:auto 1fr auto; gap:12px; padding:18px; overflow:hidden;}
+    .questionBox{text-align:center; background:#fff8e8; border:3px solid #ffe3a3; border-radius:26px; padding:16px; box-shadow:0 6px 12px rgba(0,0,0,.08);}
+    .questionText{font-size:clamp(28px,4.5vw,48px); font-weight:900; color:#27364a; margin:0; line-height:1.15;}
+    .questionImage{max-height:130px; max-width:100%; object-fit:contain; display:block; margin:10px auto 0;}
+    .choices{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; min-height:0;}
+    .tapChoice{background:white; border:6px solid #d9efff; border-radius:30px; box-shadow:0 10px 20px rgba(0,0,0,.13); display:flex; align-items:center; justify-content:center; text-align:center; padding:14px; min-height:220px; color:#263238;}
+    .tapChoice:hover{filter:brightness(1.03)}
+    .tapChoice img{max-width:100%; max-height:250px; object-fit:contain;}
+    .tapChoice.text{font-size:clamp(34px,5vw,64px); font-weight:900;}
+    .playBottom{display:flex; justify-content:center; gap:16px; align-items:center;}
+    .resultsBox{text-align:center; max-width:780px; margin:40px auto;}
+    .score{font-size:72px; font-weight:900; color:#25b36b; margin:6px 0;}
+    table{width:100%; border-collapse:collapse; background:white; border-radius:18px; overflow:hidden;}
+    th,td{border-bottom:1px solid #e6eef6; padding:10px; text-align:left; font-size:14px;}
+    th{background:#eaf6ff;color:#315a7a}
+    .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%); background:#263238; color:white; padding:14px 20px; border-radius:16px; box-shadow:var(--shadow); display:none; z-index:99; font-weight:800;}
+    .notice{background:#fff8e8;border:2px solid #ffe2a0;border-radius:18px;padding:12px;font-weight:700;color:#5b4a22;}
+
+    .statsGrid{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:12px;}
+    .statCard{background:#f4fbff; border:2px solid #dcefff; border-radius:20px; padding:14px; text-align:center; font-weight:900;}
+    .statCard .num{font-size:30px; color:#1d5fbf; display:block;}
+    .fileManagerControls{display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:12px; align-items:end; margin:14px 0;}
+    .fileCards{max-height:330px; overflow:auto; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px;}
+    .fileCard{background:#fff; border:3px solid #e0f1ff; border-radius:24px; padding:16px; box-shadow:0 8px 18px rgba(0,0,0,.10);}
+    .fileCard.activeFile{border-color:#25b36b; background:#f4fff9;}
+    .fileTitle{font-size:19px; font-weight:900; color:#1d5fbf; margin-bottom:8px;}
+    .fileMeta{display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:14px; font-weight:800; color:#405064; margin:10px 0;}
+    .fileMeta span{background:#f4fbff; border-radius:12px; padding:7px 9px;}
+    @media(max-width:850px){.statsGrid,.fileManagerControls,.fileCards{grid-template-columns:1fr}.fileMeta{grid-template-columns:1fr}}
+    @media(max-width:850px){
+      html,body{overflow:auto}.app{height:auto; min-height:100%; padding:8px}.screen{height:auto; min-height:96vh}.grid2,.grid3,.choices{grid-template-columns:1fr}.tapChoice{min-height:150px}.topButtons{position:static;margin-bottom:10px}.hero{padding:24px}.playArea{overflow:auto}.playTop{height:auto;flex-wrap:wrap}.screen{overflow:auto}
+    }
+    @media print{body{background:#fff;overflow:auto}.app,.screen,.inner{display:block;height:auto;box-shadow:none;border:0}.noPrint,.topButtons{display:none!important}.screen:not(.active){display:none!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <section id="landing" class="screen active">
+    <div class="topButtons noPrint">
+      <button class="btn purple" onclick="go('teacherPanel')">Teacher Panel</button>
+      <button class="btn green" onclick="go('reports')">Reports</button>
+      <button class="btn gray" onclick="go('settings')">Settings</button>
+    </div>
+    <div class="hero">
+      <div style="font-size:78px">🌈📚⭐</div>
+      <h1>Kindergarten Assessment Hub</h1>
+      <div class="tagline">Simple Assessment for Young Learners</div>
+      <button class="btn big blue" onclick="go('studentLogin')">▶ Play Assessment</button>
+      <div class="pill">V2F RC8 • RC7 Organization + Question Bank</div>
+    </div>
+  </section>
+
+  <section id="teacherLogin" class="screen">
+    <div class="inner">
+      <div class="header"><h2>Teacher Panel</h2><button class="btn gray" onclick="go('landing')">Home</button></div>
+      <div class="card" style="max-width:520px;margin:60px auto;text-align:center">
+        <h3>Password Protected</h3>
+        <p class="muted">Teacher Panel is open for teachers. Admin tools require private admin access.</p>
+        <input id="teacherPass" type="password" placeholder="Enter teacher password" onkeydown="if(event.key==='Enter') checkTeacherPass()">
+        <br><br><button class="btn blue" onclick="checkTeacherPass()">Unlock Teacher Panel</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="teacherPanel" class="screen">
+    <div class="inner">
+      <div class="header">
+        <div><h2>Teacher Builder</h2><div class="muted">Create a test, add questions, then let students play.</div></div>
+        <div class="row noPrint"><button class="btn blue" onclick="newTestFile()">New Test</button><button class="btn green" onclick="saveTest()">Save Copy</button><button class="btn purple" id="publishSharedBtn" style="display:none" onclick="publishToSharedLibrary()">Publish Shared</button><button class="btn orange" onclick="exportTestJSON()">Export Test</button><button class="btn purple" onclick="adminLogin()">Admin Access</button><button class="btn blue" id="copyUidBtn" style="display:none" onclick="copyAdminUid()">Copy Admin UID</button><button class="btn red" id="adminExitBtn" style="display:none" onclick="adminLogout()">Exit Admin</button><button class="btn gray" onclick="go('landing')">Home</button></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <h3>1. Test Details</h3>
+          <label>Test Name</label><input id="testName" placeholder="Example: K2 English Pre-Test">
+          <div class="grid2">
+            <div><label>Level</label><select id="testLevel"><option>K1</option><option selected>K2</option><option>K3</option></select></div>
+            <div><label>Subject</label><input id="testSubject" value="English"></div>
+          </div>
+          <div class="grid2">
+            <div><label>Semester / Term</label><input id="testTerm" value="Second Semester"></div>
+            <div><label>Class Code</label><input id="testClassCode" value="K2-DEMO"></div>
+          </div>
+          <br>
+          <div class="notice">Rule #1: Picture choices show images only. No vocabulary labels under picture answers.</div>
+        </div>
+
+        <div class="card">
+          <h3>2. Saved Questions</h3>
+          <div id="questionList" class="questionList"></div>
+          <br>
+          <div class="row"><button class="btn red" onclick="clearQuestionForm()">New Question</button><button class="btn blue" onclick="loadSampleTest()">Load Sample Test</button><button class="btn gray" onclick="deleteAllQuestions()">Clear All</button></div>
+        </div>
+      </div>
+
+      <br>
+      <div class="card">
+        <div class="header" style="margin-bottom:8px">
+          <div><h3>☁️ V2F RC6 No Landing Image</h3><div class="muted">No teacher sign-in. Saves teacher copies to Firebase and fixes admin publishing verification for official shared assessments.</div><div id="cloudStatus" class="notice" style="margin-top:10px">Cloud Status: Connecting...</div><div id="roleStatus" class="pill" style="display:inline-block;margin-top:10px">Teacher Mode</div> <button class="btn mini blue noPrint" onclick="testCloudConnection()" style="margin-top:10px">Test Cloud</button><div id="adminUidBox" class="notice noPrint" style="display:none;margin-top:10px"></div></div>
+        </div>
+        <div id="fileStats" class="statsGrid"></div>
+        <div class="fileManagerControls noPrint">
+          <div><label>Search Assessment</label><input id="fileSearch" placeholder="Search by name, subject, or class code" oninput="renderSavedFiles()"></div>
+          <div><label>Level</label><select id="fileLevelFilter" onchange="renderSavedFiles()"><option value="All">All Levels</option><option>K1</option><option>K2</option><option>K3</option></select></div>
+          <div><label>Subject</label><select id="fileSubjectFilter" onchange="renderSavedFiles()"><option value="All">All Subjects</option><option>English</option><option>Math</option><option>Science</option><option>Other</option></select></div>
+          <div><label>Sort</label><select id="fileSort" onchange="renderSavedFiles()"><option value="newest">Newest First</option><option value="oldest">Oldest First</option><option value="alpha">Alphabetical</option><option value="questions">Most Questions</option></select></div>
+        </div>
+        <div id="savedFilesList" class="fileCards"></div>
+      </div>
+
+      <br>
+      <div class="card">
+        <h3>3. Add / Edit Question</h3>
+        <div class="grid2">
+          <div>
+            <label>Question Type</label>
+            <select id="qType" onchange="updateQuestionTypeUI()">
+              <option value="picture">Picture Multiple Choice</option>
+              <option value="text">Text Multiple Choice</option>
+              <option value="missing">Missing Letter</option>
+              <option value="audio">Audio Listening</option>
+            </select>
+          </div>
+          <div>
+            <label>Correct Answer</label>
+            <select id="qCorrect"><option>A</option><option>B</option><option>C</option></select>
+          </div>
+        </div>
+        <label>Question / Prompt</label>
+        <textarea id="qText" placeholder="Example: Which fruit is yellow?"></textarea>
+        <label>Optional Question Image</label>
+        <div class="choiceEditor" id="questionImageDrop" data-target="questionImage" tabindex="0" title="Click here, then press Ctrl + V to paste a screenshot.">
+          <img id="questionImagePreview" alt="Question image preview">
+          <div class="pasteHint"><strong>Ctrl + V Question Image Here</strong>Click this box, paste a screenshot, drag and drop, or upload as backup.</div>
+          <label class="uploadBtn" onclick="event.stopPropagation()">Upload Backup<input type="file" accept="image/*" onchange="handleFileInput(event,'questionImage')"></label>
+          <button class="btn mini gray" onclick="event.stopPropagation(); clearImage('questionImage')">Remove Image</button>
+        </div>
+
+        <div id="pictureChoices">
+          <h3>Picture Choices</h3>
+          <div class="notice">Teacher shortcut: use Snipping Tool, copy the picture, click a choice box, then press <b>Ctrl + V</b>.</div><br>
+          <div class="grid3">
+            <div><label>Choice A Image</label><div class="choiceEditor" id="choiceADrop" data-target="choiceAImage" tabindex="0" title="Click here, then press Ctrl + V to paste choice A."><img id="choiceAImagePreview" alt="A"><div class="pasteHint"><strong>Ctrl + V Choice A</strong>Paste screenshot here.</div><label class="uploadBtn" onclick="event.stopPropagation()">Upload Backup<input type="file" accept="image/*" onchange="handleFileInput(event,'choiceAImage')"></label><button class="btn mini gray" onclick="event.stopPropagation(); clearImage('choiceAImage')">Remove</button></div></div>
+            <div><label>Choice B Image</label><div class="choiceEditor" id="choiceBDrop" data-target="choiceBImage" tabindex="0" title="Click here, then press Ctrl + V to paste choice B."><img id="choiceBImagePreview" alt="B"><div class="pasteHint"><strong>Ctrl + V Choice B</strong>Paste screenshot here.</div><label class="uploadBtn" onclick="event.stopPropagation()">Upload Backup<input type="file" accept="image/*" onchange="handleFileInput(event,'choiceBImage')"></label><button class="btn mini gray" onclick="event.stopPropagation(); clearImage('choiceBImage')">Remove</button></div></div>
+            <div><label>Choice C Image</label><div class="choiceEditor" id="choiceCDrop" data-target="choiceCImage" tabindex="0" title="Click here, then press Ctrl + V to paste choice C."><img id="choiceCImagePreview" alt="C"><div class="pasteHint"><strong>Ctrl + V Choice C</strong>Paste screenshot here.</div><label class="uploadBtn" onclick="event.stopPropagation()">Upload Backup<input type="file" accept="image/*" onchange="handleFileInput(event,'choiceCImage')"></label><button class="btn mini gray" onclick="event.stopPropagation(); clearImage('choiceCImage')">Remove</button></div></div>
+          </div>
+        </div>
+
+        <div id="textChoices" style="display:none">
+          <h3>Text Choices</h3>
+          <div class="grid3">
+            <div><label>Choice A</label><input id="choiceAText" placeholder="A"></div>
+            <div><label>Choice B</label><input id="choiceBText" placeholder="B"></div>
+            <div><label>Choice C</label><input id="choiceCText" placeholder="C"></div>
+          </div>
+        </div>
+        <br>
+        <button class="btn big green" onclick="addOrUpdateQuestion()">Save Question</button>
+      </div>
+      <br>
+      <div class="card">
+        <div class="header" style="margin-bottom:8px">
+          <div><h3>📚 RC8 Question Bank</h3><div class="muted">Save reusable questions by topic, then build assessments from selected bank questions.</div></div>
+          <div class="row noPrint"><button class="btn green" onclick="saveCurrentQuestionToBank()">Save Current Question to Bank</button><button class="btn blue" onclick="exportQuestionBank()">Export Bank</button><button class="btn orange" onclick="importQuestionBank()">Import Bank</button></div>
+        </div>
+        <div class="fileManagerControls noPrint">
+          <div><label>Topic</label><input id="bankTopic" value="Animals" placeholder="Animals, Fruits, Colors..."></div>
+          <div><label>Level</label><select id="bankLevelFilter" onchange="renderQuestionBank()"><option value="All">All Levels</option><option>K1</option><option>K2</option><option>K3</option></select></div>
+          <div><label>Search Question Bank</label><input id="bankSearch" placeholder="Search prompt, answer, or topic" oninput="renderQuestionBank()"></div>
+          <div><label>Build</label><button class="btn purple" onclick="buildAssessmentFromBank()">Build From Selected</button></div>
+        </div>
+        <div id="questionBankList" class="fileCards"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="studentLogin" class="screen">
+    <div class="inner">
+      <div class="header"><h2>Student Login</h2><button class="btn gray" onclick="go('landing')">Home</button></div>
+      <div class="card studentForm">
+        <div class="notice" id="studentSelectedTest">Selected Assessment: K2 Demo Assessment</div>
+        <br>
+        <div class="grid2">
+          <div><label>Kindergarten Level</label><select id="studentLevel" onchange="refreshStudentTestOptions()"><option>K1</option><option selected>K2</option><option>K3</option></select></div>
+          <div><label>Assessment File</label><select id="studentTestSelect" onchange="selectStudentTest()"></select></div>
+          <div><label>Class Code</label><input id="studentClassCode" placeholder="Class code"></div>
+          <div><label>Test Type</label><select id="studentTestType"><option>Pre-Test</option><option>Post-Test</option></select></div>
+          <div><label>Student Name</label><input id="studentName" placeholder="Student name"></div>
+          <div><label>Student Number</label><input id="studentNumber" placeholder="Student number"></div>
+          <div><label>Teacher's Name (Optional)</label><input id="studentTeacher" placeholder="Teacher's name"></div>
+          <div><label>School Name (Optional)</label><input id="studentSchool" placeholder="School name"></div>
+        </div>
+        <br><button class="btn big blue" onclick="startAssessment()">Start Assessment</button>
+      </div>
+    </div>
+  </section>
+
+    <section id="assessmentPreview" class="screen">
+    <div class="inner">
+      <div class="header"><h2>Assessment Preview</h2><button class="btn gray" onclick="go('studentLogin')">Back</button></div>
+      <div class="card" style="max-width:760px;margin:40px auto;text-align:center">
+        <div style="font-size:64px">📝</div>
+        <h3 id="previewName">Assessment Name</h3>
+        <div id="previewDetails" class="statsGrid"></div>
+        <div class="notice" id="previewStudent"></div>
+        <br>
+        <button class="btn big green" onclick="beginAssessmentNow()">Start Assessment</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="assessment" class="screen">
+    <div class="playTop">
+      <div class="pill" id="playStudent">Student</div>
+      <div class="pill" id="playProgress">Question 1 / 1</div>
+      <button class="btn gray noPrint" onclick="confirmExitAssessment()">Exit</button>
+    </div>
+    <div class="playArea">
+      <div class="questionBox">
+        <p class="questionText" id="playQuestion">Question</p>
+        <img id="playQuestionImage" class="questionImage" style="display:none" alt="Question image">
+      </div>
+      <div id="playChoices" class="choices"></div>
+      <div class="playBottom noPrint"><button class="btn orange" onclick="speakCurrentQuestion()">🔊 Hear Again</button></div>
+    </div>
+  </section>
+
+  <section id="results" class="screen">
+    <div class="inner">
+      <div class="header"><h2>Results</h2><button class="btn gray noPrint" onclick="go('landing')">Home</button></div>
+      <div class="resultsBox card">
+        <h3 id="resultName">Student</h3>
+        <div class="score" id="resultScore">0 / 0</div>
+        <h2 id="resultPercent">0%</h2>
+        <h3 id="resultLevel">Performance Level</h3>
+        <div class="row noPrint" style="justify-content:center"><button class="btn blue" onclick="go('studentLogin')">New Student</button><button class="btn green" onclick="go('reports')">View Reports</button><button class="btn orange" onclick="window.print()">Print / Save PDF</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reports" class="screen">
+    <div class="inner">
+      <div class="header"><h2>Student Records</h2><div class="row noPrint"><button class="btn green" onclick="downloadCSV()">Export CSV</button><button class="btn orange" onclick="window.print()">Print / Save PDF</button><button class="btn gray" onclick="go('landing')">Home</button></div></div>
+      <div class="card">
+        <div class="fileManagerControls noPrint">
+          <div><label>Level</label><select id="reportLevelFilter" onchange="renderReports()"><option value="All">All Levels</option><option>K1</option><option>K2</option><option>K3</option></select></div>
+          <div><label>Class Code</label><input id="reportClassFilter" placeholder="Class code" oninput="renderReports()"></div>
+          <div><label>Teacher</label><input id="reportTeacherFilter" placeholder="Teacher name" oninput="renderReports()"></div>
+          <div><label>Type</label><select id="reportTypeFilter" onchange="renderReports()"><option value="All">All Types</option><option>Pre-Test</option><option>Post-Test</option></select></div>
+        </div>
+        <div id="reportSummary" class="row"></div><br><div style="overflow:auto"><table><thead><tr><th>Date</th><th>Name</th><th>No.</th><th>Level</th><th>Class</th><th>Test</th><th>Score</th><th>%</th><th>Level</th><th>Teacher</th><th>School</th></tr></thead><tbody id="recordsTable"></tbody></table></div></div>
+    </div>
+  </section>
+
+  <section id="settings" class="screen">
+    <div class="inner">
+      <div class="header"><h2>Settings</h2><button class="btn gray" onclick="go('landing')">Home</button></div>
+      <div class="card" style="max-width:720px;margin:auto">
+        <h3>Teacher Password</h3>
+        <label>Change Teacher Password</label><input id="newPassword" placeholder="New password">
+        <br><br><button class="btn blue" onclick="changePassword()">Save Password</button>
+        <hr>
+        <h3>Data</h3>
+        <button class="btn red" onclick="clearRecords()">Clear Student Records</button>
+      </div>
+    </div>
+  </section>
+</div>
+<div id="toast" class="toast"></div>
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.14.0/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAAVus_QZ7J7idCp2TdrxNwBUQ7uVbgc9g",
+  authDomain: "kindergarten-assessment-hub.firebaseapp.com",
+  databaseURL: "https://kindergarten-assessment-hub-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "kindergarten-assessment-hub",
+  storageBucket: "kindergarten-assessment-hub.firebasestorage.app",
+  messagingSenderId: "801468471135",
+  appId: "1:801468471135:web:c886d91be1cff3665988ea",
+  measurementId: "G-W8NEF7CG7K"
+};
+const ADMIN_CODE = ['Kevin','Admin','2026'].join('');
+let db=null;
+let cloudReady=false;
+let currentUid=null;
+let sharedTests=[];
+let teacherDrafts=[];
+let cloudTests=[];
+let isAdmin=false;
+const SHARED_PATH='sharedAssessments';
+const DRAFTS_PATH='teacherDrafts';
+
+const STORAGE_TEST='kah_v2f_revised_current_test';
+const STORAGE_TESTS='kah_v2f_revised_shared_cache';
+const STORAGE_RECORDS='kah_v2f_revised_records';
+const STORAGE_PASS='kah_v2f_revised_pass';
+const STORAGE_BANK='kah_v2f_rc8_question_bank';
+let activePasteTarget='questionImage';
+let currentTest={id:makeTestId(),name:'K2 Demo Assessment',level:'K2',subject:'English',term:'Second Semester',classCode:'K2-DEMO',questions:[]};
+let editingIndex=null;
+let imageStore={questionImage:'',choiceAImage:'',choiceBImage:'',choiceCImage:''};
+let session={student:{},answers:[],score:0,current:0};
+
+function $(id){return document.getElementById(id)}
+function go(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active'); if(id==='teacherPanel') renderTeacher(); if(id==='studentLogin') prepareStudentLoginForCurrentTest(); if(id==='assessmentPreview') renderAssessmentPreview(); if(id==='reports') renderReports();}
+function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2200)}
+function defaultPass(){return localStorage.getItem(STORAGE_PASS)||'teacher123'}
+function checkTeacherPass(){ if($('teacherPass').value===defaultPass()){ $('teacherPass').value=''; go('teacherPanel')} else toast('Incorrect password. Try teacher123.'); }
+function changePassword(){const v=$('newPassword').value.trim(); if(!v)return toast('Please enter a new password.'); localStorage.setItem(STORAGE_PASS,v); $('newPassword').value=''; toast('Password saved.');}
+
+function makeTestId(){return 'test_'+Date.now()+'_'+Math.random().toString(36).slice(2,7)}
+function getLocalTests(){try{return JSON.parse(localStorage.getItem(STORAGE_TESTS)||'[]')}catch(e){return[]}}
+function setLocalTests(list){localStorage.setItem(STORAGE_TESTS,JSON.stringify(list));}
+function getSavedTests(){return cloudReady ? cloudTests : getLocalTests();}
+function setSavedTests(list){setLocalTests(list);}
+function combineCloudTests(){
+  const shared=(sharedTests||[]).map(t=>({...t,source:'shared',isOfficial:true}));
+  const drafts=(teacherDrafts||[]).map(t=>({...t,source:'draft',isOfficial:false}));
+  cloudTests=[...drafts,...shared];
+  setLocalTests(cloudTests);
+}
+function testRef(t){
+  if(!db) return null;
+  if((t.source||'draft')==='shared') return db.ref(SHARED_PATH+'/'+t.id);
+  return db.ref(DRAFTS_PATH+'/'+currentUid+'/'+t.id);
+}
+function cleanForCloud(t){return JSON.parse(JSON.stringify(t||{}));}
+function currentTestTitle(t){return `${t.level||'K'} • ${t.name||'Untitled Assessment'} • ${t.classCode||'No Class Code'}`;}
+function saveTest(silent){
+  const wasShared=currentTest.source==='shared' || currentTest.isOfficial===true;
+  currentTest.name=$('testName').value.trim()||'Untitled Assessment';
+  currentTest.level=$('testLevel').value; currentTest.subject=$('testSubject').value.trim(); currentTest.term=$('testTerm').value.trim(); currentTest.classCode=$('testClassCode').value.trim();
+  if(!currentTest.id) currentTest.id=makeTestId();
+  currentTest.createdAt=currentTest.createdAt||new Date().toLocaleString();
+  currentTest.updatedAt=new Date().toLocaleString();
+
+  // Teacher safety rule: if a teacher opens an official shared file and clicks Save,
+  // the app creates an editable teacher copy instead of changing the original.
+  if(isAdmin){
+    // Admin saves to the official shared library. The database rules still require
+    // this browser's Firebase anonymous UID to be listed under /admins.
+    currentTest.source='shared';
+    currentTest.isOfficial=true;
+    currentTest.ownerUid='admin';
+  } else if(wasShared){
+    // Teacher safety rule: if a teacher opens an official shared file and clicks Save,
+    // the app creates an editable teacher copy instead of changing the original.
+    const originalId=currentTest.id;
+    currentTest.id=makeTestId();
+    currentTest.parentSharedId=originalId;
+    currentTest.source='draft';
+    currentTest.isOfficial=false;
+    currentTest.ownerUid=currentUid||'anonymous';
+    currentTest.name=currentTest.name.includes('Copy') ? currentTest.name : currentTest.name+' Copy';
+    currentTest.createdAt=new Date().toLocaleString();
+    currentTest.updatedAt=new Date().toLocaleString();
+  } else {
+    currentTest.source='draft';
+    currentTest.isOfficial=false;
+    currentTest.ownerUid=currentUid||'anonymous';
+  }
+
+  localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest));
+
+  if(db && currentUid){
+    const ref=testRef(currentTest);
+    ref.set(cleanForCloud(currentTest)).then(()=>{
+      toast(currentTest.source==='shared'?'Official shared file saved.':'Editable teacher copy saved.');
+      renderTeacher(); refreshStudentTestOptions();
+    }).catch(err=>toast('Cloud save failed: '+err.message));
+  } else {
+    const tests=getLocalTests();
+    const idx=tests.findIndex(t=>t.id===currentTest.id);
+    if(idx>=0) tests[idx]=currentTest; else tests.push(currentTest);
+    setLocalTests(tests);
+    toast('Saved locally. Cloud is not connected. Check Anonymous Authentication and Database Rules.'); renderTeacher(); refreshStudentTestOptions();
+  }
+}
+function loadSavedTest(){
+  const last=localStorage.getItem(STORAGE_TEST);
+  if(last){try{currentTest=JSON.parse(last)}catch(e){}}
+  if(!currentTest || !currentTest.id){
+    currentTest={id:makeTestId(),name:'Untitled Assessment',level:'K1',subject:'English',term:'',classCode:'',questions:[],source:'draft',isOfficial:false,ownerUid:currentUid||'anonymous'};
+  }
+  // RC3 does not auto-add demo/sample files to the saved library.
+  // Use Load Sample Test, then click Save Copy to write it to Firebase.
+}
+function newTestFile(){
+  if(!confirm('Create a new blank test file? Remember to save your current test first.')) return;
+  currentTest={id:makeTestId(),name:'Untitled Assessment',level:'K1',subject:'English',term:'',classCode:'',questions:[],source:'draft',isOfficial:false,ownerUid:currentUid||'anonymous'};
+  localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); clearQuestionForm(); renderTeacher(); toast('New blank test file created.');
+}
+function openSavedTest(id){const t=getSavedTests().find(x=>x.id===id); if(!t)return toast('Saved file not found.'); currentTest=JSON.parse(JSON.stringify(t)); localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); clearQuestionForm(); renderTeacher(); if((t.source==='shared'||t.isOfficial)&&!isAdmin) toast('Official file opened as read-only. Click Duplicate to Edit or Save to create your own copy.'); else toast('Assessment file opened.');}
+function playSavedTest(id){openSavedTest(id); go('studentLogin'); prepareStudentLoginForCurrentTest();}
+
+function renameSavedTest(id){
+  const tests=getSavedTests();
+  const target=tests.find(t=>t.id===id);
+  if(!target)return toast('Saved file not found.');
+  if(target.source==='shared' && !isAdmin) return toast('Official shared files cannot be renamed. Duplicate first, then rename your copy.');
+  const oldName=target.name||'Untitled Assessment';
+  const newName=prompt('Rename assessment file:', oldName);
+  if(newName===null)return;
+  const cleanName=newName.trim();
+  if(!cleanName)return toast('Assessment name cannot be blank.');
+  const duplicate=tests.some(t=>t.id!==id && String(t.name||'').trim().toLowerCase()===cleanName.toLowerCase() && (t.level||'')===(target.level||''));
+  if(duplicate && !confirm('Another assessment with this name already exists in the same level. Rename anyway?')) return;
+  target.name=cleanName;
+  target.updatedAt=new Date().toLocaleString();
+  if(cloudReady && db && currentUid){
+    testRef(target).set(cleanForCloud(target)).then(()=>toast('Assessment renamed.')).catch(err=>toast('Rename failed: '+err.message));
+  }else{
+    const local=getLocalTests(); const idx=local.findIndex(t=>t.id===id); if(idx>=0)local[idx]=target; setLocalTests(local); toast('Assessment renamed locally.');
+  }
+  if(currentTest.id===id){currentTest=target; localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest));}
+  renderTeacher(); refreshStudentTestOptions();
+}
+function duplicateSavedTest(id){
+  const tests=getSavedTests();
+  const original=tests.find(t=>t.id===id);
+  if(!original)return toast('Saved file not found.');
+  const copy=JSON.parse(JSON.stringify(original));
+  copy.id=makeTestId();
+  copy.source='draft';
+  copy.isOfficial=false;
+  copy.ownerUid=currentUid||'anonymous';
+  if(original.source==='shared') copy.parentSharedId=original.id;
+  const baseName=(original.name||'Untitled Assessment')+' Copy';
+  let name=baseName;
+  let n=2;
+  while(tests.some(t=>String(t.name||'').trim().toLowerCase()===name.toLowerCase() && (t.level||'')===(copy.level||''))){
+    name=baseName+' '+n;
+    n++;
+  }
+  copy.name=name;
+  copy.classCode=(original.classCode||'') ? String(original.classCode)+'-COPY' : '';
+  copy.createdAt=new Date().toLocaleString();
+  copy.updatedAt=new Date().toLocaleString();
+  if(cloudReady && db && currentUid){
+    db.ref(DRAFTS_PATH+'/'+currentUid+'/'+copy.id).set(cleanForCloud(copy)).then(()=>{
+      currentTest=copy; localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); clearQuestionForm(); renderTeacher(); refreshStudentTestOptions(); toast('Shared file duplicated into your editable copy.');
+    }).catch(err=>toast('Duplicate failed: '+err.message));
+  }else{
+    const local=getLocalTests(); local.push(copy); setLocalTests(local); currentTest=copy; localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); clearQuestionForm(); renderTeacher(); refreshStudentTestOptions(); toast('Assessment duplicated locally.');
+  }
+}
+function deleteSavedTest(id){
+  const target=getSavedTests().find(t=>t.id===id);
+  if(!target)return toast('Saved file not found.');
+  if(target.source==='shared' && !isAdmin) return toast('Teachers cannot delete official shared files.');
+  if(!confirm('Delete '+(target.name||'this saved assessment file')+'?\n\nThis cannot be undone.'))return;
+  if(cloudReady && db && currentUid){
+    testRef(target).remove().then(()=>toast(target.source==='shared'?'Official shared file deleted.':'Teacher copy deleted.')).catch(err=>toast('Delete failed: '+err.message));
+  }else{
+    let tests=getLocalTests().filter(t=>t.id!==id); setLocalTests(tests); toast('Saved file deleted locally.');
+  }
+  if(currentTest.id===id){currentTest={id:makeTestId(),name:'Untitled Assessment',level:'K1',subject:'English',term:'',classCode:'',questions:[],source:'draft'}; localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest));}
+  renderTeacher(); refreshStudentTestOptions();
+}
+function renderFileStats(tests){
+  const box=$('fileStats'); if(!box)return;
+  const k1=tests.filter(t=>(t.level||'')==='K1').length;
+  const k2=tests.filter(t=>(t.level||'')==='K2').length;
+  const k3=tests.filter(t=>(t.level||'')==='K3').length;
+  box.innerHTML=`<div class="statCard"><span class="num">${tests.length}</span>Total Files</div><div class="statCard"><span class="num">${k1}</span>K1 Files</div><div class="statCard"><span class="num">${k2}</span>K2 Files</div><div class="statCard"><span class="num">${k3}</span>K3 Files</div>`;
+}
+function renderSavedFiles(){
+  const box=$('savedFilesList'); if(!box)return;
+  const allTests=getSavedTests();
+  renderFileStats(allTests);
+  const search=($('fileSearch')?$('fileSearch').value:'').trim().toLowerCase();
+  const levelFilter=$('fileLevelFilter')?$('fileLevelFilter').value:'All';
+  const subjectFilter=$('fileSubjectFilter')?$('fileSubjectFilter').value:'All';
+  const sortBy=$('fileSort')?$('fileSort').value:'newest';
+  let tests=allTests.filter(t=>{
+    const text=`${t.name||''} ${t.subject||''} ${t.classCode||''} ${t.level||''} ${t.source||''}`.toLowerCase();
+    const levelOk=levelFilter==='All'||(t.level||'')===levelFilter;
+    const subjectOk=subjectFilter==='All'||(t.subject||'')===subjectFilter;
+    const searchOk=!search||text.includes(search);
+    return levelOk&&subjectOk&&searchOk;
+  });
+  tests.sort((a,b)=>{
+    if(sortBy==='oldest') return new Date(a.updatedAt||0)-new Date(b.updatedAt||0);
+    if(sortBy==='alpha') return String(a.name||'').localeCompare(String(b.name||''));
+    if(sortBy==='questions') return ((b.questions||[]).length)-((a.questions||[]).length);
+    return new Date(b.updatedAt||0)-new Date(a.updatedAt||0);
+  });
+  box.innerHTML='';
+  if(!allTests.length){box.innerHTML='<div class="notice">No Firebase assessment files yet. Load Sample Test, then click Save Copy to create your first teacherDraft. Admin mode can publish official shared files using the Publish Shared button.</div>'; return;}
+  if(!tests.length){box.innerHTML='<div class="notice">No saved files match your search/filter.</div>'; return;}
+  const groups={K1:[],K2:[],K3:[],Other:[]};
+  tests.forEach(t=>{(groups[t.level]||groups.Other).push(t);});
+  ['K1','K2','K3','Other'].forEach(level=>{
+    if(!groups[level].length)return;
+    const folder=document.createElement('div'); folder.className='notice'; folder.style.margin='12px 0 8px';
+    folder.innerHTML=`📁 <b>${level==='Other'?'Other / Unset Level':level+' Folder'}</b> <span class="muted">(${groups[level].length} assessment${groups[level].length>1?'s':''})</span>`;
+    box.appendChild(folder);
+    groups[level].forEach(t=>{
+      const div=document.createElement('div'); div.className='fileCard'+(t.id===currentTest.id?' activeFile':'');
+      const qCount=(t.questions||[]).length;
+      const isShared=t.source==='shared' || t.isOfficial;
+      const badge=isShared?'🌐 Official Shared':'✏️ My Editable Copy';
+      const openLabel=isShared && !isAdmin?'View Original':'Open / Edit';
+      let actionButtons='';
+      if(isShared && !isAdmin){
+        actionButtons=`<button class="btn mini blue" onclick="openSavedTest('${t.id}')">View Original</button><button class="btn mini orange" onclick="duplicateSavedTest('${t.id}')">Duplicate to Edit</button><button class="btn mini green" onclick="playSavedTest('${t.id}')">Preview / Start</button><button class="btn mini orange" onclick="exportOneTestJSON('${t.id}')">Export</button>`;
+      }else{
+        actionButtons=`<button class="btn mini blue" onclick="openSavedTest('${t.id}')">${openLabel}</button><button class="btn mini purple" onclick="renameSavedTest('${t.id}')">Rename</button><button class="btn mini orange" onclick="duplicateSavedTest('${t.id}')">Duplicate</button><button class="btn mini green" onclick="playSavedTest('${t.id}')">Preview / Start</button><button class="btn mini orange" onclick="exportOneTestJSON('${t.id}')">Export</button><button class="btn mini red" onclick="deleteSavedTest('${t.id}')">Delete</button>`;
+      }
+      div.innerHTML=`<div class="fileTitle">📄 ${escapeHTML(t.name||'Untitled Assessment')} ${t.id===currentTest.id?'✅':''}</div>
+        <div class="fileMeta">
+          <span>${badge}</span><span>Level: ${escapeHTML(t.level||'')}</span><span>Subject: ${escapeHTML(t.subject||'')}</span><span>Questions: ${qCount}</span><span>Class Code: ${escapeHTML(t.classCode||'')}</span><span>Created: ${escapeHTML(t.createdAt||'')}</span><span>Updated: ${escapeHTML(t.updatedAt||'')}</span>
+        </div>
+        <div class="row">${actionButtons}</div>`;
+      box.appendChild(div);
+    });
+  });
+}
+
+function renderTeacher(){
+  $('testName').value=currentTest.name||''; $('testLevel').value=currentTest.level||'K2'; $('testSubject').value=currentTest.subject||''; $('testTerm').value=currentTest.term||''; $('testClassCode').value=currentTest.classCode||'';
+  const list=$('questionList'); list.innerHTML='';
+  if(!currentTest.questions.length){list.innerHTML='<div class="notice">No questions yet. Add one question below or load the sample test.</div>'; renderSavedFiles(); return;}
+  currentTest.questions.forEach((q,i)=>{const div=document.createElement('div');div.className='qItem';div.innerHTML=`<span><b>${i+1}.</b> ${escapeHTML(q.question).slice(0,60)} <span class="muted">(${q.type})</span></span><span><button class="btn mini blue" onclick="editQuestion(${i})">Edit</button> <button class="btn mini red" onclick="deleteQuestion(${i})">Delete</button></span>`;list.appendChild(div);});
+  renderSavedFiles();
+}
+function clearQuestionForm(){editingIndex=null; $('qType').value='picture'; $('qCorrect').value='A'; $('qText').value=''; ['choiceAText','choiceBText','choiceCText'].forEach(id=>$(id).value=''); imageStore={questionImage:'',choiceAImage:'',choiceBImage:'',choiceCImage:''}; refreshImagePreviews(); updateQuestionTypeUI();}
+function updateQuestionTypeUI(){const type=$('qType').value; const pic=(type==='picture'); $('pictureChoices').style.display=pic?'block':'none'; $('textChoices').style.display=pic?'none':'block';}
+function addOrUpdateQuestion(){
+  const type=$('qType').value; const question=$('qText').value.trim(); if(!question)return toast('Please type the question.');
+  let q={type, question, correct:$('qCorrect').value, questionImage:imageStore.questionImage||''};
+  if(type==='picture'){
+    if(!imageStore.choiceAImage||!imageStore.choiceBImage||!imageStore.choiceCImage)return toast('Please add images for A, B, and C.');
+    q.choices={A:{image:imageStore.choiceAImage},B:{image:imageStore.choiceBImage},C:{image:imageStore.choiceCImage}};
+  } else {
+    const A=$('choiceAText').value.trim(),B=$('choiceBText').value.trim(),C=$('choiceCText').value.trim(); if(!A||!B||!C)return toast('Please complete text choices A, B, and C.');
+    q.choices={A:{text:A},B:{text:B},C:{text:C}};
+  }
+  if(editingIndex===null) currentTest.questions.push(q); else currentTest.questions[editingIndex]=q;
+  saveTest(); clearQuestionForm(); toast('Question saved.');
+}
+function editQuestion(i){const q=currentTest.questions[i]; editingIndex=i; $('qType').value=q.type; $('qCorrect').value=q.correct; $('qText').value=q.question; ['choiceAText','choiceBText','choiceCText'].forEach(id=>$(id).value=''); imageStore={questionImage:q.questionImage||'',choiceAImage:'',choiceBImage:'',choiceCImage:''}; if(q.type==='picture'){imageStore.choiceAImage=q.choices.A.image; imageStore.choiceBImage=q.choices.B.image; imageStore.choiceCImage=q.choices.C.image;} else {$('choiceAText').value=q.choices.A.text; $('choiceBText').value=q.choices.B.text; $('choiceCText').value=q.choices.C.text;} refreshImagePreviews(); updateQuestionTypeUI(); toast('Editing question '+(i+1));}
+function deleteQuestion(i){ if(confirm('Delete question '+(i+1)+'?')){currentTest.questions.splice(i,1); saveTest();}}
+function deleteAllQuestions(){ if(confirm('Clear all questions?')){currentTest.questions=[]; saveTest(); clearQuestionForm();}}
+
+function refreshImagePreviews(){['questionImage','choiceAImage','choiceBImage','choiceCImage'].forEach(key=>{const img=$(key+'Preview'); const wrap=img.closest('.choiceEditor'); if(imageStore[key]){img.src=imageStore[key]; wrap.classList.add('hasImage')} else {img.removeAttribute('src'); wrap.classList.remove('hasImage')}})}
+function clearImage(key){imageStore[key]=''; refreshImagePreviews();}
+function handleFileInput(event,key){const f=event.target.files[0]; if(f) readImageFile(f,key); event.target.value='';}
+function readImageFile(file,key){if(!file.type.startsWith('image/'))return toast('Please use an image file.'); const reader=new FileReader(); reader.onload=e=>{imageStore[key]=e.target.result; refreshImagePreviews(); toast('Image added.');}; reader.readAsDataURL(file);}
+function setActivePasteBox(box){
+  document.querySelectorAll('.choiceEditor').forEach(b=>b.classList.remove('activePaste'));
+  box.classList.add('activePaste');
+  activePasteTarget=box.dataset.target;
+}
+function readClipboardImage(e,key){
+  const items=e.clipboardData&&e.clipboardData.items?e.clipboardData.items:[];
+  for(const item of items){
+    if(item.type&&item.type.startsWith('image/')){
+      readImageFile(item.getAsFile(),key);
+      e.preventDefault();
+      return true;
+    }
+  }
+  return false;
+}
+function setupImageDropPaste(){
+  document.querySelectorAll('.choiceEditor').forEach(box=>{
+    box.addEventListener('click',()=>{box.focus(); setActivePasteBox(box);});
+    box.addEventListener('focus',()=>setActivePasteBox(box));
+    box.addEventListener('dragover',e=>{e.preventDefault(); setActivePasteBox(box); box.style.filter='brightness(.96)'});
+    box.addEventListener('dragleave',()=>box.style.filter='');
+    box.addEventListener('drop',e=>{e.preventDefault(); box.style.filter=''; const key=box.dataset.target; const file=e.dataTransfer.files[0]; if(file) readImageFile(file,key);});
+    box.addEventListener('paste',e=>{const key=box.dataset.target; if(!readClipboardImage(e,key)) toast('No image found in clipboard. Use Snipping Tool then Ctrl + V.');});
+  });
+  document.addEventListener('paste',e=>{
+    const active=document.activeElement&&document.activeElement.closest?document.activeElement.closest('.choiceEditor'):null;
+    const key=active?active.dataset.target:activePasteTarget;
+    if(key) readClipboardImage(e,key);
+  });
+}
+
+function refreshStudentTestOptions(){
+  const sel=$('studentTestSelect'); if(!sel)return;
+  const level=$('studentLevel')?$('studentLevel').value:(currentTest.level||'K2');
+  const tests=getSavedTests().filter(t=>(t.level||'')===level);
+  sel.innerHTML='';
+  if(!tests.length){
+    const opt=document.createElement('option'); opt.value=''; opt.textContent='No saved files for '+level; sel.appendChild(opt);
+    $('studentClassCode').value='';
+    updateStudentSelectedTestLabel('No saved assessment selected for '+level);
+    return;
+  }
+  tests.forEach(t=>{const opt=document.createElement('option'); opt.value=t.id; opt.textContent=`${t.name} (${(t.questions||[]).length} Qs)`; sel.appendChild(opt);});
+  if(tests.some(t=>t.id===currentTest.id)) sel.value=currentTest.id;
+  else {sel.value=tests[0].id; currentTest=tests[0]; localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest));}
+  $('studentClassCode').value=currentTest.classCode||'';
+  updateStudentSelectedTestLabel();
+}
+function updateStudentSelectedTestLabel(message){
+  if(!$('studentSelectedTest'))return;
+  if(message){$('studentSelectedTest').innerHTML=escapeHTML(message); return;}
+  $('studentSelectedTest').innerHTML=`Selected Assessment: <b>${escapeHTML(currentTest.name||'Untitled Assessment')}</b> | Level: <b>${escapeHTML(currentTest.level||'')}</b> | Class Code: <b>${escapeHTML(currentTest.classCode||'')}</b>`;
+}
+function prepareStudentLoginForCurrentTest(){
+  if(!$('studentLevel'))return;
+  $('studentLevel').value=currentTest.level||'K2';
+  refreshStudentTestOptions();
+  $('studentClassCode').value=currentTest.classCode||'';
+  updateStudentSelectedTestLabel();
+}
+function selectStudentTest(){
+  const id=$('studentTestSelect').value; if(!id)return;
+  const t=getSavedTests().find(x=>x.id===id); if(t){currentTest=t; localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); $('studentLevel').value=currentTest.level||'K2'; $('studentClassCode').value=currentTest.classCode||''; updateStudentSelectedTestLabel();}
+}
+function startAssessment(){
+  selectStudentTest();
+  if($('studentTestSelect') && !$('studentTestSelect').value) return toast('No saved assessment file selected for this level.');
+  if(!currentTest.questions.length)return toast('No questions yet. Please ask the teacher to create a test.');
+  session.student={level:$('studentLevel').value,name:$('studentName').value.trim()||'Student',number:$('studentNumber').value.trim(),classCode:$('studentClassCode').value.trim(),teacher:$('studentTeacher').value.trim(),school:$('studentSchool').value.trim(),testType:$('studentTestType').value};
+  go('assessmentPreview');
+}
+function renderAssessmentPreview(){
+  if(!$('previewName'))return;
+  const q=(currentTest.questions||[]).length;
+  $('previewName').textContent=currentTest.name||'Untitled Assessment';
+  $('previewDetails').innerHTML=`<div class="statCard"><span class="num">${escapeHTML(currentTest.level||'')}</span>Level</div><div class="statCard"><span class="num">${escapeHTML(currentTest.subject||'')}</span>Subject</div><div class="statCard"><span class="num">${q}</span>Questions</div><div class="statCard"><span class="num">${Math.max(1,Math.ceil(q*0.5))} min</span>Estimated Time</div>`;
+  $('previewStudent').innerHTML=`Student: <b>${escapeHTML(session.student.name||'Student')}</b> • Type: <b>${escapeHTML(session.student.testType||'')}</b> • Class: <b>${escapeHTML(session.student.classCode||currentTest.classCode||'')}</b>`;
+}
+function beginAssessmentNow(){
+  session.answers=[]; session.score=0; session.current=0; $('playStudent').textContent=session.student.name; go('assessment'); renderQuestion();
+}
+function renderQuestion(){const q=currentTest.questions[session.current]; $('playProgress').textContent=`Question ${session.current+1} / ${currentTest.questions.length}`; $('playQuestion').textContent=q.question; if(q.questionImage){$('playQuestionImage').src=q.questionImage; $('playQuestionImage').style.display='block'} else {$('playQuestionImage').style.display='none'} const area=$('playChoices'); area.innerHTML=''; ['A','B','C'].forEach(letter=>{const btn=document.createElement('button'); btn.className='tapChoice '+(q.type==='picture'?'':'text'); btn.onclick=()=>answerQuestion(letter); if(q.type==='picture'){const img=document.createElement('img'); img.src=q.choices[letter].image; img.alt='Choice '+letter; btn.appendChild(img);} else {btn.textContent=q.choices[letter].text;} area.appendChild(btn);}); setTimeout(speakCurrentQuestion,450);}
+function speakCurrentQuestion(){const q=currentTest.questions[session.current]; if(!('speechSynthesis' in window))return; speechSynthesis.cancel(); const text=q.type==='audio'?q.question:q.question; const u=new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=.82; u.pitch=1.08; const voices=speechSynthesis.getVoices(); const female=voices.find(v=>/female|zira|samantha|jenny|aria|google us english/i.test(v.name)); if(female)u.voice=female; speechSynthesis.speak(u);}
+function answerQuestion(letter){const q=currentTest.questions[session.current]; const correct=letter===q.correct; if(correct)session.score++; session.answers.push({question:q.question,answer:letter,correct:q.correct,isCorrect:correct}); session.current++; if(session.current>=currentTest.questions.length) finishAssessment(); else renderQuestion();}
+function finishAssessment(){const total=currentTest.questions.length; const pct=Math.round((session.score/total)*100); const level=pct>=90?'Excellent':pct>=75?'Very Good':pct>=60?'Good':'Needs Support'; $('resultName').textContent=session.student.name; $('resultScore').textContent=`${session.score} / ${total}`; $('resultPercent').textContent=pct+'%'; $('resultLevel').textContent=level; saveRecord({date:new Date().toLocaleString(),student:session.student,testName:currentTest.name,level:currentTest.level,subject:currentTest.subject,score:session.score,total,percent:pct,performance:level,answers:session.answers}); go('results');}
+function confirmExitAssessment(){if(confirm('Exit assessment? Current progress will not be saved.'))go('landing');}
+function saveRecord(r){const records=getRecords(); records.push(r); localStorage.setItem(STORAGE_RECORDS,JSON.stringify(records));}
+function getRecords(){try{return JSON.parse(localStorage.getItem(STORAGE_RECORDS)||'[]')}catch(e){return[]}}
+function getFilteredRecords(){
+  const records=getRecords();
+  const level=$('reportLevelFilter')?$('reportLevelFilter').value:'All';
+  const cls=($('reportClassFilter')?$('reportClassFilter').value:'').trim().toLowerCase();
+  const teacher=($('reportTeacherFilter')?$('reportTeacherFilter').value:'').trim().toLowerCase();
+  const type=$('reportTypeFilter')?$('reportTypeFilter').value:'All';
+  return records.filter(r=>{
+    const rLevel=(r.student&&r.student.level)||r.level||'';
+    const rClass=((r.student&&r.student.classCode)||'').toLowerCase();
+    const rTeacher=((r.student&&r.student.teacher)||'').toLowerCase();
+    const rType=(r.student&&r.student.testType)||'';
+    return (level==='All'||rLevel===level) && (!cls||rClass.includes(cls)) && (!teacher||rTeacher.includes(teacher)) && (type==='All'||rType===type);
+  });
+}
+function renderReports(){const records=getFilteredRecords(); const all=getRecords(); const body=$('recordsTable'); body.innerHTML=''; if(!records.length){body.innerHTML='<tr><td colspan="11">No matching records yet.</td></tr>';} records.slice().reverse().forEach(r=>{const tr=document.createElement('tr'); tr.innerHTML=`<td>${escapeHTML(r.date)}</td><td>${escapeHTML(r.student.name)}</td><td>${escapeHTML(r.student.number)}</td><td>${escapeHTML(r.student.level||r.level||'')}</td><td>${escapeHTML(r.student.classCode)}</td><td>${escapeHTML(r.testName||r.student.testType)}</td><td>${r.score}/${r.total}</td><td>${r.percent}%</td><td>${escapeHTML(r.performance)}</td><td>${escapeHTML(r.student.teacher)}</td><td>${escapeHTML(r.student.school)}</td>`; body.appendChild(tr);}); const avg=records.length?Math.round(records.reduce((s,r)=>s+r.percent,0)/records.length):0; $('reportSummary').innerHTML=`<span class="pill">Showing: ${records.length}</span><span class="pill">Total Records: ${all.length}</span><span class="pill">Average: ${avg}%</span>`;}
+function downloadCSV(){const records=getFilteredRecords(); if(!records.length)return toast('No records to export.'); const header=['Date','Student Name','Student Number','Class Code','Teacher','School','Test Type','Test Name','Level','Subject','Score','Total','Percent','Performance']; const rows=records.map(r=>[r.date,r.student.name,r.student.number,r.student.classCode,r.student.teacher,r.student.school,r.student.testType,r.testName,r.level,r.subject,r.score,r.total,r.percent,r.performance]); const csv=[header,...rows].map(row=>row.map(v=>'"'+String(v||'').replaceAll('"','""')+'"').join(',')).join('\n'); downloadBlob(csv,'kindergarten_assessment_records.csv','text/csv');}
+function exportTestJSON(){saveTest(); downloadBlob(JSON.stringify(currentTest,null,2),'kindergarten_assessment_test.json','application/json');}
+function downloadBlob(content,name,type){const blob=new Blob([content],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href);}
+function clearRecords(){if(confirm('Clear all saved student records?')){localStorage.removeItem(STORAGE_RECORDS); renderReports(); toast('Records cleared.');}}
+function escapeHTML(s){return String(s||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+
+
+
+function exportOneTestJSON(id){
+  const t=getSavedTests().find(x=>x.id===id);
+  if(!t)return toast('Assessment not found.');
+  downloadBlob(JSON.stringify(t,null,2),(t.name||'assessment').replace(/[^a-z0-9_-]+/gi,'_')+'.json','application/json');
+}
+function getQuestionBank(){try{return JSON.parse(localStorage.getItem(STORAGE_BANK)||'[]')}catch(e){return[]}}
+function setQuestionBank(bank){localStorage.setItem(STORAGE_BANK,JSON.stringify(bank));}
+function questionFromForm(){
+  const q={id:'qb_'+Date.now(),topic:($('bankTopic')?$('bankTopic').value.trim():'General')||'General',level:$('testLevel').value,subject:$('testSubject').value.trim()||'English',type:$('qType').value,question:$('qText').value.trim(),correct:$('qCorrect').value,choices:{A:{text:$('choiceAText').value.trim(),image:imageStore.choiceAImage||''},B:{text:$('choiceBText').value.trim(),image:imageStore.choiceBImage||''},C:{text:$('choiceCText').value.trim(),image:imageStore.choiceCImage||''}},questionImage:imageStore.questionImage||'',createdAt:new Date().toLocaleString(),updatedAt:new Date().toLocaleString()};
+  return q;
+}
+function saveCurrentQuestionToBank(){
+  const q=questionFromForm();
+  if(!q.question)return toast('Type a question/prompt before saving to the question bank.');
+  const bank=getQuestionBank(); bank.push(q); setQuestionBank(bank); renderQuestionBank(); toast('Question saved to RC8 Question Bank.');
+}
+function renderQuestionBank(){
+  const box=$('questionBankList'); if(!box)return;
+  const level=$('bankLevelFilter')?$('bankLevelFilter').value:'All';
+  const search=($('bankSearch')?$('bankSearch').value:'').trim().toLowerCase();
+  let bank=getQuestionBank().filter(q=>{
+    const text=`${q.topic||''} ${q.question||''} ${q.subject||''} ${q.level||''} ${q.choices?.A?.text||''} ${q.choices?.B?.text||''} ${q.choices?.C?.text||''}`.toLowerCase();
+    return (level==='All'||q.level===level)&&(!search||text.includes(search));
+  });
+  if(!bank.length){box.innerHTML='<div class="notice">No question bank items yet. Create a question above, choose a topic, then click Save Current Question to Bank.</div>'; return;}
+  const groups={}; bank.forEach(q=>{const topic=q.topic||'General'; (groups[topic]||(groups[topic]=[])).push(q);});
+  box.innerHTML='';
+  Object.keys(groups).sort().forEach(topic=>{
+    const folder=document.createElement('div'); folder.className='notice'; folder.style.margin='12px 0 8px'; folder.innerHTML=`📚 <b>${escapeHTML(topic)}</b> <span class="muted">(${groups[topic].length} question${groups[topic].length>1?'s':''})</span>`; box.appendChild(folder);
+    groups[topic].forEach(q=>{
+      const div=document.createElement('div'); div.className='fileCard';
+      div.innerHTML=`<label style="display:flex;gap:10px;align-items:flex-start"><input type="checkbox" class="bankPick" value="${q.id}"><span><b>${escapeHTML(q.question||'Untitled Question')}</b><br><span class="muted">${escapeHTML(q.level||'')} • ${escapeHTML(q.subject||'')} • Correct: ${escapeHTML(q.correct||'')}</span></span></label><div class="row"><button class="btn mini blue" onclick="loadBankQuestion('${q.id}')">Preview / Edit</button><button class="btn mini orange" onclick="duplicateBankQuestion('${q.id}')">Duplicate</button><button class="btn mini red" onclick="deleteBankQuestion('${q.id}')">Delete</button></div>`;
+      box.appendChild(div);
+    });
+  });
+}
+function loadBankQuestion(id){
+  const q=getQuestionBank().find(x=>x.id===id); if(!q)return;
+  $('qType').value=q.type||'picture'; $('qText').value=q.question||''; $('qCorrect').value=q.correct||'A';
+  $('choiceAText').value=q.choices?.A?.text||''; $('choiceBText').value=q.choices?.B?.text||''; $('choiceCText').value=q.choices?.C?.text||'';
+  imageStore.questionImage=q.questionImage||''; imageStore.choiceAImage=q.choices?.A?.image||''; imageStore.choiceBImage=q.choices?.B?.image||''; imageStore.choiceCImage=q.choices?.C?.image||'';
+  updateQuestionTypeUI(); renderImagePreviews(); toast('Question loaded from bank. You can edit it or add it to the current assessment.');
+}
+function duplicateBankQuestion(id){const q=getQuestionBank().find(x=>x.id===id); if(!q)return; const copy=JSON.parse(JSON.stringify(q)); copy.id='qb_'+Date.now(); copy.question=(copy.question||'Question')+' (Copy)'; copy.updatedAt=new Date().toLocaleString(); const bank=getQuestionBank(); bank.push(copy); setQuestionBank(bank); renderQuestionBank(); toast('Question duplicated.');}
+function deleteBankQuestion(id){if(!confirm('Delete this question from the bank?'))return; setQuestionBank(getQuestionBank().filter(q=>q.id!==id)); renderQuestionBank(); toast('Question deleted from bank.');}
+function buildAssessmentFromBank(){
+  const ids=Array.from(document.querySelectorAll('.bankPick:checked')).map(x=>x.value);
+  if(!ids.length)return toast('Select question bank items first.');
+  const bank=getQuestionBank().filter(q=>ids.includes(q.id));
+  currentTest.id=makeTestId(); currentTest.name=prompt('Assessment name:', ($('testLevel').value||'K')+' Question Bank Assessment')||'Question Bank Assessment'; currentTest.level=$('testLevel').value; currentTest.subject=$('testSubject').value.trim()||'English'; currentTest.term=$('testTerm').value.trim(); currentTest.classCode=$('testClassCode').value.trim(); currentTest.questions=bank.map(q=>({type:q.type,question:q.question,questionImage:q.questionImage||'',correct:q.correct,choices:q.choices})); currentTest.source='draft'; currentTest.isOfficial=false; currentTest.createdAt=new Date().toLocaleString(); currentTest.updatedAt=new Date().toLocaleString();
+  localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); renderTeacher(); refreshStudentTestOptions(); toast('Assessment built from selected question bank items. Click Save Copy to store it.');
+}
+function exportQuestionBank(){downloadBlob(JSON.stringify(getQuestionBank(),null,2),'kindergarten_question_bank_rc8.json','application/json');}
+function importQuestionBank(){
+  const input=document.createElement('input'); input.type='file'; input.accept='.json,application/json';
+  input.onchange=()=>{const file=input.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=()=>{try{const incoming=JSON.parse(reader.result); if(!Array.isArray(incoming))throw new Error('Question bank JSON must be an array.'); const bank=getQuestionBank().concat(incoming.map(q=>({...q,id:q.id||('qb_'+Date.now()+Math.random())}))); setQuestionBank(bank); renderQuestionBank(); toast('Question bank imported.');}catch(e){alert('Import failed: '+e.message);}}; reader.readAsText(file);}; input.click();
+}
+function startAutoSaveDraft(){
+  setInterval(()=>{
+    if(!$('teacherPanel') || !$('teacherPanel').classList.contains('active'))return;
+    try{saveTest(true); toast('Draft saved ✓');}catch(e){console.warn('Auto-save failed',e);}
+  },30000);
+}
+function getAdminSetupText(){
+  return 'Current Firebase UID: '+(currentUid||'not connected yet')+'\nAdd this exact UID under /admins in Realtime Database with role = admin.';
+}
+function updateAdminUidBox(){
+  const box=$('adminUidBox');
+  if(!box) return;
+  if(isAdmin){
+    box.style.display='block';
+    box.innerHTML='<b>Admin Publishing Helper</b><br>Current Firebase UID: <b>'+escapeHTML(currentUid||'not connected yet')+'</b><br>Add this UID under <b>admins</b> in Realtime Database with <b>role: "admin"</b> if Publish Shared is denied.';
+  }else{
+    box.style.display='none';
+  }
+}
+function copyAdminUid(){
+  if(!currentUid) return toast('No Firebase UID yet. Wait for Cloud Status: Connected.');
+  const text=currentUid;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(()=>toast('Firebase UID copied. Add it under /admins in Realtime Database.')).catch(()=>alert(getAdminSetupText()));
+  }else{
+    alert(getAdminSetupText());
+  }
+}
+function verifyAdminNode(){
+  if(!db || !currentUid) return Promise.reject(new Error('Cloud is not connected yet.'));
+  return db.ref('admins/'+currentUid+'/role').once('value').then(snap=>{
+    const role = snap.val();
+    if(role !== 'admin') throw new Error('This Firebase UID is not listed as admin. Expected admins/'+currentUid+'/role = "admin". Current value: '+JSON.stringify(role));
+    return role;
+  });
+}
+function publishToSharedLibrary(){
+  if(!isAdmin) return toast('Admin access is required.');
+  if(!db || !currentUid) return toast('Cloud is not connected yet.');
+  currentTest.name=$('testName').value.trim()||'Untitled Assessment';
+  currentTest.level=$('testLevel').value;
+  currentTest.subject=$('testSubject').value.trim()||'English';
+  currentTest.term=$('testTerm').value.trim();
+  currentTest.classCode=$('testClassCode').value.trim();
+  if(!currentTest.questions || !currentTest.questions.length) return toast('Please add or load questions before publishing.');
+
+  // RC6 note: landing page image removed; publishing still writes directly to the protected shared path.
+  // Firebase Realtime Database rules already verify admins/{auth.uid}/role === "admin".
+  // We do not depend on a separate app-side /admins pre-check, which caused false failures.
+  if(!currentTest.id || currentTest.source==='draft') currentTest.id=makeTestId();
+  currentTest.source='shared';
+  currentTest.isOfficial=true;
+  currentTest.ownerUid='admin';
+  currentTest.publishedBy=currentUid;
+  currentTest.createdAt=currentTest.createdAt||new Date().toLocaleString();
+  currentTest.updatedAt=new Date().toLocaleString();
+
+  db.ref(SHARED_PATH+'/'+currentTest.id).set(cleanForCloud(currentTest)).then(()=>{
+    localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest));
+    toast('Official shared assessment published to Firebase.');
+    renderTeacher(); refreshStudentTestOptions();
+  }).catch(err=>{
+    console.error('Publish Shared failed. Current UID:', currentUid, err);
+    alert('Publish Shared failed.\n\nCurrent Firebase UID:\n'+(currentUid||'not connected')+'\n\nCheck Firebase:\nadmins/'+(currentUid||'UID')+'/role must equal "admin".\n\nError: '+err.message);
+    toast('Publish failed. Check admin UID and rules.');
+    updateAdminUidBox();
+  });
+}
+
+function adminLogin(){
+  const code = prompt('Enter admin access code:');
+  if(code === null) return;
+  if(String(code).trim() === ADMIN_CODE){
+    isAdmin = true;
+    sessionStorage.setItem('kah_v2f_admin_unlocked','yes');
+    updateRoleUI();
+    toast('Admin access unlocked.');
+  } else {
+    toast('Incorrect admin access code.');
+  }
+}
+function adminLogout(){
+  isAdmin = false;
+  sessionStorage.removeItem('kah_v2f_admin_unlocked');
+  updateRoleUI();
+  toast('Admin access closed.');
+}
+function updateRoleUI(){
+  if(sessionStorage.getItem('kah_v2f_admin_unlocked') === 'yes') isAdmin = true;
+  const role = $('roleStatus');
+  const exitBtn = $('adminExitBtn');
+  if(role){
+    role.textContent = isAdmin ? 'Admin Mode' : 'Teacher Mode';
+    role.style.background = isAdmin ? '#fff0f6' : '#edf7ff';
+    role.style.borderColor = isAdmin ? '#ffc2d6' : '#cae9ff';
+    role.style.color = isAdmin ? '#9b174c' : '#315a7a';
+  }
+  if(exitBtn) exitBtn.style.display = isAdmin ? 'inline-block' : 'none';
+  const publishBtn=$('publishSharedBtn'); if(publishBtn) publishBtn.style.display = isAdmin ? 'inline-block' : 'none';
+  const uidBtn=$('copyUidBtn'); if(uidBtn) uidBtn.style.display = isAdmin ? 'inline-block' : 'none';
+  updateAdminUidBox();
+  renderSavedFiles();
+}
+
+function makeSVGData(label,emoji,bg){const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="700" viewBox="0 0 900 700"><rect width="900" height="700" rx="70" fill="${bg}"/><circle cx="150" cy="120" r="60" fill="rgba(255,255,255,.35)"/><circle cx="760" cy="580" r="90" fill="rgba(255,255,255,.30)"/><text x="450" y="340" text-anchor="middle" font-size="230">${emoji}</text><text x="450" y="560" text-anchor="middle" font-family="Arial" font-size="58" font-weight="800" fill="#263238">${label}</text></svg>`; return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);}
+function loadSampleTest(showToast=true){
+ currentTest={id:currentTest.id||makeTestId(),source:'draft',isOfficial:false,name:'K2 Demo Assessment',level:'K2',subject:'English',term:'Second Semester',classCode:'K2-DEMO',questions:[
+  {type:'picture',question:'Which fruit is yellow?',correct:'B',questionImage:'',choices:{A:{image:makeSVGData('Apple','🍎','#ffd6d6')},B:{image:makeSVGData('Banana','🍌','#fff0a8')},C:{image:makeSVGData('Grapes','🍇','#ead8ff')}}},
+  {type:'picture',question:'Which is a pet?',correct:'A',questionImage:'',choices:{A:{image:makeSVGData('Dog','🐶','#d8f3ff')},B:{image:makeSVGData('Fish','🐟','#d4f8e8')},C:{image:makeSVGData('Bird','🐦','#fff3d6')}}},
+  {type:'text',question:'Close the _______.',correct:'B',questionImage:'',choices:{A:{text:'window'},B:{text:'door'},C:{text:'gate'}}},
+  {type:'missing',question:'FRI__ND',correct:'A',questionImage:'',choices:{A:{text:'E'},B:{text:'O'},C:{text:'A'}}},
+  {type:'audio',question:'I say meow, meow. What am I?',correct:'C',questionImage:'',choices:{A:{text:'dog'},B:{text:'rabbit'},C:{text:'cat'}}}
+ ]};
+ currentTest.createdAt=currentTest.createdAt||new Date().toLocaleString(); currentTest.updatedAt=new Date().toLocaleString(); localStorage.setItem(STORAGE_TEST,JSON.stringify(currentTest)); renderTeacher(); refreshStudentTestOptions(); if(showToast)toast('Sample test loaded into the editor. Teachers click Save Copy; admin clicks Publish Shared.');
+}
+
+function testCloudConnection(){
+  const status=$('cloudStatus');
+  if(!db || !currentUid){
+    toast('Cloud is not connected yet. Check Anonymous Authentication and Live Server.');
+    if(status) status.textContent='Cloud Status: Not connected. Check Anonymous Authentication and run with Live Server.';
+    return;
+  }
+  const testId='connectionTest_'+currentUid;
+  db.ref('connectionTests/'+testId).set({uid:currentUid,time:new Date().toLocaleString(),databaseURL:firebaseConfig.databaseURL,ok:true}).then(()=>{
+    toast('Cloud connection test successful. Check Realtime Database > Data > connectionTests.');
+    if(status) status.textContent='Cloud Status: Connected • Firebase write test successful.';
+  }).catch(err=>{
+    toast('Cloud test failed: '+err.message);
+    if(status) status.textContent='Cloud Status: Write test failed: '+err.message;
+  });
+}
+
+function initFirebaseCloud(){
+  const status=$('cloudStatus');
+  try{
+    if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    db=firebase.database();
+    if(status) status.textContent='Cloud Status: Connecting to Firebase...';
+    firebase.auth().signInAnonymously().then((cred)=>{
+      currentUid=cred.user.uid;
+      cloudReady=true;
+      updateAdminUidBox();
+      if(status) status.textContent='Cloud Status: Connected. UID: '+currentUid+' • Loading shared library and your editable copies...';
+      db.ref(SHARED_PATH).on('value',snap=>{
+        const val=snap.val()||{};
+        sharedTests=Object.keys(val).map(k=>({id:val[k].id||k,...val[k],source:'shared',isOfficial:true}));
+        combineCloudTests(); cloudReady=true;
+        if(status) status.textContent='Cloud Status: Connected • Shared: '+sharedTests.length+' • My copies: '+teacherDrafts.length;
+        renderTeacher(); refreshStudentTestOptions();
+      },err=>{ if(status) status.textContent='Cloud shared read error: '+err.message; cloudReady=false; });
+      db.ref(DRAFTS_PATH+'/'+currentUid).on('value',snap=>{
+        const val=snap.val()||{};
+        teacherDrafts=Object.keys(val).map(k=>({id:val[k].id||k,...val[k],source:'draft',isOfficial:false}));
+        combineCloudTests(); cloudReady=true;
+        if(status) status.textContent='Cloud Status: Connected • Shared: '+sharedTests.length+' • My copies: '+teacherDrafts.length;
+        renderTeacher(); refreshStudentTestOptions();
+      },err=>{ if(status) status.textContent='Cloud teacher-copy read error: '+err.message; cloudReady=false; });
+    }).catch(err=>{ if(status) status.textContent='Anonymous sign-in failed: '+err.message+'. Enable Anonymous provider or use local fallback.'; cloudReady=false; });
+  }catch(err){ if(status) status.textContent='Firebase setup error: '+err.message; cloudReady=false; }
+}
+window.addEventListener('load',()=>{loadSavedTest(); setupImageDropPaste(); updateQuestionTypeUI(); refreshStudentTestOptions(); updateRoleUI(); startAutoSaveDraft(); initFirebaseCloud(); if('speechSynthesis' in window) speechSynthesis.onvoiceschanged=()=>{};});
+</script>
+</body>
+</html>

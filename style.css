@@ -308,6 +308,16 @@ body {
   border-radius: 18px;
   font-size: 21px;
   font-weight: 900;
+
+  text-decoration: none;
+  color: #1f2d3d;
+  display: block;
+  transition: 0.2s ease;
+}
+
+.teacher-card:hover {
+  transform: translateY(-3px);
+  background: #e4f0ff;
 }
 
 .website-box {

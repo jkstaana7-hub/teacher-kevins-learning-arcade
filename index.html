@@ -50,13 +50,13 @@
     <section class="popup wide-popup">
       <button class="close-btn" onclick="closePopup('playPopup')">×</button>
       <h2>🎮 Play Games</h2>
-      <p class="popup-subtitle">Choose a game and start learning.</p>
+      <p class="popup-subtitle">Choose a game or classroom tool and start learning.</p>
 
       <input
         type="text"
         id="gameSearchInput"
         class="game-search"
-        placeholder="🔍 Search games..."
+        placeholder="🔍 Search games and tools..."
         oninput="renderGames()"
       />
 
@@ -76,7 +76,7 @@
     <section class="popup">
       <button class="close-btn" onclick="closePopup('recentPopup')">×</button>
       <h2>🆕 Recently Added</h2>
-      <p class="popup-subtitle">Latest games and activities added to the arcade.</p>
+      <p class="popup-subtitle">Latest games, activities, and teacher tools added to the arcade.</p>
       <div class="simple-list" id="recentList"></div>
     </section>
   </div>
@@ -97,12 +97,31 @@
       <p class="popup-subtitle">Teacher tools, updates, and classroom resources.</p>
 
       <div class="teacher-grid">
-        <div class="teacher-card">📝 Word Search Generator</div>
-        <div class="teacher-card">📖 Reading Quest Dashboard</div>
-        <div class="teacher-card">🎙️ Conversation Master Dashboard</div>
-        <div class="teacher-card">📢 New Upload Updates</div>
-        <div class="teacher-card">📚 Saved Resources</div>
-        <div class="teacher-card">🔐 Teacher Login Coming Soon</div>
+        <a class="teacher-card" href="tools/kindergarten_assessment_hub_final.html">
+          🏫 Kindergarten Assessment Hub
+        </a>
+
+        <a class="teacher-card" href="games/word_search_final.html">
+          📝 Word Search Generator
+        </a>
+
+        <div class="teacher-card">
+          🎧 Listen and Tap
+          <br>
+          <small>Coming Soon</small>
+        </div>
+
+        <a class="teacher-card" href="games/reading_quest_final.html?v=5">
+          📖 Reading Quest Dashboard
+        </a>
+
+        <a class="teacher-card" href="conversation-master/conversation_master_final.html">
+          🎙️ Conversation Master Dashboard
+        </a>
+
+        <div class="teacher-card">
+          🔐 Teacher Login Coming Soon
+        </div>
       </div>
     </section>
   </div>

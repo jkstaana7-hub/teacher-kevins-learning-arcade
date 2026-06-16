@@ -1,5 +1,16 @@
 const gameData = [
   {
+    title: "📝 Classroom Whiteboard Hub",
+    category: ["teacher"],
+    keywords: "teacher tool whiteboard live board classroom qr room code laser ink pdf export a4 pages student viewer",
+    link: "tools/classroom_whiteboard_hub_final.html",
+    image: "images/classroom-whiteboard-thumbnail.png",
+    description: "Live shared whiteboard with student viewer, QR room join, laser ink, A4 pages, and PDF export.",
+    recent: true,
+    popular: true,
+    action: "Open Tool"
+  },
+  {
     title: "🎁 Give or Keep",
     category: ["primary", "teacher"],
     keywords: "classroom review teams mystery boxes rewards primary teacher",

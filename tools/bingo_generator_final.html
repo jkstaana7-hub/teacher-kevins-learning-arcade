@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Kevin Bingo Generator V3</title>
+  <style>
+    :root{
+      --blue:#2563eb;--sky:#38bdf8;--yellow:#facc15;--orange:#fb923c;--green:#22c55e;--pink:#ec4899;--purple:#8b5cf6;--ink:#102033;--soft:#f8fbff;--card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial, Helvetica, sans-serif;background:linear-gradient(135deg,#dff7ff,#fff8d8 45%,#ffe8f2);color:var(--ink);min-height:100vh}
+    a{color:inherit}
+    .app{min-height:100vh;display:flex;flex-direction:column}
+    header{padding:14px 22px;background:rgba(255,255,255,.82);backdrop-filter:blur(8px);border-bottom:3px solid rgba(37,99,235,.12);display:flex;align-items:center;justify-content:space-between;gap:14px;position:sticky;top:0;z-index:10}
+    .brand{display:flex;align-items:center;gap:12px;text-decoration:none}.logo{width:54px;height:54px;border-radius:18px;background:linear-gradient(135deg,var(--blue),var(--purple));display:grid;place-items:center;color:white;font-size:28px;box-shadow:0 10px 22px rgba(37,99,235,.25)}
+    h1{font-size:clamp(22px,3vw,38px);margin:0;font-weight:900;letter-spacing:-.03em}.tag{font-size:13px;font-weight:800;color:#456}
+    .site-link{padding:10px 14px;border-radius:999px;background:#102033;color:white;text-decoration:none;font-weight:900;box-shadow:0 8px 18px rgba(16,32,51,.18);white-space:nowrap}
+    main{flex:1;display:grid;grid-template-columns:360px 1fr;gap:18px;padding:18px;min-height:0}.panel,.stage,.caller,.printPanel{background:rgba(255,255,255,.88);border:3px solid rgba(255,255,255,.9);border-radius:28px;box-shadow:0 16px 40px rgba(37,99,235,.12);padding:18px}.panel{display:flex;flex-direction:column;gap:12px}.section-title{font-size:18px;font-weight:900;margin:0 0 5px}.hint{font-size:13px;color:#526579;line-height:1.35;margin:0 0 6px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-size:14px;font-weight:900}.field input,.field textarea,.field select{width:100%;border:2px solid #d8e7ff;border-radius:16px;padding:12px;font-size:15px;background:white;color:var(--ink);outline:none}.field textarea{min-height:190px;resize:vertical;line-height:1.35}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.checks{display:grid;gap:8px;font-size:14px;font-weight:800}.checks label{display:flex;gap:8px;align-items:center;background:#f3f8ff;border:2px solid #e1eeff;padding:8px 10px;border-radius:14px}
+    .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:16px;padding:12px 13px;font-weight:900;font-size:14px;cursor:pointer;color:white;background:var(--blue);box-shadow:0 8px 16px rgba(37,99,235,.2);transition:.15s transform}.btn:hover{transform:translateY(-1px)}.btn.full{grid-column:1/-1}.btn.yellow{background:linear-gradient(135deg,#f59e0b,#facc15);color:#3b2600}.btn.green{background:linear-gradient(135deg,#16a34a,#22c55e)}.btn.pink{background:linear-gradient(135deg,#db2777,#ec4899)}.btn.purple{background:linear-gradient(135deg,#7c3aed,#8b5cf6)}.btn.dark{background:#102033}.btn.light{background:#e9f2ff;color:#102033;box-shadow:none;border:2px solid #cfe2ff}.workspace{display:grid;grid-template-rows:auto 1fr auto;gap:14px;min-height:0}.topTools{display:grid;grid-template-columns:1fr 340px;gap:14px}.stage{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:560px;position:relative;overflow:hidden}.stage:before{content:"";position:absolute;inset:18px;border:3px dashed rgba(37,99,235,.18);border-radius:24px;pointer-events:none}.bingo-card{width:min(72vh,620px,92vw);aspect-ratio:1/1;background:linear-gradient(135deg,#2563eb,#38bdf8);border-radius:28px;padding:14px;box-shadow:0 20px 42px rgba(16,32,51,.18);position:relative;z-index:1}.bingo-title{height:13%;display:flex;align-items:center;justify-content:center;text-align:center;color:white;font-weight:1000;font-size:clamp(24px,4vw,46px);text-shadow:0 3px 0 rgba(0,0,0,.12);padding:0 10px;word-break:break-word}.grid{height:87%;display:grid;gap:8px}.cell{background:#fff8cc;border:3px solid rgba(16,32,51,.12);border-radius:18px;display:flex;align-items:center;justify-content:center;text-align:center;padding:8px;font-weight:900;text-transform:none;line-height:1.08;word-break:normal;overflow-wrap:anywhere;hyphens:auto;cursor:pointer;box-shadow:inset 0 -5px 0 rgba(0,0,0,.06);user-select:none}.cell.marked{background:linear-gradient(135deg,#22c55e,#bbf7d0);color:#063b1c;border-color:#15803d}.cell.free{background:#102033;color:white}.cell .txt{display:block;max-width:100%}.caller{display:flex;flex-direction:column;gap:12px}.callerBall{aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0 8%,#facc15 10%,#fb923c 60%,#c2410c);display:grid;place-items:center;text-align:center;padding:24px;color:white;font-size:clamp(24px,3vw,44px);font-weight:1000;text-shadow:0 3px 0 rgba(0,0,0,.18);box-shadow:inset -18px -28px 36px rgba(0,0,0,.18),0 16px 30px rgba(251,146,60,.28);min-height:260px}.calledList{min-height:110px;max-height:160px;overflow:auto;background:#f3f8ff;border:2px solid #dbeafe;border-radius:16px;padding:8px;display:flex;flex-wrap:wrap;align-content:flex-start;gap:6px}.pill{background:white;border:2px solid #dbeafe;border-radius:999px;padding:6px 9px;font-size:12px;font-weight:900}.printPanel{display:grid;grid-template-columns:1.3fr .8fr auto;gap:12px;align-items:end}.footer{padding:14px;text-align:center;font-weight:900;color:#38506b}.footer a{text-decoration:none;color:#2563eb}.toast{position:fixed;right:18px;bottom:18px;background:#102033;color:white;padding:14px 18px;border-radius:18px;font-weight:900;box-shadow:0 20px 40px rgba(0,0,0,.25);opacity:0;transform:translateY(20px);transition:.2s;z-index:99}.toast.show{opacity:1;transform:translateY(0)}
+    .printArea{display:none}.mini-site{font-size:12px;margin-top:8px;color:#2563eb;font-weight:900}.print-card{page-break-inside:avoid;background:white;padding:16px;margin:0 auto 18px;width:190mm;border:2px solid #dbeafe;border-radius:12px}.print-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;font-weight:900}.print-grid{display:grid;gap:0;border:2px solid #102033}.print-cell{border:1px solid #102033;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;min-height:28mm;font-weight:800;overflow-wrap:anywhere}.print-cell.free{background:#102033;color:white}.print-foot{text-align:center;font-size:12px;margin-top:8px;font-weight:800;color:#2563eb}
+
+    .hidden-app{display:none}
+    .landing-page{min-height:100vh;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:28px;background:linear-gradient(135deg,#dff7ff 0%,#fff8d8 46%,#ffe8f2 100%)}
+    .landing-bg-shape{position:absolute;border-radius:999px;filter:blur(1px);opacity:.65;pointer-events:none}.shape-one{width:360px;height:360px;background:#38bdf8;top:-120px;left:-100px}.shape-two{width:420px;height:420px;background:#facc15;right:-150px;bottom:-160px}
+    .landing-wrap{width:min(1180px,100%);display:grid;grid-template-columns:1.05fr .95fr;gap:34px;align-items:center;z-index:1}.landing-copy{background:rgba(255,255,255,.78);border:3px solid rgba(255,255,255,.9);border-radius:34px;padding:36px;box-shadow:0 24px 60px rgba(37,99,235,.16)}
+    .landing-kicker{display:inline-flex;align-items:center;gap:8px;background:#102033;color:white;border-radius:999px;padding:10px 16px;font-weight:1000;margin-bottom:18px}.landing-copy h2{font-size:clamp(38px,6vw,76px);line-height:.92;margin:0 0 18px;font-weight:1000;letter-spacing:-.06em;color:#102033}.landing-subtitle{font-size:clamp(16px,2vw,22px);line-height:1.45;color:#38506b;margin:0 0 24px;font-weight:800}
+    .landing-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:20px}.landing-btn{border:0;border-radius:18px;padding:15px 24px;font-size:17px;font-weight:1000;cursor:pointer;box-shadow:0 12px 24px rgba(37,99,235,.2);transition:.15s transform}.landing-btn:hover{transform:translateY(-2px)}.landing-btn.primary{background:linear-gradient(135deg,#2563eb,#8b5cf6);color:white}.landing-btn.secondary{background:white;color:#102033;border:3px solid #dbeafe;box-shadow:none}.landing-btn.full-howto{width:100%;margin-top:8px}
+    .landing-badges{display:flex;gap:9px;flex-wrap:wrap}.landing-badges span{background:#f3f8ff;border:2px solid #dbeafe;border-radius:999px;padding:8px 11px;font-size:13px;font-weight:1000;color:#2563eb}.landing-preview{position:relative;min-height:520px;display:grid;place-items:center}.preview-card{width:min(460px,95%);aspect-ratio:1/1;background:linear-gradient(135deg,#2563eb,#38bdf8);border-radius:34px;padding:18px;box-shadow:0 30px 70px rgba(16,32,51,.24);transform:rotate(2deg)}.preview-title{height:16%;display:grid;place-items:center;text-align:center;color:white;font-weight:1000;font-size:30px;text-shadow:0 3px 0 rgba(0,0,0,.12)}.preview-grid{height:84%;display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.preview-grid span{display:grid;place-items:center;background:#fff8cc;border:3px solid rgba(16,32,51,.12);border-radius:18px;text-align:center;font-weight:1000;font-size:20px;color:#102033}.preview-grid .free{background:#102033;color:white}.preview-caller{position:absolute;right:12px;bottom:52px;background:white;border:3px solid #facc15;border-radius:24px;padding:16px 20px;font-size:20px;font-weight:1000;box-shadow:0 20px 42px rgba(251,146,60,.25)}.landing-site{position:absolute;bottom:18px;z-index:1;text-decoration:none;font-weight:1000;color:#2563eb;background:rgba(255,255,255,.82);padding:10px 16px;border-radius:999px;border:2px solid #dbeafe}
+    .howto-modal{position:fixed;inset:0;background:rgba(16,32,51,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:999}.howto-modal.show{display:flex}.howto-card{width:min(680px,100%);background:white;border-radius:30px;padding:28px;box-shadow:0 30px 80px rgba(0,0,0,.3);position:relative;border:4px solid #dbeafe}.howto-close{position:absolute;right:18px;top:14px;border:0;background:#f3f8ff;border-radius:999px;width:38px;height:38px;font-size:28px;font-weight:900;cursor:pointer}.howto-card h2{font-size:34px;margin:0 0 12px;color:#2563eb}.howto-card ol{padding-left:22px;margin:0 0 14px}.howto-card li{margin:10px 0;line-height:1.35;font-weight:800;color:#38506b}
+    @media(max-width:900px){.landing-wrap{grid-template-columns:1fr}.landing-preview{min-height:390px}.landing-copy{padding:26px}.preview-card{width:min(360px,95%)}.preview-caller{right:auto;bottom:20px}.landing-site{position:relative;margin-top:18px;bottom:auto}.landing-page{flex-direction:column}}
+    @media(max-width:1050px){main{grid-template-columns:1fr}.topTools{grid-template-columns:1fr}.callerBall{min-height:190px}.printPanel{grid-template-columns:1fr}.site-link{display:none}}
+    @media(max-width:560px){header{padding:10px}.logo{width:44px;height:44px}main{padding:10px}.panel,.stage,.caller,.printPanel{border-radius:20px;padding:12px}.row,.btns{grid-template-columns:1fr}.stage{min-height:420px}.bingo-card{padding:10px}.grid{gap:5px}.cell{border-radius:12px;padding:5px}.field textarea{min-height:140px}}
+    @media print{body{background:white}.app>header,.app>main,.footer,.toast{display:none!important}.printArea{display:block}.print-card{box-shadow:none;border:0;width:190mm;margin:0 auto;break-after:page}.print-card:last-child{break-after:auto}@page{size:A4;margin:10mm}}
+  </style>
+</head>
+<body>
+<section id="landingPage" class="landing-page">
+  <div class="landing-bg-shape shape-one"></div>
+  <div class="landing-bg-shape shape-two"></div>
+  <div class="landing-wrap">
+    <div class="landing-copy">
+      <div class="landing-kicker">🎲 Teacher Kevin's Learning Arcade</div>
+      <h2>Editable Bingo Cards for Busy Teachers</h2>
+      <p class="landing-subtitle">Create colorful classroom bingo cards, print shuffled sets, use the random caller, and download editable Word cards teachers can customize anytime.</p>
+      <div class="landing-actions">
+        <button class="landing-btn primary" onclick="enterGenerator()">Create Now</button>
+        <button class="landing-btn secondary" onclick="openHowTo()">How To Use</button>
+      </div>
+      <div class="landing-badges">
+        <span>Printable Cards</span>
+        <span>Editable Word</span>
+        <span>Random Caller</span>
+        <span>Offline Ready</span>
+      </div>
+    </div>
+    <div class="landing-preview" aria-hidden="true">
+      <div class="preview-card">
+        <div class="preview-title">WEATHER BINGO</div>
+        <div class="preview-grid">
+          <span>sunny</span><span>rainy</span><span>cloudy</span>
+          <span>windy</span><span class="free">FREE</span><span>stormy</span>
+          <span>hot</span><span>cold</span><span>snowy</span>
+        </div>
+      </div>
+      <div class="preview-caller">🎤 Pick: <strong>rainy</strong></div>
+    </div>
+  </div>
+  <a class="landing-site" href="https://teacherkevinslearningarcade.com" target="_blank" rel="noopener">🌐 teacherkevinslearningarcade.com</a>
+</section>
+
+<div id="howToModal" class="howto-modal" aria-hidden="true">
+  <div class="howto-card">
+    <button class="howto-close" onclick="closeHowTo()" aria-label="Close">×</button>
+    <h2>How To Use</h2>
+    <ol>
+      <li>Click <strong>Create Now</strong>.</li>
+      <li>Type or paste one vocabulary word or phrase per line.</li>
+      <li>Choose <strong>3×3</strong> or <strong>5×5</strong> and set how many cards to create.</li>
+      <li>Click <strong>Display Bingo Card</strong> to preview one shuffled card.</li>
+      <li>Use <strong>Pick a Bingo Word</strong> as your random classroom caller.</li>
+      <li>Click <strong>Create Printable Cards</strong>, then <strong>Print / Save as PDF</strong>.</li>
+      <li>Click <strong>Download Word Cards</strong> if you want editable bingo cards in Word.</li>
+    </ol>
+    <button class="landing-btn primary full-howto" onclick="enterGenerator()">Start Creating</button>
+  </div>
+</div>
+
+<div class="app hidden-app">
+  <header>
+    <a class="brand" href="https://teacherkevinslearningarcade.com" target="_blank" rel="noopener">
+      <div class="logo">🎲</div>
+      <div><h1>Teacher Kevin Bingo Generator</h1><div class="tag">V3 • Editable Word Bingo Cards</div></div>
+    </a>
+    <a class="site-link" href="https://teacherkevinslearningarcade.com" target="_blank" rel="noopener">🌐 Teacher Kevin's Learning Arcade</a>
+  </header>
+  <main>
+    <aside class="panel">
+      <div><p class="section-title">Teacher Setup</p><p class="hint">Type one vocabulary word, phrase, name, or sentence per line. The caller and cards use the same list.</p></div>
+      <div class="field"><label>Card Title</label><input id="titleInput" value="Weather Bingo"></div>
+      <div class="field"><label>Bingo Entries</label><textarea id="wordsInput">sunny
+rainy
+cloudy
+windy
+stormy
+hot
+cold
+warm
+snowy
+foggy
+umbrella
+raincoat
+boots
+weather
+sky
+cloud
+sun
+wind
+thunder
+lightning
+rainbow
+season
+summer
+winter
+spring
+autumn</textarea></div>
+      <div class="row"><div class="field"><label>Grid Size</label><select id="sizeInput"><option value="3">3 × 3</option><option value="5" selected>5 × 5</option></select></div><div class="field"><label>Cards to Print</label><input id="cardCount" type="number" min="1" max="60" value="30"></div></div>
+      <div class="checks"><label><input id="freeCenter" type="checkbox" checked> Use FREE center space</label><label><input id="printBrand" type="checkbox" checked> Show website on printed cards</label></div>
+      <div class="btns"><button class="btn full" onclick="makeCard()">Display Bingo Card</button><button class="btn green" onclick="saveList()">Save List</button><button class="btn light" onclick="loadList()">Load List</button><button class="btn purple" onclick="exportList()">Export Text</button><button class="btn yellow" onclick="downloadWordCards()">Download Word Cards</button><button class="btn pink" onclick="clearMarks()">Clear Marks</button><button class="btn dark" onclick="resetAll()">Reset Caller</button></div>
+    </aside>
+    <section class="workspace">
+      <div class="topTools">
+        <div class="stage"><div id="card" class="bingo-card"></div></div>
+        <div class="caller"><p class="section-title">Random Bingo Caller</p><p class="hint">Click “Pick” during the lesson. Called words are highlighted on the preview card if they appear.</p><div id="callerBall" class="callerBall">Ready?</div><button class="btn yellow" onclick="pickWord()">🎤 Pick a Bingo Word</button><button class="btn light" onclick="speakCurrent()">🔊 Hear Again</button><div id="calledList" class="calledList"></div></div>
+      </div>
+      <div class="printPanel"><div><p class="section-title">Multi-Card Printing</p><p class="hint">Generate many shuffled cards from the same list. Each card will be different, but the caller still uses your original vocabulary list.</p></div><button class="btn green" onclick="preparePrintCards()">Create Printable Cards</button><button class="btn dark" onclick="window.print()">Print / Save as PDF</button></div>
+    </section>
+  </main>
+  <div class="footer"><a href="https://teacherkevinslearningarcade.com" target="_blank" rel="noopener">🌐 teacherkevinslearningarcade.com</a> • Educational Games • Classroom Tools • Teaching Resources</div>
+</div>
+<div id="toast" class="toast"></div>
+<div id="printArea" class="printArea"></div>
+<script>
+function enterGenerator(){document.getElementById('landingPage').style.display='none';document.getElementById('howToModal').classList.remove('show');document.querySelector('.app').classList.remove('hidden-app');setTimeout(()=>{window.scrollTo({top:0,behavior:'smooth'});},50);}
+function openHowTo(){document.getElementById('howToModal').classList.add('show');document.getElementById('howToModal').setAttribute('aria-hidden','false');}
+function closeHowTo(){document.getElementById('howToModal').classList.remove('show');document.getElementById('howToModal').setAttribute('aria-hidden','true');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeHowTo();});
+let currentWords=[], calledPool=[], calledWords=[], currentCall='';
+const site='https://teacherkevinslearningarcade.com';
+function words(){return document.getElementById('wordsInput').value.split(/\n+/).map(w=>w.trim()).filter(Boolean)}
+function title(){return document.getElementById('titleInput').value.trim()||'Bingo'}
+function size(){return parseInt(document.getElementById('sizeInput').value,10)}
+function shuffle(arr){let a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+function fitText(el, text){const span=document.createElement('span');span.className='txt';span.textContent=text;el.appendChild(span);let len=text.length;let fs= len>36?12:len>24?14:len>16?16:len>10?19:23; span.style.fontSize=fs+'px';}
+function makeCard(){currentWords=words();if(currentWords.length<8){toast('Please add more entries.');return}const n=size(), total=n*n, free=document.getElementById('freeCenter').checked, center=Math.floor(total/2);let list=shuffle(currentWords);while(list.length<total) list=list.concat(shuffle(currentWords));const card=document.getElementById('card');card.innerHTML='<div class="bingo-title"></div><div class="grid"></div>';card.querySelector('.bingo-title').textContent=title();const grid=card.querySelector('.grid');grid.style.gridTemplateColumns=`repeat(${n},1fr)`;grid.style.gridTemplateRows=`repeat(${n},1fr)`;for(let i=0;i<total;i++){const cell=document.createElement('div');cell.className='cell';if(free&&i===center){cell.className+=' free marked';cell.dataset.word='FREE';fitText(cell,'FREE')}else{const w=list.shift();cell.dataset.word=w;fitText(cell,w)}cell.onclick=()=>{if(cell.dataset.word!=='FREE') cell.classList.toggle('marked')};grid.appendChild(cell)}highlightCalled();toast('Bingo card displayed.')} 
+function clearMarks(){document.querySelectorAll('.cell').forEach(c=>{if(c.dataset.word!=='FREE')c.classList.remove('marked')})}
+function resetAll(){calledPool=shuffle(words());calledWords=[];currentCall='';document.getElementById('callerBall').textContent='Ready?';renderCalled();clearMarks();toast('Caller reset.')} 
+function pickWord(){if(calledPool.length===0){calledPool=shuffle(words().filter(w=>!calledWords.includes(w)))}if(calledPool.length===0){toast('No more words to call.');return}currentCall=calledPool.shift();calledWords.push(currentCall);document.getElementById('callerBall').textContent=currentCall;renderCalled();highlightCalled();speakCurrent(false)}
+function speakCurrent(show=true){if(!currentCall){if(show)toast('Pick a word first.');return}try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(currentCall);u.rate=.85;speechSynthesis.speak(u)}catch(e){}}
+function renderCalled(){const box=document.getElementById('calledList');box.innerHTML='';calledWords.forEach(w=>{const p=document.createElement('span');p.className='pill';p.textContent=w;box.appendChild(p)})}
+function norm(s){return (s||'').toLowerCase().replace(/\s+/g,' ').trim()}
+function highlightCalled(){const set=new Set(calledWords.map(norm));document.querySelectorAll('.cell').forEach(c=>{if(set.has(norm(c.dataset.word)))c.classList.add('marked')})}
+function saveList(){localStorage.setItem('tkBingoTitle',title());localStorage.setItem('tkBingoWords',document.getElementById('wordsInput').value);toast('List saved on this device.')} 
+function loadList(){const w=localStorage.getItem('tkBingoWords');if(!w){toast('No saved list found.');return}document.getElementById('wordsInput').value=w;document.getElementById('titleInput').value=localStorage.getItem('tkBingoTitle')||title();resetAll();makeCard();toast('Saved list loaded.')} 
+function exportList(){const blob=new Blob([`Title: ${title()}\n\n`+document.getElementById('wordsInput').value],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=title().replace(/[^a-z0-9]+/gi,'_').toLowerCase()+'_bingo_words.txt';a.click();URL.revokeObjectURL(a.href)}
+
+function buildCardData(cardNo){
+  const n=size(), total=n*n, free=document.getElementById('freeCenter').checked, center=Math.floor(total/2);
+  let list=shuffle(words());
+  while(list.length<total) list=list.concat(shuffle(words()));
+  const cells=[];
+  for(let i=0;i<total;i++){
+    if(free && i===center) cells.push('FREE');
+    else cells.push(list.shift());
+  }
+  return {cardNo, n, cells};
+}
+
+function downloadWordCards(){
+  const list=words();
+  if(list.length<8){toast('Please add more entries first.');return;}
+  const count=Math.max(1,Math.min(60,parseInt(document.getElementById('cardCount').value||'1',10)));
+  const today=new Date().toLocaleDateString();
+  const safeTitle=escapeHtml(title());
+  const includeBrand=document.getElementById('printBrand').checked;
+  let cardsHtml='';
+  for(let c=1;c<=count;c++){
+    const card=buildCardData(c);
+    let rows='';
+    for(let r=0;r<card.n;r++){
+      rows+='<tr>';
+      for(let col=0;col<card.n;col++){
+        const value=card.cells[r*card.n+col];
+        const isFree=value==='FREE';
+        rows+=`<td style="border:2px solid #102033;width:${Math.floor(100/card.n)}%;height:${card.n===3?'130':'88'}px;text-align:center;vertical-align:middle;font-size:${card.n===3?'18':'14'}pt;font-weight:bold;${isFree?'background:#102033;color:white;':''}">${escapeHtml(value)}</td>`;
+      }
+      rows+='</tr>';
+    }
+    cardsHtml+=`
+      <div class="word-card">
+        <table class="card-head" style="width:100%;border-collapse:collapse;margin-bottom:8px;">
+          <tr>
+            <td style="border:0;text-align:left;font-size:18pt;font-weight:bold;color:#2563eb;">${safeTitle}</td>
+            <td style="border:0;text-align:right;font-size:12pt;font-weight:bold;">Card #${c}</td>
+          </tr>
+        </table>
+        <table class="bingo-table" style="width:100%;border-collapse:collapse;table-layout:fixed;">${rows}</table>
+        ${includeBrand?`<p style="text-align:center;font-size:10pt;font-weight:bold;color:#2563eb;margin-top:10px;">Teacher Kevin's Learning Arcade • teacherkevinslearningarcade.com</p>`:''}
+      </div>`;
+  }
+  const doc=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${safeTitle} Editable Bingo Cards</title>
+  <style>
+  @page WordSection1{size:8.5in 11.0in;margin:.45in .45in .45in .45in;}
+  div.WordSection1{page:WordSection1;}
+  body{font-family:Arial, sans-serif;color:#102033;}
+  h1{color:#2563eb;margin:0 0 4px 0;}
+  .cover{margin-bottom:20px;border:2px solid #dbeafe;background:#f8fbff;padding:14px;}
+  .word-card{page-break-after:always;margin-bottom:18px;}
+  .word-card:last-child{page-break-after:auto;}
+  table{mso-table-lspace:0pt;mso-table-rspace:0pt;}
+  </style></head><body><div class="WordSection1">
+  <div class="cover">
+    <h1>${safeTitle}</h1>
+    <p><strong>Teacher Kevin Bingo Generator V3</strong></p>
+    <p><strong>Date Created:</strong> ${today}<br>
+    <strong>Cards:</strong> ${count}<br>
+    <strong>Grid Size:</strong> ${size()} × ${size()}<br>
+    <strong>Format:</strong> Editable Word bingo cards. Teachers can change fonts, colors, borders, words, logos, and layout in Microsoft Word.</p>
+  </div>
+  ${cardsHtml}
+  </div></body></html>`;
+  const blob=new Blob(['\ufeff',doc],{type:'application/msword'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=title().replace(/[^a-z0-9]+/gi,'_').toLowerCase()+'_editable_bingo_cards.doc';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Editable Word bingo cards downloaded.');
+}
+
+function makePrintCard(cardNo){const n=size(), total=n*n, free=document.getElementById('freeCenter').checked, center=Math.floor(total/2);let list=shuffle(words());while(list.length<total) list=list.concat(shuffle(words()));let html=`<div class="print-card"><div class="print-head"><div>${escapeHtml(title())}</div><div>Card #${cardNo}</div></div><div class="print-grid" style="grid-template-columns:repeat(${n},1fr)">`;for(let i=0;i<total;i++){if(free&&i===center)html+=`<div class="print-cell free">FREE</div>`;else html+=`<div class="print-cell">${escapeHtml(list.shift())}</div>`}html+='</div>';if(document.getElementById('printBrand').checked)html+=`<div class="print-foot">Teacher Kevin's Learning Arcade • ${site.replace('https://','')}</div>`;html+='</div>';return html}
+function preparePrintCards(){const count=Math.max(1,Math.min(60,parseInt(document.getElementById('cardCount').value||'1',10)));if(words().length<8){toast('Please add more entries first.');return}let html='';for(let i=1;i<=count;i++)html+=makePrintCard(i);document.getElementById('printArea').innerHTML=html;toast(count+' printable cards created. Click Print / Save as PDF.')} 
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+document.getElementById('wordsInput').addEventListener('input',()=>resetAll());document.getElementById('sizeInput').addEventListener('change',makeCard);document.getElementById('freeCenter').addEventListener('change',makeCard);makeCard();resetAll();
+</script>
+</body>
+</html>

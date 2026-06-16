@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Teacher Kevin's Crossword Puzzle Generator V1C - Landing Page + Website Branding</title>
+<style>
+  :root{
+    --navy:#123047; --blue:#2563eb; --sky:#eaf6ff; --yellow:#fff4b8; --orange:#fb923c;
+    --green:#22c55e; --pink:#ec4899; --purple:#8b5cf6; --line:#d9e7f5; --paper:#ffffff;
+    --soft:#f7fbff; --muted:#60758a; --black:#111827;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial, Helvetica, sans-serif;background:linear-gradient(135deg,#6ee7ff 0%,#8b5cf6 48%,#fef08a 100%);color:var(--navy);min-height:100vh;padding:22px}
+  .app{max-width:1200px;margin:0 auto;background:rgba(255,255,255,.92);border-radius:28px;box-shadow:0 25px 70px rgba(18,48,71,.25);overflow:hidden;border:4px solid rgba(255,255,255,.7)}
+  .hero{padding:26px 28px;background:linear-gradient(120deg,#123047,#2563eb);color:#fff;position:relative;overflow:hidden}
+  .hero:before{content:"";position:absolute;right:-70px;top:-70px;width:230px;height:230px;border-radius:50%;background:rgba(255,255,255,.12)}
+  .brand{display:flex;gap:14px;align-items:center;position:relative;z-index:1}.logo{width:62px;height:62px;border-radius:18px;background:#fff;color:var(--blue);display:grid;place-items:center;font-size:34px;font-weight:900;box-shadow:0 10px 25px rgba(0,0,0,.2)}
+  h1{margin:0;font-size:34px;letter-spacing:.2px}.tagline{margin:6px 0 0;opacity:.92;font-size:16px}.badge{display:inline-flex;gap:6px;align-items:center;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:8px 12px;margin-top:14px;font-weight:800}
+  .main{display:grid;grid-template-columns:390px 1fr;gap:20px;padding:22px}.panel{background:#fff;border:2px solid var(--line);border-radius:24px;padding:18px;box-shadow:0 10px 28px rgba(18,48,71,.08)}
+  .panel h2{margin:0 0 12px;font-size:22px}.field{margin-bottom:13px}label{font-weight:900;display:block;margin-bottom:6px;color:#173a56}.hint{font-size:12px;color:var(--muted);line-height:1.35;margin:5px 0 7px}
+  input,textarea,select{width:100%;border:2px solid var(--line);border-radius:15px;padding:12px;font:inherit;color:var(--navy);background:#fbfdff;outline:none}textarea{min-height:210px;resize:vertical;line-height:1.45}input:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,.12)}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.counter{font-size:12px;text-align:right;color:var(--muted)}.counter.danger{color:#dc2626;font-weight:900}.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.btns.full{grid-template-columns:1fr}.btn{border:0;border-radius:16px;padding:13px 14px;font-weight:900;cursor:pointer;color:#fff;box-shadow:0 8px 16px rgba(18,48,71,.16);font-size:15px}.btn:hover{transform:translateY(-1px)}.primary{background:linear-gradient(135deg,#2563eb,#06b6d4)}.orange{background:linear-gradient(135deg,#fb923c,#f97316)}.green{background:linear-gradient(135deg,#22c55e,#16a34a)}.pink{background:linear-gradient(135deg,#ec4899,#8b5cf6)}.dark{background:linear-gradient(135deg,#123047,#334155)}.light{background:#eff6ff;color:#123047;border:2px solid #bfdbfe;box-shadow:none}
+  .status{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}.pill{background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;border-radius:999px;padding:8px 10px;font-weight:900;font-size:13px}.pill.warn{background:#fff7ed;border-color:#fed7aa;color:#c2410c}.pill.good{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+  .worksheet-wrap{background:#dcecff;border-radius:22px;padding:14px;overflow:auto}.worksheet{background:#fff;width:794px;min-height:1123px;margin:0 auto;padding:34px 36px;box-shadow:0 14px 40px rgba(18,48,71,.16);color:#102a43}.ws-header{border:3px solid #cfe2ff;border-radius:22px;padding:18px;background:linear-gradient(135deg,#f8fbff,#fff);display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.ws-title h2{margin:0;font-size:34px;color:#123047}.ws-title p{margin:6px 0 0;color:#5f7185;font-weight:700}.ws-brand{text-align:right;font-weight:900;color:#2563eb}.student-lines{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:18px 0}.linebox{font-weight:800}.line{border-bottom:2px solid #9fb8d4;height:22px;margin-top:3px}.instructions{border:2px solid #cfe2ff;border-radius:18px;padding:12px 14px;margin-bottom:18px;background:#fbfdff;font-weight:700;color:#40576e}
+  .crossword-holder{display:flex;justify-content:center;align-items:center;width:100%;margin:14px auto 24px;text-align:center}.crossword{border-collapse:collapse;table-layout:fixed}.crossword td{width:34px;height:34px;position:relative;text-align:center;vertical-align:middle;font-weight:900;font-size:20px;text-transform:uppercase}.crossword td.cell{border:1.8px solid #1f2937;background:white}.crossword td.block{border:0;background:transparent}.crossword td .num{position:absolute;left:2px;top:1px;font-size:9px;line-height:1;color:#111827;font-weight:900}.crossword.answer td.cell{color:#111827}.crossword.puzzle td.cell{color:transparent}.clues{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:12px}.cluebox{border:2px solid #dbeafe;border-radius:20px;padding:16px;background:#fff}.cluebox h3{margin:0 0 8px;color:#2563eb;font-size:23px}.cluebox ol{margin:0;padding-left:26px}.cluebox li{margin:8px 0;line-height:1.35;font-size:17px}.footer{margin-top:24px;text-align:center;font-size:12px;color:#6b7280;border-top:1px solid #dbeafe;padding-top:12px}
+  .empty{padding:60px 20px;text-align:center;color:#60758a;font-weight:800}.notice{background:#fff7ed;border:2px solid #fed7aa;color:#9a3412;border-radius:16px;padding:12px;margin-top:12px;font-weight:800;display:none}.mini{font-size:12px;color:#64748b;margin-top:10px;line-height:1.45}
+
+  .landing{min-height:calc(100vh - 44px);max-width:1180px;margin:0 auto;background:rgba(255,255,255,.94);border:4px solid rgba(255,255,255,.75);border-radius:32px;box-shadow:0 28px 80px rgba(18,48,71,.28);overflow:hidden;position:relative}
+  .landing-top{padding:22px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px;background:linear-gradient(120deg,#123047,#2563eb);color:#fff}
+  .site-link{color:#fff;text-decoration:none;font-weight:900;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:9px 13px;white-space:nowrap}
+  .landing-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;padding:42px 38px 34px;align-items:center;position:relative}
+  .landing-hero:before{content:"";position:absolute;right:-80px;top:-60px;width:280px;height:280px;border-radius:50%;background:rgba(37,99,235,.10)}
+  .landing-copy{position:relative;z-index:1}.eyebrow{display:inline-flex;gap:8px;align-items:center;background:#fff7ed;border:2px solid #fed7aa;color:#c2410c;border-radius:999px;padding:8px 13px;font-weight:900;margin-bottom:14px}
+  .landing h1{font-size:46px;line-height:1.05;margin:0 0 14px;color:#123047}.landing p{font-size:18px;line-height:1.5;color:#40576e;margin:0 0 18px}.landing-actions{display:flex;gap:13px;flex-wrap:wrap;margin-top:22px}.landing-btn{border:0;border-radius:18px;padding:15px 22px;font-size:17px;font-weight:900;cursor:pointer;box-shadow:0 10px 22px rgba(18,48,71,.18)}.landing-btn.create{color:#fff;background:linear-gradient(135deg,#2563eb,#06b6d4)}.landing-btn.how{color:#123047;background:#fff;border:2px solid #bfdbfe}.landing-card{position:relative;z-index:1;background:linear-gradient(135deg,#eaf6ff,#fff);border:3px solid #cfe2ff;border-radius:28px;padding:24px;box-shadow:0 18px 45px rgba(18,48,71,.14)}
+  .mini-grid{display:grid;grid-template-columns:repeat(7,28px);justify-content:center;gap:4px;margin:8px 0 18px}.mini-grid span{width:28px;height:28px;border:2px solid #123047;background:#fff;border-radius:5px}.mini-grid .blank{border:0;background:transparent}.feature-list{display:grid;gap:10px}.feature{background:#fff;border:2px solid #dbeafe;border-radius:16px;padding:11px 13px;font-weight:900;color:#123047}.landing-footer{padding:16px 28px;text-align:center;color:#60758a;font-weight:800;border-top:1px solid #dbeafe;background:#fbfdff}.hidden{display:none!important}.how-modal{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;padding:22px;z-index:99}.how-box{max-width:720px;background:#fff;border-radius:26px;padding:26px;border:4px solid #cfe2ff;box-shadow:0 25px 70px rgba(0,0,0,.28)}.how-box h2{margin:0 0 10px;font-size:30px}.how-box ol{margin:12px 0 18px;padding-left:24px}.how-box li{margin:9px 0;line-height:1.45;font-weight:700;color:#40576e}.how-close{float:right;border:0;border-radius:12px;background:#eff6ff;color:#123047;font-weight:900;padding:9px 12px;cursor:pointer}
+
+  @media(max-width:980px){body{padding:10px}.main{grid-template-columns:1fr}.worksheet{transform-origin:top left;zoom:.72}.worksheet-wrap{max-height:none}.row{grid-template-columns:1fr}.landing-hero{grid-template-columns:1fr;padding:28px 20px}.landing h1{font-size:34px}.landing-top{flex-direction:column;align-items:flex-start}.mini-grid{grid-template-columns:repeat(7,24px)}.mini-grid span{width:24px;height:24px}}
+  @media print{body{background:#fff;padding:0}.landing,.how-modal{display:none!important}.app{box-shadow:none;border:0;border-radius:0}.hero,.panel,.status,.no-print{display:none!important}.main{display:block;padding:0}.worksheet-wrap{background:#fff;padding:0;overflow:visible}.worksheet{width:auto;min-height:auto;box-shadow:none;margin:0;padding:22mm 16mm}.crossword td{width:8.5mm;height:8.5mm}.crossword td.block{border:0!important;background:transparent!important} @page{size:A4 portrait;margin:10mm}}
+</style>
+</head>
+<body>
+<section id="landing" class="landing no-print">
+  <div class="landing-top">
+    <div class="brand"><div class="logo">✏️</div><div><strong>Teacher Kevin's Learning Arcade</strong><div style="opacity:.9;font-size:13px;margin-top:3px;">Printable tools for busy teachers</div></div></div>
+    <a class="site-link" href="https://teacherkevinslearningarcade.com/" target="_blank" rel="noopener">teacherkevinslearningarcade.com</a>
+  </div>
+  <div class="landing-hero">
+    <div class="landing-copy">
+      <div class="eyebrow">🧩 Crossword Worksheet Generator</div>
+      <h1>Create clean crossword worksheets in minutes.</h1>
+      <p>Type your vocabulary and clues, then generate a classroom-ready A4 crossword with PDF printing, editable Word export, and answer key options.</p>
+      <div class="landing-actions">
+        <button class="landing-btn create" onclick="openTool()">Create Now</button>
+        <button class="landing-btn how" onclick="showHowToUse()">How To Use</button>
+      </div>
+    </div>
+    <div class="landing-card">
+      <div class="mini-grid" aria-hidden="true">
+        <span class="blank"></span><span class="blank"></span><span></span><span class="blank"></span><span class="blank"></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span><span class="blank"></span><span class="blank"></span>
+        <span class="blank"></span><span class="blank"></span><span></span><span class="blank"></span><span class="blank"></span><span></span><span class="blank"></span>
+        <span></span><span></span><span></span><span></span><span class="blank"></span><span></span><span class="blank"></span>
+        <span class="blank"></span><span class="blank"></span><span></span><span class="blank"></span><span></span><span></span><span></span>
+      </div>
+      <div class="feature-list">
+        <div class="feature">✅ Low-ink clean worksheet layout</div>
+        <div class="feature">✅ Centered crossword preview</div>
+        <div class="feature">✅ Download editable Word file</div>
+        <div class="feature">✅ Print or save as PDF</div>
+      </div>
+    </div>
+  </div>
+  <div class="landing-footer">Generated for Teacher Kevin's Learning Arcade • https://teacherkevinslearningarcade.com/</div>
+</section>
+<div id="howModal" class="how-modal hidden no-print">
+  <div class="how-box">
+    <button class="how-close" onclick="hideHowToUse()">Close</button>
+    <h2>How To Use</h2>
+    <ol>
+      <li>Click <b>Create Now</b> to open the crossword generator.</li>
+      <li>Enter a puzzle title, level, difficulty, and instructions.</li>
+      <li>Type one word and clue per line, for example: <b>sunny - The weather is bright and hot.</b></li>
+      <li>Click <b>Create Puzzle</b> to preview the worksheet.</li>
+      <li>Use <b>Print / Save PDF</b>, <b>Download Word</b>, or <b>Word Puzzle + Key</b>.</li>
+    </ol>
+    <p style="font-weight:800;color:#60758a;margin:0;">Tip: Use 5–20 words for the best crossword shape.</p>
+  </div>
+</div>
+
+<div id="app" class="app hidden">
+  <header class="hero">
+    <div class="brand"><div class="logo">✏️</div><div><h1>Teacher Kevin's Crossword Puzzle Generator V1C</h1><p class="tagline">Create clean, printable, editable crossword worksheets for classroom use.</p><div class="badge">📘 A4 Worksheet • 🧩 Answer Key • 📝 Word Export</div><div style="margin-top:8px;font-weight:800;opacity:.95;">🌐 teacherkevinslearningarcade.com</div></div></div>
+  </header>
+  <main class="main">
+    <section class="panel no-print">
+      <h2>Teacher Setup</h2>
+      <div class="field"><label for="title">Puzzle Title</label><input id="title" maxlength="49" value="Weather Words" placeholder="Example: Weather Words"></div>
+      <div class="row"><div class="field"><label for="level">Level</label><select id="level"><option>Kindergarten</option><option selected>Primary</option><option>Secondary</option></select></div><div class="field"><label for="difficulty">Difficulty</label><select id="difficulty"><option>Easy</option><option selected>Standard</option><option>Advanced</option></select></div></div>
+      <div class="field"><label for="instructions">Instructions</label><input id="instructions" value="Read each clue. Write the correct word in the crossword puzzle."></div>
+      <div class="field"><label for="words">Words and Clues</label><div class="hint">One line per item. Format: <b>word - clue</b> or <b>word, clue</b>. Use 5–20 words for best results.</div><textarea id="words" maxlength="3000"></textarea><div id="counter" class="counter">0 of 3000 characters</div></div>
+      <div class="btns"><button class="btn light" onclick="fillSample()">Fill Sample Data</button><button class="btn primary" onclick="generate()">Create Puzzle</button><button class="btn orange" onclick="printClean()">Print / Save PDF</button><button class="btn green" onclick="downloadWord(false)">Download Word</button><button class="btn pink" onclick="toggleAnswer()">Show Answer Key</button><button class="btn dark" onclick="downloadWord(true)">Word Answer Key</button><button class="btn primary" onclick="downloadWordPack()">Word Puzzle + Key</button></div>
+      <div id="notice" class="notice"></div>
+      <div class="mini">V1C Upgrade: landing page and website branding added. The V1B crossword and export system is preserved.</div>
+    </section>
+    <section>
+      <div class="status no-print"><span class="pill good" id="placedPill">0 placed</span><span class="pill warn" id="skippedPill">0 skipped</span><span class="pill" id="modePill">Puzzle View</span></div>
+      <div class="worksheet-wrap"><div id="worksheet" class="worksheet"><div class="empty">Add words and clues, then click <b>Create Puzzle</b>.</div></div></div>
+    </section>
+  </main>
+</div>
+<script>
+/* V1C Landing Page + Website Branding. V1B engine preserved. */
+function openTool(){document.getElementById('landing').classList.add('hidden');document.getElementById('app').classList.remove('hidden');window.scrollTo({top:0,behavior:'smooth'});}
+function showHowToUse(){document.getElementById('howModal').classList.remove('hidden');}
+function hideHowToUse(){document.getElementById('howModal').classList.add('hidden');}
+const sample = `sunny - The weather is bright and hot.
+rainy - Water falls from the clouds.
+cloudy - The sky has many clouds.
+windy - The air moves strongly.
+stormy - There is thunder and lightning.
+weather - Sunny, rainy, cloudy, or windy conditions.
+umbrella - We use this when it rains.
+jacket - We wear this when it is cold.`;
+let last = null, answerMode = false;
+const wordsEl = document.getElementById('words');
+wordsEl.value = sample; updateCounter();
+wordsEl.addEventListener('input', updateCounter);
+function updateCounter(){const n=wordsEl.value.length; const c=document.getElementById('counter'); c.textContent=`${n} of 3000 characters`; c.className='counter'+(n>2900?' danger':'');}
+function fillSample(){wordsEl.value=sample;updateCounter();generate();}
+function cleanWord(w){return (w||'').toUpperCase().replace(/[^A-Z]/g,'');}
+function parseInput(){return wordsEl.value.split(/\n+/).map(line=>line.trim()).filter(Boolean).map(line=>{let m=line.match(/^([^,-:;]+)[\s]*[-,:;][\s]*(.+)$/); if(!m){let parts=line.split(/\s+/); return {word:cleanWord(parts[0]), clue:parts.slice(1).join(' ')||'Write the correct word.'};} return {word:cleanWord(m[1]), clue:m[2].trim()};}).filter(x=>x.word.length>=2 && x.clue.length>0);}
+function key(r,c){return r+','+c} function get(grid,r,c){return grid.get(key(r,c))}
+function canPlace(grid, word, r, c, dir){let touches=0,crosses=0; for(let i=0;i<word.length;i++){let rr=r+(dir==='down'?i:0), cc=c+(dir==='across'?i:0), existing=get(grid,rr,cc); if(existing && existing!==word[i]) return false; if(existing===word[i]) crosses++; let before = dir==='across'?get(grid,rr,cc-1):get(grid,rr-1,cc); let after = dir==='across'?get(grid,rr,cc+1):get(grid,rr+1,cc); if(i===0 && before) return false; if(i===word.length-1 && after) return false; if(!existing){let side1=dir==='across'?get(grid,rr-1,cc):get(grid,rr,cc-1); let side2=dir==='across'?get(grid,rr+1,cc):get(grid,rr,cc+1); if(side1||side2) return false;} if(existing) touches++;} return grid.size===0 || crosses>0 || touches>0;}
+function place(grid, word, r, c, dir){for(let i=0;i<word.length;i++){let rr=r+(dir==='down'?i:0), cc=c+(dir==='across'?i:0); grid.set(key(rr,cc),word[i]);}}
+function boundsOf(grid){let rs=[],cs=[]; for(const k of grid.keys()){let [r,c]=k.split(',').map(Number); rs.push(r);cs.push(c);} return {minR:Math.min(...rs),maxR:Math.max(...rs),minC:Math.min(...cs),maxC:Math.max(...cs)};}
+function compactScore(grid, word, r, c, dir){let temp=new Map(grid); place(temp,word,r,c,dir); let b=boundsOf(temp); return (b.maxR-b.minR+1)*(b.maxC-b.minC+1) - word.length*2;}
+function build(items){items=[...items].sort((a,b)=>b.word.length-a.word.length); const grid=new Map(), placed=[], skipped=[]; if(!items.length) return {grid,placed,skipped}; place(grid,items[0].word,0,0,'across'); placed.push({...items[0],r:0,c:0,dir:'across'}); for(let idx=1;idx<items.length;idx++){const item=items[idx]; let options=[]; for(const p of placed){for(let i=0;i<item.word.length;i++){for(let j=0;j<p.word.length;j++){if(item.word[i]!==p.word[j]) continue; const dir=p.dir==='across'?'down':'across'; const r=p.r+(p.dir==='down'?j:0)-(dir==='down'?i:0); const c=p.c+(p.dir==='across'?j:0)-(dir==='across'?i:0); if(canPlace(grid,item.word,r,c,dir)) options.push({r,c,dir,score:compactScore(grid,item.word,r,c,dir)});}}}
+      if(options.length){options.sort((a,b)=>a.score-b.score); const o=options[0]; place(grid,item.word,o.r,o.c,o.dir); placed.push({...item,r:o.r,c:o.c,dir:o.dir});} else skipped.push(item);
+  } return {grid,placed,skipped};}
+function numberClues(placed){placed.sort((a,b)=>a.r-b.r||a.c-b.c); let n=1; const startMap={}; for(const p of placed){const k=key(p.r,p.c); if(!startMap[k]) startMap[k]=n++; p.num=startMap[k];} return placed;}
+function generate(){const items=parseInput(); const notice=document.getElementById('notice'); notice.style.display='none'; if(!items.length){notice.textContent='Please add at least one word and clue.'; notice.style.display='block'; return;} if(items.length<3){notice.textContent='For a better crossword, add at least 3 words.'; notice.style.display='block';}
+  const result=build(items); result.placed=numberClues(result.placed); last=result; answerMode=false; render();}
+function render(){if(!last) return; document.getElementById('placedPill').textContent=last.placed.length+' placed'; document.getElementById('skippedPill').textContent=last.skipped.length+' skipped'; document.getElementById('modePill').textContent=answerMode?'Answer Key':'Puzzle View'; document.getElementById('worksheet').innerHTML=worksheetHTML(answerMode);}
+function worksheetHTML(showAnswers){const title=document.getElementById('title').value.trim()||'Crossword Puzzle'; const level=document.getElementById('level').value; const diff=document.getElementById('difficulty').value; const instr=document.getElementById('instructions').value.trim()||'Read each clue. Write the correct word in the crossword puzzle.'; let b=boundsOf(last.grid); b={minR:b.minR,maxR:b.maxR,minC:b.minC,maxC:b.maxC}; const starts={}; last.placed.forEach(p=>starts[key(p.r,p.c)]=p.num); let table=`<table class="crossword ${showAnswers?'answer':'puzzle'}">`; for(let r=b.minR;r<=b.maxR;r++){table+='<tr>'; for(let c=b.minC;c<=b.maxC;c++){let ch=get(last.grid,r,c); if(ch){table+=`<td class="cell">${starts[key(r,c)]?`<span class="num">${starts[key(r,c)]}</span>`:''}${showAnswers?ch:''}</td>`;} else table+='<td class="block"></td>'; } table+='</tr>'; } table+='</table>'; const across=last.placed.filter(p=>p.dir==='across').sort((a,b)=>a.num-b.num), down=last.placed.filter(p=>p.dir==='down').sort((a,b)=>a.num-b.num); const clueList=arr=>arr.length?`<ol>${arr.map(p=>`<li value="${p.num}">${escapeHTML(p.clue)}</li>`).join('')}</ol>`:'<p>No clues.</p>'; return `<div class="ws-header"><div class="ws-title"><h2>${escapeHTML(title)}${showAnswers?' - Answer Key':''}</h2><p>${level} • ${diff} • ${last.placed.length} placed word(s) • ${last.skipped.length} skipped</p></div><div class="ws-brand">Teacher Kevin's<br>Learning Arcade</div></div><div class="student-lines"><div class="linebox">Name:<div class="line"></div></div><div class="linebox">Class:<div class="line"></div></div><div class="linebox">Date:<div class="line"></div></div></div><div class="instructions">${escapeHTML(instr)}</div><div class="crossword-holder">${table}</div><div class="clues"><div class="cluebox"><h3>Across</h3>${clueList(across)}</div><div class="cluebox"><h3>Down</h3>${clueList(down)}</div></div>${last.skipped.length?`<div class="notice" style="display:block">Skipped words: ${last.skipped.map(x=>escapeHTML(x.word)).join(', ')}</div>`:''}<div class="footer">Generated by Teacher Kevin's Learning Arcade • teacherkevinslearningarcade.com • Editable teacher worksheet</div>`;}
+function toggleAnswer(){if(!last) generate(); answerMode=!answerMode; render();}
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));}
+
+function printClean(){
+  if(!last) generate();
+  const html = exportDocumentHTML(answerMode, 'print');
+  const w = window.open('', '_blank');
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+  w.focus();
+  setTimeout(()=>{ w.print(); }, 350);
+}
+function getExportCellSize(mode){
+  const b = boundsOf(last.grid);
+  const rows = b.maxR - b.minR + 1;
+  const cols = b.maxC - b.minC + 1;
+  if(mode === 'word'){
+    if(cols <= 9 && rows <= 9) return 34;
+    if(cols <= 13 && rows <= 11) return 30;
+    if(cols <= 17 && rows <= 14) return 26;
+    return 22;
+  }
+  if(cols <= 9 && rows <= 9) return 40;
+  if(cols <= 13 && rows <= 11) return 34;
+  if(cols <= 17 && rows <= 14) return 30;
+  return 26;
+}
+
+function exportDocumentHTML(showAnswers, mode, packMode=false){
+  const title=document.getElementById('title').value.trim()||'Crossword Puzzle';
+  const level=document.getElementById('level').value;
+  const diff=document.getElementById('difficulty').value;
+  const instr=document.getElementById('instructions').value.trim()||'Read each clue. Write the correct word in the crossword puzzle.';
+  const cellSize = getExportCellSize(mode);
+  const makePage = (answers) => {
+    let b=boundsOf(last.grid); b={minR:b.minR,maxR:b.maxR,minC:b.minC,maxC:b.maxC};
+    const starts={}; last.placed.forEach(p=>starts[key(p.r,p.c)]=p.num);
+    let table = `<table align="center" style="border-collapse:collapse;margin:0 auto;table-layout:fixed;mso-table-lspace:0pt;mso-table-rspace:0pt;">`;
+    for(let r=b.minR;r<=b.maxR;r++){
+      table += '<tr>';
+      for(let c=b.minC;c<=b.maxC;c++){
+        const ch=get(last.grid,r,c);
+        if(ch){
+          const num = starts[key(r,c)] ? `<span style="font-size:7pt;line-height:7pt;font-weight:bold;display:block;text-align:left;height:8px;">${starts[key(r,c)]}</span>` : `<span style="font-size:7pt;line-height:7pt;display:block;height:8px;">&nbsp;</span>`;
+          const letter = answers ? `<div style="font-size:15pt;line-height:${Math.max(14,cellSize-10)}px;font-weight:bold;text-align:center;">${ch}</div>` : `<div style="font-size:15pt;line-height:${Math.max(14,cellSize-10)}px;text-align:center;">&nbsp;</div>`;
+          table += `<td style="width:${cellSize}px;height:${cellSize}px;border:1.2pt solid #111827;background:#ffffff;text-align:center;vertical-align:top;font-family:Arial,sans-serif;padding:1px;">${num}${letter}</td>`;
+        }else{
+          table += `<td style="width:${cellSize}px;height:${cellSize}px;border:0;background:#ffffff;text-align:center;vertical-align:middle;padding:1px;">&nbsp;</td>`;
+        }
+      }
+      table += '</tr>';
+    }
+    table += '</table>';
+    const across=last.placed.filter(p=>p.dir==='across').sort((a,b)=>a.num-b.num), down=last.placed.filter(p=>p.dir==='down').sort((a,b)=>a.num-b.num);
+    const list = arr => arr.length ? arr.map(p=>`<p style="margin:4px 0 6px;font-size:11pt;line-height:1.25;"><b>${p.num}.</b> ${escapeHTML(p.clue)}</p>`).join('') : '<p>No clues.</p>';
+    const skip = last.skipped.length ? `<p style="color:#9a3412;font-weight:bold;">Skipped words: ${last.skipped.map(x=>escapeHTML(x.word)).join(', ')}</p>` : '';
+    return `<div class="page">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:8px;"><tr><td style="padding:8px 0 6px;border-bottom:2px solid #cfe2ff;"><h1 style="margin:0;text-align:center;font-size:24pt;color:#123047;">${escapeHTML(title)}${answers?' - Answer Key':''}</h1><p style="margin:4px 0 0;text-align:center;color:#5f7185;font-weight:bold;font-size:10.5pt;">${escapeHTML(level)} • ${escapeHTML(diff)} • ${last.placed.length} placed word(s) • ${last.skipped.length} skipped</p></td></tr></table>
+      <table style="width:100%;border-collapse:collapse;margin:8px 0 10px;"><tr><td style="width:33%;font-weight:bold;padding-right:10px;font-size:11pt;">Name:<div style="border-bottom:1.2pt solid #777;height:18px;">&nbsp;</div></td><td style="width:33%;font-weight:bold;padding-right:10px;font-size:11pt;">Class:<div style="border-bottom:1.2pt solid #777;height:18px;">&nbsp;</div></td><td style="width:33%;font-weight:bold;font-size:11pt;">Date:<div style="border-bottom:1.2pt solid #777;height:18px;">&nbsp;</div></td></tr></table>
+      <div style="border:1.2pt solid #cfe2ff;background:#fbfdff;padding:8px 10px;margin:0 0 14px;font-weight:bold;color:#40576e;text-align:center;font-size:11pt;">${escapeHTML(instr)}</div>
+      <table style="width:100%;border-collapse:collapse;margin:6px 0 16px;"><tr><td align="center" style="text-align:center;vertical-align:top;">${table}</td></tr></table>
+      <table style="width:100%;border-collapse:collapse;margin-top:10px;"><tr><td style="width:50%;vertical-align:top;border:1.2pt solid #dbeafe;padding:9px;"><h2 style="margin:0 0 7px;color:#2563eb;font-size:16pt;">Across</h2>${list(across)}</td><td style="width:50%;vertical-align:top;border:1.2pt solid #dbeafe;padding:9px;"><h2 style="margin:0 0 7px;color:#2563eb;font-size:16pt;">Down</h2>${list(down)}</td></tr></table>
+      ${skip}<p style="text-align:center;font-size:9pt;color:#777;margin-top:12px;border-top:1px solid #ddd;padding-top:7px;">Generated by Teacher Kevin's Learning Arcade • teacherkevinslearningarcade.com • Editable teacher worksheet</p>
+    </div>`;
+  };
+  const firstPage = makePage(showAnswers);
+  const answerPage = packMode ? `<div style="page-break-before:always;mso-page-break-before:always;"></div>${makePage(true)}` : '';
+  return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${escapeHTML(title)}</title><style>@page{size:A4 portrait;margin:12mm} body{margin:0;background:#fff;color:#123047;font-family:Arial,Helvetica,sans-serif;} .page{width:186mm;min-height:273mm;margin:0 auto;padding:0;box-sizing:border-box;} table{mso-table-lspace:0pt;mso-table-rspace:0pt;} @media print{body{print-color-adjust:exact;-webkit-print-color-adjust:exact}.page{width:auto;min-height:auto}}</style></head><body>${firstPage}${answerPage}</body></html>`;
+}
+
+function downloadWord(answer){
+  if(!last) generate();
+  const html=exportDocumentHTML(answer, 'word');
+  const blob=new Blob(['\ufeff',html],{type:'application/msword;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(answer?'answer_key_':'')+(document.getElementById('title').value.trim()||'crossword').replace(/[^a-z0-9]+/gi,'_').toLowerCase()+'.doc';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),500);
+}
+
+function downloadWordPack(){
+  if(!last) generate();
+  const html=exportDocumentHTML(false, 'word', true);
+  const blob=new Blob(['\ufeff',html],{type:'application/msword;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=(document.getElementById('title').value.trim()||'crossword').replace(/[^a-z0-9]+/gi,'_').toLowerCase()+'_puzzle_and_answer_key.doc';
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(a.href),500);
+}
+generate();
+</script>
+</body>
+</html>

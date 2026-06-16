@@ -11,6 +11,28 @@ const gameData = [
     action: "Open Tool"
   },
   {
+    title: "🎲 Bingo Card Generator",
+    category: ["teacher"],
+    keywords: "teacher tool bingo card generator printable classroom worksheet custom words",
+    link: "tools/bingo_generator_final.html",
+    image: "images/bingo-generator-thumbnail.png",
+    description: "Create printable classroom bingo cards with your own words and settings.",
+    recent: true,
+    popular: true,
+    action: "Open Tool"
+  },
+  {
+    title: "🧩 Crossword Generator",
+    category: ["teacher"],
+    keywords: "teacher tool crossword generator printable worksheet vocabulary clues puzzle",
+    link: "tools/crossword_generator_final.html",
+    image: "images/crossword-generator-thumbnail.png",
+    description: "Make custom crossword puzzles with clues, vocabulary words, and printable worksheets.",
+    recent: true,
+    popular: true,
+    action: "Open Tool"
+  },
+  {
     title: "🎁 Give or Keep",
     category: ["primary", "teacher"],
     keywords: "classroom review teams mystery boxes rewards primary teacher",

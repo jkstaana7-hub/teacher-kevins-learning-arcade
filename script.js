@@ -10,6 +10,16 @@ const gameData = [
     popular: true
   },
   {
+    title: "🏆 Classroom Jeopardy",
+    category: ["kindergarten", "primary", "secondary", "teacher"],
+    keywords: "jeopardy classroom review quiz teams all levels kindergarten primary secondary built in questions",
+    link: "games/classroom_jeopardy_final.html",
+    image: "images/classroom-jeopardy-thumbnail.png",
+    description: "750 built-in questions for all levels. Think. Discuss. Win!",
+    recent: true,
+    popular: true
+  },
+  {
     title: "🎙️ Conversation Master",
     category: ["secondary", "teacher"],
     keywords: "conversation speaking secondary voice quiz dashboard",
@@ -101,13 +111,15 @@ const gameData = [
     popular: false
   },
   {
-  title: "🌈 Tap and Play",
-  description: "Tap, learn, and smile! Explore colorful worlds, complete levels, earn stars, and track student progress through Solo Play and Class Play.",
-  image: "images/tap-and-play-thumbnail.png",
-  link: "games/tap_and_play_final.html",
-  category: "kindergarten",
-  status: "play"
-},
+    title: "🌈 Tap and Play",
+    category: ["kindergarten"],
+    keywords: "tap play kindergarten worlds levels stars solo class play vocabulary listening",
+    link: "games/tap_and_play_final.html",
+    image: "images/tap-and-play-thumbnail.png",
+    description: "Tap, learn, and smile! Explore colorful worlds, complete levels, and earn stars.",
+    recent: true,
+    popular: false
+  },
   {
     title: "🎧 Listen and Tap",
     category: ["kindergarten", "teacher"],
@@ -115,28 +127,39 @@ const gameData = [
     link: "#",
     image: "images/hero-banner.png",
     description: "Teacher-focused listening activity builder. Coming soon.",
+    recent: false,
+    popular: false,
     comingSoon: true
   },
   {
-  title: "🏫 Kindergarten Assessment Hub",
-  category: ["kindergarten", "teacher"],
-  keywords: "kindergarten assessment teacher tool pretest posttest question bank reports k1 k2 k3",
-  link: "tools/kindergarten_assessment_hub_final.html",
-  image: "images/kindergarten-assessment-hub-thumbnail.png",
-  description: "Create, organize, and deliver K1–K3 assessments with question banks and reports.",
-  recent: true,
-  popular: false,
-  action: "Open Tool"
-}
+    title: "🏫 Kindergarten Assessment Hub",
+    category: ["kindergarten", "teacher"],
+    keywords: "kindergarten assessment teacher tool pretest posttest question bank reports k1 k2 k3",
+    link: "tools/kindergarten_assessment_hub_final.html",
+    image: "images/kindergarten-assessment-hub-thumbnail.png",
+    description: "Create, organize, and deliver K1–K3 assessments with question banks and reports.",
+    recent: true,
+    popular: false,
+    action: "Open Tool"
+  }
 ];
 
 let currentCategory = "all";
 
 function openPopup(id) {
   document.getElementById(id).classList.add("show");
-  if (id === "playPopup") renderGames();
-  if (id === "recentPopup") renderSimpleList("recentList", gameData.filter(game => game.recent));
-  if (id === "popularPopup") renderSimpleList("popularList", gameData.filter(game => game.popular));
+
+  if (id === "playPopup") {
+    renderGames();
+  }
+
+  if (id === "recentPopup") {
+    renderSimpleList("recentList", gameData.filter(game => game.recent));
+  }
+
+  if (id === "popularPopup") {
+    renderSimpleList("popularList", gameData.filter(game => game.popular));
+  }
 }
 
 function closePopup(id) {
@@ -145,9 +168,11 @@ function closePopup(id) {
 
 function setCategory(category) {
   currentCategory = category;
+
   document.querySelectorAll(".category-tab").forEach(button => {
     button.classList.toggle("active", button.dataset.category === category);
   });
+
   renderGames();
 }
 
@@ -158,17 +183,22 @@ function getSearchText() {
 
 function gameMatchesSearch(game, searchText) {
   if (!searchText) return true;
+
   const haystack = [
     game.title,
     game.description,
     game.keywords,
-    game.category.join(" ")
+    Array.isArray(game.category) ? game.category.join(" ") : game.category
   ].join(" ").toLowerCase();
+
   return haystack.includes(searchText);
 }
 
 function gameMatchesCategory(game) {
-  return currentCategory === "all" || game.category.includes(currentCategory);
+  if (currentCategory === "all") return true;
+
+  const categories = Array.isArray(game.category) ? game.category : [game.category];
+  return categories.includes(currentCategory);
 }
 
 function renderGames() {
@@ -176,7 +206,10 @@ function renderGames() {
   if (!grid) return;
 
   const searchText = getSearchText();
-  const games = gameData.filter(game => gameMatchesCategory(game) && gameMatchesSearch(game, searchText));
+
+  const games = gameData.filter(game => {
+    return gameMatchesCategory(game) && gameMatchesSearch(game, searchText);
+  });
 
   if (!games.length) {
     grid.innerHTML = `<div class="empty-message">No games found. Try another search or category.</div>`;
@@ -203,12 +236,20 @@ function renderSimpleList(elementId, games) {
   const list = document.getElementById(elementId);
   if (!list) return;
 
+  if (!games.length) {
+    list.innerHTML = `<div class="empty-message">No games found.</div>`;
+    return;
+  }
+
   list.innerHTML = games.map(game => {
-    const buttonText = game.action || "Play Now";
+    const buttonText = game.comingSoon ? "Coming Soon" : (game.action || "Play Now");
+    const href = game.comingSoon ? "javascript:void(0)" : game.link;
+    const click = game.comingSoon ? "" : `onclick="trackGamePlay('${escapeQuotes(game.title)}')"`;
+
     return `
       <div class="simple-item">
         <span>${game.title}</span>
-        <a href="${game.link}" onclick="trackGamePlay('${escapeQuotes(game.title)}')">${buttonText}</a>
+        <a class="${game.comingSoon ? "disabled" : ""}" href="${href}" ${click}>${buttonText}</a>
       </div>
     `;
   }).join("");
@@ -234,7 +275,9 @@ function escapeQuotes(text) {
 
 document.addEventListener("keydown", event => {
   if (event.key === "Escape") {
-    document.querySelectorAll(".popup-overlay.show").forEach(popup => popup.classList.remove("show"));
+    document.querySelectorAll(".popup-overlay.show").forEach(popup => {
+      popup.classList.remove("show");
+    });
   }
 });
 

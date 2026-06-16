@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Primary Colors Mini Arcade – V2A</title>
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --red: #ff4b4b;
+  --yellow: #ffd93d;
+  --blue: #4d96ff;
+  --dark: #17324d;
+  --cream: #fff8df;
+  --card: rgba(255,255,255,0.92);
+}
+
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: "Arial Rounded MT Bold", Arial, sans-serif;
+  color: var(--dark);
+  background: linear-gradient(#9de3ff 0%, #dff8ff 45%, #c9f7b7 100%);
+}
+
+.screen {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.screen.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 999px;
+  opacity: 0.9;
+  animation: floatCloud 13s ease-in-out infinite alternate;
+}
+
+.cloud::before,
+.cloud::after {
+  content: "";
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+}
+
+.cloud.one {
+  width: 150px;
+  height: 45px;
+  top: 8%;
+  left: 8%;
+}
+
+.cloud.one::before {
+  width: 65px;
+  height: 65px;
+  left: 20px;
+  top: -30px;
+}
+
+.cloud.one::after {
+  width: 80px;
+  height: 80px;
+  right: 18px;
+  top: -42px;
+}
+
+.cloud.two {
+  width: 180px;
+  height: 52px;
+  top: 15%;
+  right: 7%;
+  animation-delay: 1s;
+}
+
+.cloud.two::before {
+  width: 75px;
+  height: 75px;
+  left: 25px;
+  top: -35px;
+}
+
+.cloud.two::after {
+  width: 90px;
+  height: 90px;
+  right: 20px;
+  top: -46px;
+}
+
+@keyframes floatCloud {
+  from { transform: translateX(-8px); }
+  to { transform: translateX(18px); }
+}
+
+.home-panel {
+  width: min(900px, 94vw);
+  min-height: min(620px, 88vh);
+  background: rgba(255,255,255,0.78);
+  border: 8px solid white;
+  border-radius: 42px;
+  box-shadow: 0 18px 0 rgba(0,0,0,0.14);
+  padding: clamp(18px, 4vw, 36px);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+
+.badge {
+  display: inline-block;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: #fff3b0;
+  font-size: clamp(16px, 2.4vw, 24px);
+  font-weight: 900;
+  border: 4px solid white;
+}
+
+h1 {
+  font-size: clamp(36px, 7vw, 78px);
+  margin: 16px 0 6px;
+  line-height: 0.95;
+  font-weight: 1000;
+}
+
+.tagline {
+  font-size: clamp(20px, 3.5vw, 34px);
+  margin-bottom: 22px;
+  font-weight: 900;
+}
+
+.color-balls {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 18px 0 26px;
+}
+
+.ball {
+  width: clamp(70px, 11vw, 120px);
+  height: clamp(70px, 11vw, 120px);
+  border-radius: 50%;
+  border: 7px solid white;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.16);
+  display: grid;
+  place-items: center;
+  font-size: clamp(32px, 6vw, 58px);
+  animation: bounce 1.8s ease-in-out infinite;
+}
+
+.ball:nth-child(2) { animation-delay: 0.18s; }
+.ball:nth-child(3) { animation-delay: 0.36s; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+.big-btn {
+  border: 0;
+  border-radius: 28px;
+  padding: clamp(16px, 3vw, 24px) clamp(24px, 5vw, 42px);
+  font-size: clamp(22px, 4vw, 38px);
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 9px 0 rgba(0,0,0,0.18);
+  transition: transform 0.08s;
+}
+
+.big-btn:active {
+  transform: translateY(5px);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+}
+
+.play-btn {
+  background: linear-gradient(135deg, #ff7b7b, #ffd93d, #4d96ff);
+  color: white;
+  text-shadow: 0 3px 0 rgba(0,0,0,0.15);
+  border: 6px solid white;
+}
+
+.top-bar {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.top-bar > * {
+  pointer-events: auto;
+}
+
+.pill {
+  background: rgba(255,255,255,0.92);
+  border: 4px solid white;
+  border-radius: 999px;
+  padding: 10px 16px;
+  font-size: clamp(16px, 2.4vw, 24px);
+  font-weight: 1000;
+  box-shadow: 0 6px 0 rgba(0,0,0,0.12);
+}
+
+.small-btn {
+  border: 0;
+  background: white;
+  color: var(--dark);
+  border-radius: 18px;
+  padding: 10px 16px;
+  font-size: clamp(16px, 2.5vw, 22px);
+  font-weight: 1000;
+  cursor: pointer;
+  box-shadow: 0 5px 0 rgba(0,0,0,0.15);
+}
+
+.hub-wrap {
+  width: min(1120px, 96vw);
+  height: min(690px, 88vh);
+  margin-top: 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 2;
+}
+
+.hub-title {
+  text-align: center;
+  font-size: clamp(30px, 5vw, 58px);
+  font-weight: 1000;
+  text-shadow: 0 4px white;
+}
+
+.world-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.world-card {
+  border: 6px solid white;
+  border-radius: 32px;
+  padding: 14px;
+  background: var(--card);
+  box-shadow: 0 12px 0 rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.world-card.locked {
+  opacity: 0.7;
+  filter: grayscale(0.15);
+}
+
+.world-icon {
+  font-size: clamp(56px, 8vw, 100px);
+}
+
+.world-name {
+  font-size: clamp(20px, 2.7vw, 32px);
+  font-weight: 1000;
+}
+
+.world-info {
+  font-size: clamp(14px, 1.8vw, 21px);
+  font-weight: 900;
+}
+
+.red-card { background: linear-gradient(180deg, #fff, #ffe0e0); }
+.yellow-card { background: linear-gradient(180deg, #fff, #fff1a6); }
+.blue-card { background: linear-gradient(180deg, #fff, #ddebff); }
+.rainbow-card { background: linear-gradient(180deg, #fff, #ffe0ee, #e0edff); }
+
+.game-panel {
+  width: min(980px, 95vw);
+  height: min(650px, 88vh);
+  margin-top: 36px;
+  background: rgba(255,255,255,0.86);
+  border: 8px solid white;
+  border-radius: 40px;
+  box-shadow: 0 16px 0 rgba(0,0,0,0.14);
+  padding: clamp(16px, 3vw, 28px);
+  text-align: center;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mission {
+  font-size: clamp(22px, 4vw, 42px);
+  font-weight: 1000;
+}
+
+.prompt {
+  font-size: clamp(28px, 5vw, 58px);
+  font-weight: 1000;
+  margin: 6px 0;
+}
+
+.character {
+  font-size: clamp(64px, 11vw, 125px);
+  line-height: 1;
+}
+
+.choices {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 26px);
+  flex-wrap: wrap;
+}
+
+.color-choice {
+  width: clamp(130px, 24vw, 220px);
+  height: clamp(130px, 24vw, 220px);
+  border-radius: 34px;
+  border: 8px solid white;
+  box-shadow: 0 10px 0 rgba(0,0,0,0.18);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: clamp(52px, 9vw, 92px);
+}
+
+.color-choice:active {
+  transform: translateY(5px);
+  box-shadow: 0 5px 0 rgba(0,0,0,0.18);
+}
+
+.red-bg { background: #ff4b4b; }
+.yellow-bg { background: #ffd93d; }
+.blue-bg { background: #4d96ff; }
+
+.popup {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  background: rgba(0,0,0,0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.popup.show {
+  display: flex;
+}
+
+.popup-card {
+  width: min(620px, 92vw);
+  background: white;
+  border-radius: 36px;
+  border: 8px solid #fff5b8;
+  box-shadow: 0 16px 0 rgba(0,0,0,0.2);
+  text-align: center;
+  padding: 26px;
+}
+
+.popup-emoji {
+  font-size: clamp(70px, 16vw, 130px);
+}
+
+.popup-title {
+  font-size: clamp(32px, 6vw, 62px);
+  font-weight: 1000;
+}
+
+.popup-text {
+  font-size: clamp(20px, 3vw, 30px);
+  font-weight: 900;
+  margin: 14px 0 22px;
+}
+
+.confetti {
+  position: fixed;
+  top: -20px;
+  width: 14px;
+  height: 24px;
+  border-radius: 4px;
+  animation: fall 1.8s linear forwards;
+  z-index: 30;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0.2;
+  }
+}
+
+@media (max-width: 760px) {
+  .world-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hub-wrap {
+    height: min(700px, 90vh);
+  }
+
+  .world-card {
+    border-radius: 24px;
+    padding: 10px;
+  }
+
+  .top-bar {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+  }
+}
+
+@media (max-width: 460px) {
+  .screen {
+    padding: 10px;
+  }
+
+  .home-panel {
+    min-height: 82vh;
+    border-radius: 28px;
+  }
+
+  .world-grid {
+    gap: 10px;
+  }
+
+  .color-choice {
+    width: 105px;
+    height: 105px;
+    border-radius: 24px;
+  }
+}
+</style>
+</head>
+<body>
+
+<section id="home" class="screen active">
+  <div class="cloud one"></div>
+  <div class="cloud two"></div>
+
+  <div class="home-panel">
+    <div class="badge">Teacher Kevin's Learning Arcade</div>
+    <h1>🎨 Primary Colors<br>Mini Arcade</h1>
+    <div class="tagline">Play • Paint • Discover</div>
+
+    <div class="color-balls">
+      <div class="ball red-bg">🔴</div>
+      <div class="ball yellow-bg">🟡</div>
+      <div class="ball blue-bg">🔵</div>
+    </div>
+
+    <button class="big-btn play-btn" onclick="openHub()">▶ Play</button>
+  </div>
+</section>
+
+<section id="hub" class="screen">
+  <div class="cloud one"></div>
+  <div class="cloud two"></div>
+
+  <div class="top-bar">
+    <button class="small-btn" onclick="showScreen('home')">🏠 Home</button>
+    <div class="pill">⭐ Stars: <span id="starsA">0</span></div>
+  </div>
+
+  <div class="hub-wrap">
+    <div class="hub-title">Choose a Color World</div>
+
+    <div class="world-grid">
+      <div class="world-card red-card" onclick="startListenTap('red')">
+        <div class="world-icon">🏰</div>
+        <div class="world-name">Red Castle</div>
+        <div class="world-info">Listen & Tap</div>
+      </div>
+
+      <div class="world-card yellow-card" onclick="startListenTap('yellow')">
+        <div class="world-icon">☀️</div>
+        <div class="world-name">Sunshine Town</div>
+        <div class="world-info">Listen & Tap</div>
+      </div>
+
+      <div class="world-card blue-card" onclick="startListenTap('blue')">
+        <div class="world-icon">🌊</div>
+        <div class="world-name">Ocean Bay</div>
+        <div class="world-info">Listen & Tap</div>
+      </div>
+
+      <div class="world-card rainbow-card locked" onclick="lockedWorld()">
+        <div class="world-icon">🌈</div>
+        <div class="world-name">Rainbow Lab</div>
+        <div class="world-info">Coming in V2B</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="screen">
+  <div class="cloud one"></div>
+  <div class="cloud two"></div>
+
+  <div class="top-bar">
+    <button class="small-btn" onclick="showScreen('hub')">⬅ Hub</button>
+    <div class="pill">⭐ Stars: <span id="starsB">0</span></div>
+    <button class="small-btn" onclick="speak(currentPrompt)">🔊 Again</button>
+  </div>
+
+  <div class="game-panel">
+    <div>
+      <div class="mission" id="missionText">🎯 Mission</div>
+      <div class="prompt" id="promptText">Tap red!</div>
+    </div>
+
+    <div class="character" id="character">🧑‍🎨</div>
+
+    <div class="choices" id="choices"></div>
+  </div>
+</section>
+
+<div id="popup" class="popup">
+  <div class="popup-card">
+    <div class="popup-emoji" id="popupEmoji">🎉</div>
+    <div class="popup-title" id="popupTitle">Great Job!</div>
+    <div class="popup-text" id="popupText">You earned a star!</div>
+    <button class="big-btn play-btn" onclick="closePopup()">Continue</button>
+  </div>
+</div>
+
+<script>
+const colorData = {
+  red: {
+    name: "red",
+    hex: "#ff4b4b",
+    emoji: "🏰",
+    mission: "Welcome to Red Castle!",
+    prompt: "Tap red!",
+    character: "🦊"
+  },
+  yellow: {
+    name: "yellow",
+    hex: "#ffd93d",
+    emoji: "☀️",
+    mission: "Welcome to Sunshine Town!",
+    prompt: "Tap yellow!",
+    character: "🐥"
+  },
+  blue: {
+    name: "blue",
+    hex: "#4d96ff",
+    emoji: "🌊",
+    mission: "Welcome to Ocean Bay!",
+    prompt: "Tap blue!",
+    character: "🐳"
+  }
+};
+
+const choicesList = [
+  { name: "red", hex: "#ff4b4b", emoji: "🔴" },
+  { name: "yellow", hex: "#ffd93d", emoji: "🟡" },
+  { name: "blue", hex: "#4d96ff", emoji: "🔵" }
+];
+
+let stars = Number(localStorage.getItem("primaryColorStarsV2A") || 0);
+let currentAnswer = "red";
+let currentPrompt = "Tap red!";
+let nextAction = null;
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(screen => {
+    screen.classList.remove("active");
+  });
+  document.getElementById(id).classList.add("active");
+  updateStars();
+}
+
+function openHub() {
+  showScreen("hub");
+}
+
+function updateStars() {
+  document.getElementById("starsA").textContent = stars;
+  document.getElementById("starsB").textContent = stars;
+  localStorage.setItem("primaryColorStarsV2A", stars);
+}
+
+function speak(text) {
+  if (!("speechSynthesis" in window)) return;
+
+  window.speechSynthesis.cancel();
+
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "en-US";
+  utterance.rate = 0.82;
+  utterance.pitch = 1.15;
+
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v =>
+    /female|zira|samantha|google us english|english/i.test(v.name)
+  );
+
+  if (preferred) utterance.voice = preferred;
+
+  window.speechSynthesis.speak(utterance);
+}
+
+function shuffle(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
+
+function startListenTap(colorName) {
+  const data = colorData[colorName];
+
+  currentAnswer = colorName;
+  currentPrompt = data.prompt;
+
+  showScreen("game");
+
+  document.getElementById("missionText").textContent = "🎯 " + data.mission;
+  document.getElementById("promptText").textContent = "Can you find " + colorName.toUpperCase() + "?";
+  document.getElementById("character").textContent = data.character;
+
+  buildChoices();
+
+  setTimeout(() => speak(currentPrompt), 350);
+}
+
+function buildChoices() {
+  const box = document.getElementById("choices");
+  box.innerHTML = "";
+
+  shuffle([...choicesList]).forEach(color => {
+    const btn = document.createElement("button");
+    btn.className = "color-choice";
+    btn.style.background = color.hex;
+    btn.innerHTML = color.emoji;
+    btn.setAttribute("aria-label", color.name);
+    btn.onclick = () => checkAnswer(color.name);
+    box.appendChild(btn);
+  });
+}
+
+function checkAnswer(choice) {
+  if (choice === currentAnswer) {
+    stars++;
+    updateStars();
+    showCelebration("🎉", "Great Job!", "⭐ You earned a star!", () => {
+      showScreen("hub");
+    });
+    speak("Great job! You earned a star!");
+    confetti();
+  } else {
+    showCelebration("😊", "Nice Try!", "Let's try again!", () => {
+      closePopup();
+      speak(currentPrompt);
+    });
+    speak("Nice try. Let's try again.");
+  }
+}
+
+function showCelebration(emoji, title, text, action) {
+  document.getElementById("popupEmoji").textContent = emoji;
+  document.getElementById("popupTitle").textContent = title;
+  document.getElementById("popupText").textContent = text;
+  document.getElementById("popup").classList.add("show");
+  nextAction = action;
+}
+
+function closePopup() {
+  document.getElementById("popup").classList.remove("show");
+  if (nextAction) {
+    const action = nextAction;
+    nextAction = null;
+    action();
+  }
+}
+
+function lockedWorld() {
+  showCelebration("🌈", "Rainbow Lab", "Magic Mix will open in V2B!", () => {
+    showScreen("hub");
+  });
+  speak("Rainbow Lab will open in version 2 B.");
+}
+
+function confetti() {
+  const colors = ["#ff4b4b", "#ffd93d", "#4d96ff", "#ff9ee7", "#79e36d"];
+
+  for (let i = 0; i < 45; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti";
+    piece.style.left = Math.random() * 100 + "vw";
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.animationDelay = Math.random() * 0.4 + "s";
+    document.body.appendChild(piece);
+
+    setTimeout(() => piece.remove(), 2200);
+  }
+}
+
+updateStars();
+if ("speechSynthesis" in window) {
+  window.speechSynthesis.onvoiceschanged = () => {};
+}
+</script>
+
+</body>
+</html>

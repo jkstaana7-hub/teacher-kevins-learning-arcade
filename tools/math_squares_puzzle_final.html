@@ -1,0 +1,1110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Math Squares Puzzle Maker</title>
+<style>
+:root{
+  --bg:#f4f8ff;
+  --card:#ffffff;
+  --ink:#172033;
+  --muted:#60708a;
+  --line:#d8e3f2;
+  --blue:#2563eb;
+  --blue2:#1d4ed8;
+  --purple:#7c3aed;
+  --green:#16a34a;
+  --orange:#f59e0b;
+  --red:#dc2626;
+  --shadow:0 18px 45px rgba(28,48,90,.12);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app-header{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  min-height:72px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  padding:14px 26px;
+  position:sticky;
+  top:0;
+  z-index:20;
+  box-shadow:0 8px 24px rgba(28,48,90,.08);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-weight:900;
+  color:#132a57;
+  letter-spacing:.1px;
+}
+.brand-mark{
+  width:46px;
+  height:46px;
+  border-radius:16px;
+  background:linear-gradient(135deg,var(--blue),var(--purple));
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  box-shadow:0 10px 22px rgba(37,99,235,.25);
+}
+.brand small{display:block;color:var(--muted);font-weight:800;font-size:13px;margin-top:2px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.btn{
+  border:0;
+  border-radius:14px;
+  padding:12px 17px;
+  font-weight:900;
+  background:#fff;
+  color:#172033;
+  border:1px solid var(--line);
+  box-shadow:0 8px 18px rgba(28,48,90,.08);
+}
+.btn:hover{transform:translateY(-1px)}
+.btn.primary{background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:0}
+.btn.green{background:linear-gradient(135deg,#16a34a,#22c55e);color:#fff;border:0}
+.btn.orange{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#211300;border:0}
+.btn.red{background:linear-gradient(135deg,#dc2626,#fb7185);color:#fff;border:0}
+.btn.ghost{box-shadow:none;background:#f8fbff}
+.screen{display:none;padding:26px}
+.screen.active{display:block}
+.container{max-width:1240px;margin:0 auto}
+.home-panel{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);
+  gap:22px;
+  align-items:stretch;
+}
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:26px;
+  box-shadow:var(--shadow);
+  padding:28px;
+}
+.tool-title{font-size:42px;line-height:1.05;margin:0 0 12px;color:#12295a}
+.tool-lead{font-size:18px;line-height:1.55;color:#334155;margin:0 0 22px;max-width:760px}
+.quick-actions{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 24px}
+.mini-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.mini-card{
+  border:1px solid var(--line);
+  background:#fbfdff;
+  border-radius:18px;
+  padding:16px;
+  font-weight:900;
+  color:#253555;
+}
+.mini-card span{display:block;font-size:13px;font-weight:800;color:var(--muted);margin-top:4px}
+.sample-wrap{
+  background:linear-gradient(135deg,#edf5ff,#fff7ed);
+  border-radius:22px;
+  padding:18px;
+  min-height:100%;
+  display:grid;
+  place-items:center;
+}
+.sample-paper{
+  width:100%;
+  max-width:390px;
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:22px;
+  box-shadow:0 20px 38px rgba(15,23,42,.16);
+}
+.sample-lines div{height:10px;background:#e2e8f0;border-radius:10px;margin:8px 0}
+.coming-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 14px}
+.coming-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.coming-card{
+  border:1px solid var(--line);
+  background:#fbfdff;
+  border-radius:18px;
+  padding:16px;
+  text-align:center;
+  font-weight:900;
+}
+.coming-card small{display:block;color:var(--muted);margin-top:5px}
+.generator-layout{
+  display:grid;
+  grid-template-columns:300px minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+.settings{
+  position:sticky;
+  top:94px;
+}
+.settings h2,.preview-card h2,.play-panel h2{margin:0 0 14px;color:#12295a}
+.field{margin-bottom:13px}
+label{display:block;font-weight:900;color:#263653;margin-bottom:6px;font-size:14px}
+input,select,textarea{
+  width:100%;
+  border:1px solid #cbd7e8;
+  border-radius:12px;
+  padding:11px 12px;
+  background:#fff;
+  color:var(--ink);
+}
+textarea{min-height:78px;resize:vertical}
+.checkline{display:flex;align-items:center;gap:10px;margin:9px 0;font-weight:850;color:#263653}
+.checkline input{width:auto}
+.hint{color:var(--muted);font-size:13px;line-height:1.35;margin:12px 0 0}
+.preview-card{padding:20px}
+.preview-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.preview-shell{
+  background:#6b7280;
+  border-radius:18px;
+  padding:22px;
+  overflow:auto;
+  max-height:calc(100vh - 150px);
+}
+.sheet{
+  width:794px;
+  min-height:1123px;
+  background:#fff;
+  color:#000;
+  margin:0 auto;
+  padding:44px 50px;
+  box-shadow:0 18px 34px rgba(0,0,0,.22);
+  display:flex;
+  flex-direction:column;
+}
+.worksheet-title{text-align:center;font-size:28px;font-weight:900;color:#000;margin:0 0 8px}
+.worksheet-divider{border-top:2px solid #111;margin:0 0 18px}
+.student-info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px 24px;
+  font-size:15px;
+  margin-bottom:14px;
+  flex:0 0 auto;
+}
+.student-info div:last-child{grid-column:1/3}
+.instruction-line{
+  font-size:15px;
+  font-weight:900;
+  line-height:1.4;
+  margin:4px 0 14px;
+  flex:0 0 auto;
+}
+.worksheet-grid{
+  display:grid;
+  align-items:center;
+  justify-items:center;
+  flex:1;
+  width:100%;
+}
+.worksheet-grid.count-1{grid-template-columns:1fr;gap:18px}
+.worksheet-grid.count-2{grid-template-columns:1fr 1fr;gap:22px 42px}
+.worksheet-grid.count-4{grid-template-columns:1fr 1fr;gap:28px 42px}
+.puzzle-block{
+  text-align:center;
+  break-inside:avoid;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+.puzzle-label{font-weight:900;margin-bottom:10px;font-size:16px}
+.math-table{border-collapse:collapse;margin:0 auto;table-layout:fixed}
+.math-table td{
+  text-align:center;
+  vertical-align:middle;
+  color:#000;
+  font-weight:900;
+  padding:0;
+}
+.math-table td.num,.math-table td.sum{
+  border:1.5px solid #111;
+  background:#fff;
+}
+.math-table td.op{
+  border:0;
+  font-size:13px;
+}
+.math-table.size-3 td.num,.math-table.size-3 td.sum{width:58px;height:58px;font-size:20px}
+.math-table.size-4 td.num,.math-table.size-4 td.sum{width:42px;height:42px;font-size:16px}
+.math-table.size-5 td.num,.math-table.size-5 td.sum{width:34px;height:34px;font-size:13px}
+
+.worksheet-grid.count-4 .math-table.size-3 td.num,.worksheet-grid.count-4 .math-table.size-3 td.sum{width:54px;height:54px;font-size:20px}
+.worksheet-grid.count-4 .math-table.size-4 td.num,.worksheet-grid.count-4 .math-table.size-4 td.sum{width:39px;height:39px;font-size:15px}
+.worksheet-grid.count-4 .math-table.size-5 td.num,.worksheet-grid.count-4 .math-table.size-5 td.sum{width:31px;height:31px;font-size:12px}
+
+.worksheet-grid.count-2 .math-table.size-3 td.num,.worksheet-grid.count-2 .math-table.size-3 td.sum{width:66px;height:66px;font-size:23px}
+.worksheet-grid.count-2 .math-table.size-4 td.num,.worksheet-grid.count-2 .math-table.size-4 td.sum{width:48px;height:48px;font-size:18px}
+.worksheet-grid.count-2 .math-table.size-5 td.num,.worksheet-grid.count-2 .math-table.size-5 td.sum{width:39px;height:39px;font-size:15px}
+
+.worksheet-grid.count-1 .math-table.size-3 td.num,.worksheet-grid.count-1 .math-table.size-3 td.sum{width:88px;height:88px;font-size:30px}
+.worksheet-grid.count-1 .math-table.size-4 td.num,.worksheet-grid.count-1 .math-table.size-4 td.sum{width:66px;height:66px;font-size:24px}
+.worksheet-grid.count-1 .math-table.size-5 td.num,.worksheet-grid.count-1 .math-table.size-5 td.sum{width:54px;height:54px;font-size:19px}
+.worksheet-grid.count-1 .math-table td.op{font-size:22px}
+.worksheet-grid.count-2 .math-table td.op{font-size:18px}
+.worksheet-grid.count-4 .math-table td.op{font-size:17px}
+.answer-page{
+  page-break-before:always;
+  margin-top:70px;
+}
+.answer-title{
+  text-align:center;
+  font-size:28px;
+  font-weight:900;
+  margin:0 0 28px;
+  letter-spacing:.5px;
+}
+.play-layout{
+  display:grid;
+  grid-template-columns:minmax(520px,1fr) 330px;
+  gap:22px;
+  align-items:start;
+}
+.play-board-card{
+  background:linear-gradient(135deg,#ffffff,#f0f7ff);
+  border:1px solid var(--line);
+  border-radius:30px;
+  box-shadow:var(--shadow);
+  padding:26px;
+  min-height:660px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+}
+.game-title{
+  font-size:32px;
+  font-weight:1000;
+  color:#12295a;
+  margin:0 0 18px;
+  text-align:center;
+}
+.game-table{
+  border-collapse:separate;
+  border-spacing:10px;
+  margin:0 auto;
+}
+.game-table td{
+  text-align:center;
+  vertical-align:middle;
+  font-weight:1000;
+}
+.game-table td.num,.game-table td.sum{
+  width:78px;
+  height:78px;
+  border-radius:18px;
+  border:4px solid #9ec5ff;
+  background:#eaf3ff;
+  color:#0f2b5d;
+  box-shadow:0 9px 0 #c5dcff;
+  font-size:25px;
+}
+.game-table td.given{
+  background:#dcfce7;
+  border-color:#4ade80;
+  color:#166534;
+  box-shadow:0 9px 0 #bbf7d0;
+}
+.game-table td.sum{
+  background:#fff2c2;
+  border-color:#fbbf24;
+  color:#92400e;
+  box-shadow:0 9px 0 #fde68a;
+  font-size:22px;
+}
+.game-table td.op{
+  width:28px;
+  height:28px;
+  color:#243b63;
+  font-size:24px;
+}
+.game-table input{
+  width:100%;
+  height:100%;
+  border:0;
+  background:transparent;
+  text-align:center;
+  font-size:28px;
+  font-weight:1000;
+  color:#0f2b5d;
+  outline:none;
+}
+.game-table td.correct{
+  background:#dcfce7!important;
+  border-color:#22c55e!important;
+  animation:pop .32s ease;
+}
+.game-table td.wrong{
+  background:#fee2e2!important;
+  border-color:#ef4444!important;
+  animation:shake .35s ease;
+}
+@keyframes pop{50%{transform:scale(1.07)}}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.play-panel .btn{width:100%;margin:6px 0}
+.stat-box{
+  margin-top:14px;
+  padding:14px;
+  border-radius:16px;
+  background:#f8fbff;
+  border:1px solid var(--line);
+  font-weight:900;
+  line-height:1.6;
+}
+.modal-backdrop{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.55);
+  z-index:50;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.modal-backdrop.show{display:flex}
+.modal{
+  width:min(680px,100%);
+  background:#fff;
+  border-radius:24px;
+  box-shadow:0 30px 70px rgba(0,0,0,.25);
+  padding:28px;
+}
+.modal h2{margin-top:0;color:#12295a}
+.modal li{margin-bottom:8px}
+@media(max-width:1050px){
+  .home-panel,.generator-layout,.play-layout{grid-template-columns:1fr}
+  .settings{position:static}
+  .preview-shell{max-height:none}
+  .coming-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:720px){
+  .app-header{align-items:flex-start;flex-direction:column}
+  .screen{padding:16px}
+  .tool-title{font-size:34px}
+  .mini-grid,.coming-grid{grid-template-columns:1fr}
+  .sheet{width:100%;min-height:auto;padding:34px 22px}
+  .worksheet-title{text-align:center;font-size:28px;font-weight:900;color:#000;margin:0 0 8px}
+.worksheet-divider{border-top:2px solid #111;margin:0 0 18px}
+.student-info{grid-template-columns:1fr}
+  .student-info div:last-child{grid-column:auto}
+  .worksheet-grid.count-2,.worksheet-grid.count-4{grid-template-columns:1fr}
+  .game-table{border-spacing:6px}
+  .game-table td.num,.game-table td.sum{width:54px;height:54px;font-size:18px;border-radius:13px}
+  .game-table td.op{width:18px;font-size:18px}
+}
+@media print{
+  @page{size:A4;margin:0}
+  html,body{background:#fff!important}
+  .app-header,.settings,.no-print,.modal-backdrop{display:none!important}
+  .screen{display:none!important}
+  #worksheet-screen{display:block!important;padding:0!important}
+  .generator-layout{display:block!important;max-width:none!important}
+  .preview-card{border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+  .preview-head{display:none!important}
+  .preview-shell{background:#fff!important;padding:0!important;max-height:none!important;overflow:visible!important;border-radius:0!important}
+  .sheet{width:100%!important;min-height:297mm!important;margin:0!important;padding:10mm 12mm!important;box-shadow:none!important}
+  .answer-page{page-break-before:always!important;margin-top:0!important;padding-top:13mm!important}
+}
+
+/* V1.1 Professional Enhancements */
+.worksheet-grid.count-1{min-height:850px}
+.worksheet-grid.count-2{min-height:850px}
+.worksheet-grid.count-4{min-height:840px}
+.worksheet-grid.count-1 .puzzle-label{font-size:22px;margin-bottom:14px}
+.worksheet-grid.count-2 .puzzle-label{font-size:18px;margin-bottom:12px}
+.worksheet-grid.count-4 .puzzle-label{font-size:16px;margin-bottom:10px}
+.puzzle-subtitle{font-size:12px;font-weight:800;color:#333;margin-top:-5px;margin-bottom:8px}
+.worksheet-grid.count-1 .puzzle-subtitle{font-size:15px;margin-bottom:12px}
+.worksheet-grid.count-2 .puzzle-subtitle{font-size:13px;margin-bottom:10px}
+.math-table td.op{font-weight:900;color:#111}
+.worksheet-grid.count-1 .math-table.size-3 td.num,.worksheet-grid.count-1 .math-table.size-3 td.sum{width:98px;height:98px;font-size:34px}
+.worksheet-grid.count-1 .math-table.size-4 td.num,.worksheet-grid.count-1 .math-table.size-4 td.sum{width:73px;height:73px;font-size:26px}
+.worksheet-grid.count-1 .math-table.size-5 td.num,.worksheet-grid.count-1 .math-table.size-5 td.sum{width:58px;height:58px;font-size:21px}
+.worksheet-grid.count-2 .math-table.size-3 td.num,.worksheet-grid.count-2 .math-table.size-3 td.sum{width:72px;height:72px;font-size:25px}
+.worksheet-grid.count-2 .math-table.size-4 td.num,.worksheet-grid.count-2 .math-table.size-4 td.sum{width:52px;height:52px;font-size:20px}
+.worksheet-grid.count-2 .math-table.size-5 td.num,.worksheet-grid.count-2 .math-table.size-5 td.sum{width:41px;height:41px;font-size:16px}
+.worksheet-grid.count-4 .math-table.size-3 td.num,.worksheet-grid.count-4 .math-table.size-3 td.sum{width:58px;height:58px;font-size:21px}
+.worksheet-grid.count-4 .math-table.size-4 td.num,.worksheet-grid.count-4 .math-table.size-4 td.sum{width:41px;height:41px;font-size:16px}
+.worksheet-grid.count-4 .math-table.size-5 td.num,.worksheet-grid.count-4 .math-table.size-5 td.sum{width:32px;height:32px;font-size:13px}
+.success-pop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.35);z-index:100}
+.success-pop.show{display:flex}
+.success-card{background:white;border-radius:28px;padding:34px 42px;text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.25);border:4px solid #22c55e}
+.success-card h2{font-size:42px;margin:0 0 8px;color:#166534}
+.success-card p{margin:0 0 18px;font-weight:900;color:#334155}
+.confetti-piece{position:fixed;width:10px;height:16px;top:-20px;z-index:120;animation:fall 1.8s linear forwards;border-radius:3px}
+@keyframes fall{to{transform:translateY(105vh) rotate(720deg);opacity:.2}}
+.timer-pill{display:inline-block;background:#eef2ff;color:#3730a3;border-radius:999px;padding:8px 12px;font-weight:900;margin-bottom:10px}
+@media print{
+  .worksheet-grid.count-1{min-height:235mm!important}
+  .worksheet-grid.count-2{min-height:232mm!important}
+  .worksheet-grid.count-4{min-height:230mm!important}
+}
+
+
+/* Final Welcome Page Polish */
+#home-screen{
+  background:
+    radial-gradient(circle at 12% 18%, rgba(37,99,235,.16), transparent 28%),
+    radial-gradient(circle at 90% 12%, rgba(124,58,237,.16), transparent 30%),
+    radial-gradient(circle at 72% 86%, rgba(245,158,11,.18), transparent 26%),
+    linear-gradient(135deg,#f4f8ff 0%,#eef7ff 46%,#fff8ed 100%);
+}
+.welcome-hero{
+  position:relative;
+  overflow:hidden;
+  border:0!important;
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.96),rgba(255,255,255,.88)),
+    linear-gradient(135deg,#2563eb,#7c3aed);
+}
+.welcome-hero:before{
+  content:"";
+  position:absolute;
+  right:-80px;
+  top:-90px;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  background:linear-gradient(135deg,rgba(37,99,235,.22),rgba(124,58,237,.20));
+}
+.welcome-hero:after{
+  content:"";
+  position:absolute;
+  left:-70px;
+  bottom:-80px;
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  background:linear-gradient(135deg,rgba(34,197,94,.18),rgba(245,158,11,.20));
+}
+.welcome-content{position:relative;z-index:1}
+.welcome-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 13px;
+  border-radius:999px;
+  background:#eef2ff;
+  color:#3730a3;
+  font-weight:900;
+  font-size:14px;
+  margin-bottom:14px;
+}
+.welcome-stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:18px;
+}
+.welcome-stat{
+  background:#fff;
+  border:1px solid #dbe7f5;
+  border-radius:16px;
+  padding:12px;
+  text-align:center;
+  font-weight:1000;
+  color:#12295a;
+}
+.welcome-stat small{
+  display:block;
+  color:#64748b;
+  font-size:12px;
+  margin-top:3px;
+}
+.preview-showcase{
+  background:
+    linear-gradient(145deg,rgba(37,99,235,.10),rgba(124,58,237,.10)),
+    #ffffff;
+  border:0!important;
+  position:relative;
+  overflow:hidden;
+}
+.preview-showcase:before{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border-radius:24px;
+  border:2px dashed rgba(37,99,235,.18);
+  pointer-events:none;
+}
+.showcase-grid{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:16px;
+}
+.showcase-card{
+  background:#fff;
+  border:1px solid #dbe7f5;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 16px 30px rgba(30,58,138,.10);
+}
+.showcase-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-weight:1000;
+  color:#12295a;
+  margin-bottom:12px;
+}
+.showcase-pill{
+  background:#dcfce7;
+  color:#166534;
+  border-radius:999px;
+  padding:6px 10px;
+  font-size:12px;
+  font-weight:1000;
+}
+.color-feature-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+  margin-top:22px;
+}
+.color-feature{
+  background:#fff;
+  border:1px solid #dbe7f5;
+  border-radius:22px;
+  padding:18px;
+  box-shadow:0 14px 28px rgba(30,58,138,.08);
+  font-weight:1000;
+  color:#12295a;
+  min-height:118px;
+}
+.color-feature .icon{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  margin-bottom:12px;
+  font-size:22px;
+}
+.color-feature:nth-child(1) .icon{background:linear-gradient(135deg,#2563eb,#60a5fa)}
+.color-feature:nth-child(2) .icon{background:linear-gradient(135deg,#16a34a,#4ade80)}
+.color-feature:nth-child(3) .icon{background:linear-gradient(135deg,#f59e0b,#fbbf24)}
+.color-feature:nth-child(4) .icon{background:linear-gradient(135deg,#7c3aed,#a78bfa)}
+.color-feature span{
+  display:block;
+  color:#64748b;
+  font-size:13px;
+  font-weight:800;
+  line-height:1.35;
+  margin-top:6px;
+}
+#home-screen .coming-card{
+  background:linear-gradient(180deg,#ffffff,#f8fbff);
+  box-shadow:0 10px 22px rgba(30,58,138,.08);
+}
+#home-screen .coming-card:first-child{
+  border-color:#93c5fd;
+  background:linear-gradient(180deg,#eff6ff,#ffffff);
+}
+@media(max-width:1050px){
+  .color-feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .welcome-stats{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .color-feature-grid{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">▦</div>
+    <div>Teacher Kevin's Learning Arcade<small>Math Squares Puzzle Maker</small></div>
+  </div>
+  <nav class="nav">
+    <button class="btn ghost" onclick="showScreen('home-screen')">Home</button>
+    <button class="btn primary" onclick="showScreen('worksheet-screen')">Create Worksheet</button>
+    <button class="btn green" onclick="showScreen('play-screen')">Interactive Play</button>
+    <button class="btn orange" onclick="openHow()">How It Works</button>
+  </nav>
+</header>
+
+
+<section id="home-screen" class="screen active">
+  <div class="container">
+    <div class="home-panel">
+      <div class="card welcome-hero">
+        <div class="welcome-content">
+          <div class="welcome-badge">✨ Professional Worksheet Generator</div>
+          <h1 class="tool-title">Math Squares Puzzle Maker</h1>
+          <p class="tool-lead">Create polished math square worksheets with answer keys in seconds. Use the clean PDF worksheet for printing, or switch to the colorful play mode for classroom screens.</p>
+          <div class="quick-actions">
+            <button class="btn primary" onclick="showScreen('worksheet-screen')">Create Worksheet</button>
+            <button class="btn green" onclick="showScreen('play-screen')">Interactive Play</button>
+            <button class="btn orange" onclick="openHow()">How It Works</button>
+          </div>
+          <div class="welcome-stats">
+            <div class="welcome-stat">PDF<small>Print ready</small></div>
+            <div class="welcome-stat">A4<small>Worksheet layout</small></div>
+            <div class="welcome-stat">Key<small>Answer page</small></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card preview-showcase">
+        <div class="showcase-grid">
+          <div class="showcase-card">
+            <div class="showcase-title">Worksheet Preview <span class="showcase-pill">Ready</span></div>
+            <div class="sample-paper" style="box-shadow:none;border-radius:16px;padding:18px">
+              <div style="text-align:center;font-weight:900;margin-bottom:8px">Math Squares Challenge</div>
+              <div class="sample-lines">
+                <div style="width:75%"></div>
+                <div style="width:56%"></div>
+                <div style="width:62%"></div>
+              </div>
+              <div id="samplePuzzle" style="margin-top:16px"></div>
+            </div>
+          </div>
+          <div class="showcase-card">
+            <div class="showcase-title">Teacher Workflow <span class="showcase-pill">Fast</span></div>
+            <div class="mini-grid">
+              <div class="mini-card">1. Choose Preset<span>Addition, subtraction, mixed</span></div>
+              <div class="mini-card">2. Generate<span>Preview instantly</span></div>
+              <div class="mini-card">3. Print PDF<span>Clean student copy</span></div>
+              <div class="mini-card">4. Use Key<span>Separate answer page</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="color-feature-grid">
+      <div class="color-feature"><div class="icon">🖨️</div>Clean PDF Export<span>No branding, no footer, no unnecessary decorations.</span></div>
+      <div class="color-feature"><div class="icon">✅</div>Answer Key Included<span>Solutions are placed on a separate page for teachers.</span></div>
+      <div class="color-feature"><div class="icon">🎯</div>Teacher Presets<span>Choose difficulty, puzzle count, and operation practice.</span></div>
+      <div class="color-feature"><div class="icon">🎮</div>Interactive Play<span>Colorful classroom mode for direct on-screen solving.</span></div>
+    </div>
+
+    <div class="card" style="margin-top:22px">
+      <div class="coming-title">
+        <h2 style="margin:0;color:#12295a">Coming Soon</h2>
+        <span style="color:var(--muted);font-weight:900">Future math tools</span>
+      </div>
+      <div class="coming-grid">
+        <div class="coming-card">Math Squares<small>Available</small></div>
+        <div class="coming-card">Number Blocks<small>Coming Soon</small></div>
+        <div class="coming-card">Magic Squares<small>Coming Soon</small></div>
+        <div class="coming-card">Sudoku<small>Coming Soon</small></div>
+        <div class="coming-card">KenKen<small>Coming Soon</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="worksheet-screen" class="screen">
+  <div class="container generator-layout">
+    <aside class="card settings">
+      <h2>Settings</h2>
+      <div class="field">
+        <label for="difficulty">Worksheet Type</label>
+        <select id="difficulty" onchange="applyDifficultyPreset()">
+          <option value="easy">Easy (Grades 1–2)</option>
+          <option value="medium">Medium (Grades 3–4)</option>
+          <option value="hard">Hard (Grades 5–6)</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="gridSize">Puzzle Size</label>
+        <select id="gridSize" onchange="markCustom(); generateWorksheet()">
+          <option value="3">3 × 3</option>
+          <option value="4">4 × 4</option>
+          <option value="5">5 × 5</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="puzzleCount">Number of Puzzles</label>
+        <select id="puzzleCount" onchange="markCustom(); generateWorksheet()">
+          <option value="4">4 puzzles</option>
+          <option value="2">2 puzzles</option>
+          <option value="1">1 puzzle</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="givenCount">Given Numbers Per Puzzle</label>
+        <select id="givenCount" onchange="markCustom(); generateWorksheet()">
+          <option value="5">5 given numbers</option>
+          <option value="4">4 given numbers</option>
+          <option value="3">3 given numbers</option>
+          <option value="2">2 given numbers</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="operationMode">Worksheet Preset</label>
+        <select id="operationMode" onchange="generateWorksheet()">
+          <option value="add">Addition Only</option>
+          <option value="sub">Subtraction Only</option>
+          <option value="mul">Multiplication Only</option>
+          <option value="div">Division Only</option>
+          <option value="mixed">Mixed Operations</option>
+        </select>
+      </div>
+      <div class="checkline">
+        <input id="includeAnswer" type="checkbox" checked onchange="generateWorksheet()">
+        <span>Include answer key</span>
+      </div>
+      <div class="field">
+        <label for="instructions">Instructions</label>
+        <textarea id="instructions" oninput="generateWorksheet()">Fill in the missing numbers. Use the row and column clues to check your answers.</textarea>
+      </div>
+      <div class="quick-actions">
+        <button class="btn primary" onclick="generateWorksheet()">Generate Worksheet</button>
+        <button class="btn green" onclick="printWorksheet()">Print / Save PDF</button>
+      </div>
+      <p class="hint">Export rule: the printed worksheet has no Teacher Kevin branding, no footer, no bonus box, no Word export, and the puzzles auto-scale to use the page space.</p>
+    </aside>
+
+    <main class="preview-card">
+      <div class="preview-head no-print">
+        <h2>Live Worksheet Preview</h2>
+        <span style="font-weight:900;color:var(--muted)">A4 Student Copy + Answer Key</span>
+      </div>
+      <div class="preview-shell">
+        <div class="sheet" id="worksheetOutput"></div>
+      </div>
+    </main>
+  </div>
+</section>
+
+<section id="play-screen" class="screen">
+  <div class="container play-layout">
+    <main class="play-board-card">
+      <h2 class="game-title">Interactive Math Squares</h2>
+      <div id="gameBoard"></div>
+    </main>
+    <aside class="card play-panel">
+      <h2>Play Controls</h2>
+      <p style="color:var(--muted);line-height:1.45;font-weight:800">Use this as a colorful classroom activity. Fill in the missing numbers, then check the answers.</p>
+      <div class="field">
+        <label for="playSize">Puzzle Size</label>
+        <select id="playSize" onchange="newGame()">
+          <option value="3">3 × 3</option>
+          <option value="4">4 × 4</option>
+          <option value="5">5 × 5</option>
+        </select>
+      </div>
+      <div class="checkline">
+        <input id="timerToggle" type="checkbox" onchange="toggleTimer()">
+        <span>Show timer</span>
+      </div>
+      <button class="btn primary" onclick="newGame()">New Puzzle</button>
+      <button class="btn green" onclick="checkGame()">Check Answers</button>
+      <button class="btn orange" onclick="revealGame()">Reveal Solution</button>
+      <button class="btn ghost" onclick="showScreen('home-screen')">Back to Home</button>
+      <div class="stat-box" id="gameStats">Attempts: 0<br>Solved: 0</div>
+    </aside>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="howModal" onclick="closeHow(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <h2>How It Works</h2>
+    <ol>
+      <li>Click <strong>Create Worksheet</strong>.</li>
+      <li>Choose Easy, Medium, Hard, or Custom settings.</li>
+      <li>Check the live preview.</li>
+      <li>Click <strong>Print / Save PDF</strong>.</li>
+      <li>Use the separate answer key page for checking.</li>
+    </ol>
+    <p><strong>Interactive Play</strong> is a colorful bonus mode for classroom screens.</p>
+    <button class="btn primary" onclick="document.getElementById('howModal').classList.remove('show')">Close</button>
+  </div>
+</div>
+
+
+<div class="success-pop" id="successPop">
+  <div class="success-card">
+    <h2>Great Job!</h2>
+    <p>Puzzle Solved!</p>
+    <button class="btn green" onclick="closeSuccess()">Continue</button>
+  </div>
+</div>
+
+
+<script>
+const state = { worksheetPuzzles: [], currentGame: null, attempts: 0, solved: 0, correctChecks: 0, totalChecks: 0, timerSeconds: 0, timerInterval: null };
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id === 'worksheet-screen') generateWorksheet();
+  if(id === 'play-screen') newGame(false);
+}
+function openHow(){ document.getElementById('howModal').classList.add('show'); }
+function closeHow(event){ if(event.target.id === 'howModal') document.getElementById('howModal').classList.remove('show'); }
+function randomInt(min,max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+function escapeHtml(str){ return str.replace(/[&<>"']/g, match => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[match])); }
+function modeLabel(mode){ return {add:'Addition Practice',sub:'Subtraction Practice',mul:'Multiplication Practice',div:'Division Practice',mixed:'Mixed Operations'}[mode] || 'Addition Practice'; }
+function allowedOps(mode){ if(mode==='add')return ['+']; if(mode==='sub')return ['-']; if(mode==='mul')return ['×']; if(mode==='div')return ['÷']; return ['+','-','×','÷']; }
+function applyOp(a,b,op){ if(op==='+')return a+b; if(op==='-')return a-b; if(op==='×')return a*b; if(op==='÷')return a/b; return a+b; }
+function evalLine(values, ops){ let result=values[0]; for(let i=0;i<ops.length;i++) result=applyOp(result, values[i+1], ops[i]); return result; }
+
+function generateLineValues(size, mode){
+  const ops = allowedOps(mode);
+  for(let tries=0; tries<700; tries++){
+    let values=[], lineOps=[];
+    if(mode === 'div'){
+      let current = randomInt(size <= 3 ? 12 : 24, size <= 3 ? 48 : 96);
+      values.push(current);
+      for(let i=0;i<size-1;i++){
+        let divisors=[]; for(let d=2; d<=12; d++) if(current % d === 0 && current / d >= 1) divisors.push(d);
+        let d = divisors.length ? divisors[randomInt(0,divisors.length-1)] : 1;
+        values.push(d); lineOps.push('÷'); current = current / d;
+      }
+      return {values, ops:lineOps, result:evalLine(values,lineOps)};
+    }
+    if(mode === 'sub'){
+      values = Array.from({length:size}, () => randomInt(1,18)).sort((a,b)=>b-a);
+      lineOps = Array.from({length:size-1}, () => '-');
+      const result = evalLine(values,lineOps);
+      if(result >= 0) return {values, ops:lineOps, result};
+    }
+    if(mode === 'mul'){
+      values = Array.from({length:size}, () => randomInt(1, size <= 3 ? 9 : 6));
+      lineOps = Array.from({length:size-1}, () => '×');
+      return {values, ops:lineOps, result:evalLine(values,lineOps)};
+    }
+    if(mode === 'mixed'){
+      values = Array.from({length:size}, () => randomInt(1,12));
+      lineOps = [];
+      for(let i=0;i<size-1;i++){
+        let op = ops[randomInt(0, ops.length-1)];
+        if(op === '÷'){
+          const current = evalLine(values.slice(0,i+1), lineOps);
+          const divs=[]; for(let d=2; d<=6; d++) if(Number.isInteger(current) && current % d === 0) divs.push(d);
+          if(divs.length) values[i+1] = divs[randomInt(0,divs.length-1)];
+          else op = '+';
+        }
+        lineOps.push(op);
+      }
+      const result = evalLine(values,lineOps);
+      if(Number.isInteger(result) && result >= 0 && Math.abs(result) <= 999) return {values, ops:lineOps, result};
+    }
+    values = Array.from({length:size}, () => randomInt(1, size <= 3 ? 12 : 15));
+    lineOps = Array.from({length:size-1}, () => '+');
+    return {values, ops:lineOps, result:evalLine(values,lineOps)};
+  }
+  const values = Array.from({length:size}, () => randomInt(1,9));
+  const lineOps = Array.from({length:size-1}, () => '+');
+  return {values, ops:lineOps, result:evalLine(values,lineOps)};
+}
+
+function makePuzzle(size, givenCount, mode){
+  const rows = [];
+  for(let r=0; r<size; r++) rows.push(generateLineValues(size, mode));
+  const numbers = [];
+  rows.forEach(row => row.values.forEach(v => numbers.push(v)));
+
+  // Column clues remain addition totals for clear cross-checking.
+  const colSums = [];
+  for(let c=0; c<size; c++){
+    let sum = 0;
+    for(let r=0; r<size; r++) sum += numbers[r * size + c];
+    colSums.push(sum);
+  }
+
+  const total = size * size;
+  const safeGiven = Math.max(0, Math.min(total - 1, givenCount));
+  const given = new Set();
+  while(given.size < safeGiven) given.add(randomInt(0,total-1));
+
+  return { size, mode, numbers, rowSums: rows.map(r => r.result), rowOps: rows.map(r => r.ops), colSums, given };
+}
+
+function worksheetPuzzleTable(puzzle, showAnswers){
+  const size = puzzle.size;
+  let html = `<table class="math-table size-${size}" aria-label="Math square puzzle">`;
+  for(let r=0; r<size; r++){
+    html += '<tr>';
+    for(let c=0; c<size; c++){
+      const idx = r * size + c;
+      const visible = showAnswers || puzzle.given.has(idx);
+      html += `<td class="num">${visible ? puzzle.numbers[idx] : ''}</td>`;
+      if(c < size - 1) html += `<td class="op">${puzzle.rowOps[r][c]}</td>`;
+    }
+    html += `<td class="op">=</td><td class="sum">${puzzle.rowSums[r]}</td></tr>`;
+  }
+  html += '<tr>';
+  for(let c=0; c<size; c++){ html += '<td class="op">+</td>'; if(c < size - 1) html += '<td class="op"></td>'; }
+  html += '<td class="op"></td><td class="op"></td></tr><tr>';
+  for(let c=0; c<size; c++){ html += `<td class="sum">${puzzle.colSums[c]}</td>`; if(c < size - 1) html += '<td class="op"></td>'; }
+  html += '<td class="op"></td><td class="op"></td></tr></table>';
+  return html;
+}
+
+function gamePuzzleTable(puzzle){
+  const size = puzzle.size;
+  let html = `<table class="game-table size-${size}" aria-label="Interactive math square puzzle">`;
+  for(let r=0; r<size; r++){
+    html += '<tr>';
+    for(let c=0; c<size; c++){
+      const idx = r * size + c;
+      const visible = puzzle.given.has(idx);
+      html += visible ? `<td class="num given">${puzzle.numbers[idx]}</td>` : `<td class="num input-cell"><input data-answer="${puzzle.numbers[idx]}" inputmode="numeric" aria-label="Missing number"></td>`;
+      if(c < size - 1) html += `<td class="op">${puzzle.rowOps[r][c]}</td>`;
+    }
+    html += `<td class="op">=</td><td class="sum">${puzzle.rowSums[r]}</td></tr>`;
+  }
+  html += '<tr>';
+  for(let c=0; c<size; c++){ html += '<td class="op">+</td>'; if(c < size - 1) html += '<td class="op"></td>'; }
+  html += '<td class="op"></td><td class="op"></td></tr><tr>';
+  for(let c=0; c<size; c++){ html += `<td class="sum">${puzzle.colSums[c]}</td>`; if(c < size - 1) html += '<td class="op"></td>'; }
+  html += '<td class="op"></td><td class="op"></td></tr></table>';
+  return html;
+}
+
+function applyDifficultyPreset(){
+  const difficulty = document.getElementById('difficulty').value;
+  if(difficulty === 'easy'){
+    document.getElementById('gridSize').value = '3'; document.getElementById('puzzleCount').value = '4'; document.getElementById('givenCount').value = '5';
+  } else if(difficulty === 'medium'){
+    document.getElementById('gridSize').value = '4'; document.getElementById('puzzleCount').value = '2'; document.getElementById('givenCount').value = '5';
+  } else if(difficulty === 'hard'){
+    document.getElementById('gridSize').value = '5'; document.getElementById('puzzleCount').value = '1'; document.getElementById('givenCount').value = '4';
+  }
+  generateWorksheet();
+}
+function markCustom(){ document.getElementById('difficulty').value = 'custom'; }
+
+function generateWorksheet(){
+  const size = Number(document.getElementById('gridSize').value);
+  const count = Number(document.getElementById('puzzleCount').value);
+  const givenCount = Number(document.getElementById('givenCount').value);
+  const includeAnswer = document.getElementById('includeAnswer').checked;
+  const instructions = document.getElementById('instructions').value.trim() || 'Fill in the missing numbers. Use the row and column clues to check your answers.';
+  const mode = document.getElementById('operationMode') ? document.getElementById('operationMode').value : 'add';
+  const label = modeLabel(mode);
+  state.worksheetPuzzles = Array.from({length: count}, () => makePuzzle(size, givenCount, mode));
+
+  let html = `
+    <div class="worksheet-title">Math Squares Challenge</div>
+    <div class="worksheet-divider"></div>
+    <div class="student-info">
+      <div>Name: _______________________________</div>
+      <div>Student No.: _________________________</div>
+      <div>Class: ______________________________</div>
+    </div>
+    <div class="instruction-line">Instructions: ${escapeHtml(instructions)}</div>
+    <div class="worksheet-grid count-${count}">
+  `;
+  state.worksheetPuzzles.forEach((puzzle, index) => {
+    html += `<div class="puzzle-block"><div class="puzzle-label">Puzzle ${index + 1}</div><div class="puzzle-subtitle">${label}</div><div style="width:80%;border-top:1px solid #999;margin:0 auto 8px;"></div>${worksheetPuzzleTable(puzzle, false)}</div>`;
+  });
+  html += '</div>';
+  if(includeAnswer){
+    html += `<div class="answer-page"><div class="answer-title">ANSWER KEY</div><div class="worksheet-grid count-${count}">`;
+    state.worksheetPuzzles.forEach((puzzle, index) => {
+      html += `<div class="puzzle-block"><div class="puzzle-label">Puzzle ${index + 1}</div><div class="puzzle-subtitle">${label}</div><div style="width:80%;border-top:1px solid #999;margin:0 auto 8px;"></div>${worksheetPuzzleTable(puzzle, true)}</div>`;
+    });
+    html += '</div></div>';
+  }
+  document.getElementById('worksheetOutput').innerHTML = html;
+}
+function printWorksheet(){ generateWorksheet(); window.print(); }
+
+function newGame(resetStats = true){
+  const size = Number(document.getElementById('playSize').value);
+  const mode = document.getElementById('operationMode') ? document.getElementById('operationMode').value : 'add';
+  const given = size === 3 ? 4 : size === 4 ? 6 : 8;
+  state.currentGame = makePuzzle(size, given, mode);
+  if(resetStats){ state.attempts = 0; state.solved = 0; state.correctChecks = 0; state.totalChecks = 0; state.timerSeconds = 0; }
+  document.getElementById('gameBoard').innerHTML = `<div class="timer-pill" id="timerPill">Time: 00:00</div>` + gamePuzzleTable(state.currentGame);
+  toggleTimer(); updateStats();
+}
+function checkGame(){
+  if(!state.currentGame) newGame(false);
+  let allCorrect = true;
+  const inputs = document.querySelectorAll('#gameBoard input');
+  let correctNow = 0;
+  inputs.forEach(input => {
+    const cell = input.closest('td');
+    cell.classList.remove('correct','wrong');
+    if(input.value.trim() === input.dataset.answer){ cell.classList.add('correct'); correctNow++; }
+    else { cell.classList.add('wrong'); allCorrect = false; }
+  });
+  state.attempts++;
+  state.correctChecks += correctNow;
+  state.totalChecks += inputs.length;
+  if(allCorrect && inputs.length > 0){ state.solved++; showSuccess(); stopTimer(); }
+  updateStats();
+}
+function revealGame(){
+  document.querySelectorAll('#gameBoard input').forEach(input => {
+    input.value = input.dataset.answer;
+    const cell = input.closest('td');
+    cell.classList.remove('wrong');
+    cell.classList.add('correct');
+  });
+}
+function updateStats(){
+  const accuracy = state.totalChecks ? Math.round((state.correctChecks / state.totalChecks) * 100) : 0;
+  const stats = document.getElementById('gameStats');
+  if(stats) stats.innerHTML = `Attempts: ${state.attempts}<br>Solved: ${state.solved}<br>Accuracy: ${accuracy}%`;
+  updateTimerDisplay();
+}
+function toggleTimer(){
+  const toggle = document.getElementById('timerToggle');
+  const pill = document.getElementById('timerPill');
+  if(!pill || !toggle) return;
+  pill.style.display = toggle.checked ? 'inline-block' : 'none';
+  if(toggle.checked) startTimer(); else stopTimer();
+}
+function startTimer(){
+  stopTimer();
+  state.timerInterval = setInterval(() => { state.timerSeconds++; updateTimerDisplay(); }, 1000);
+}
+function stopTimer(){ if(state.timerInterval){ clearInterval(state.timerInterval); state.timerInterval = null; } }
+function updateTimerDisplay(){
+  const pill = document.getElementById('timerPill');
+  if(!pill) return;
+  const m = String(Math.floor(state.timerSeconds / 60)).padStart(2,'0');
+  const s = String(state.timerSeconds % 60).padStart(2,'0');
+  pill.textContent = `Time: ${m}:${s}`;
+}
+function showSuccess(){ createConfetti(); document.getElementById('successPop').classList.add('show'); }
+function closeSuccess(){ document.getElementById('successPop').classList.remove('show'); }
+function createConfetti(){
+  const colors = ['#2563eb','#7c3aed','#16a34a','#f59e0b','#dc2626','#06b6d4'];
+  for(let i=0;i<70;i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = randomInt(0,100) + 'vw';
+    piece.style.background = colors[randomInt(0,colors.length-1)];
+    piece.style.animationDelay = (Math.random() * .35) + 's';
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 2300);
+  }
+}
+function initSample(){
+  const sample = makePuzzle(3,5,'add');
+  const samplePuzzle = document.getElementById('samplePuzzle');
+  if(samplePuzzle) samplePuzzle.innerHTML = worksheetPuzzleTable(sample, false);
+}
+initSample();
+applyDifficultyPreset();
+newGame();
+</script>
+
+</body>
+</html>

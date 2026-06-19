@@ -33,6 +33,39 @@ const gameData = [
     action: "Open Tool"
   },
   {
+    title: "🌀 Maze Generator",
+    category: ["teacher"],
+    keywords: "teacher tool maze generator printable worksheet puzzle classroom activity",
+    link: "tools/maze_worksheet_final.html",
+    image: "images/maze-worksheet-thumbnail.png",
+    description: "Create printable maze worksheets for classroom warm-ups, centers, and fun activities.",
+    recent: true,
+    popular: true,
+    action: "Open Tool"
+  },
+  {
+    title: "🔐 Cryptogram Puzzle",
+    category: ["teacher"],
+    keywords: "teacher tool cryptogram puzzle generator printable worksheet code secret message vocabulary",
+    link: "tools/cryptogram_puzzle_final.html",
+    image: "images/cryptogram-puzzle-thumbnail.png",
+    description: "Make secret-code cryptogram puzzles using your own words, sentences, and messages.",
+    recent: true,
+    popular: true,
+    action: "Open Tool"
+  },
+  {
+    title: "➕ Math Squares Puzzle Maker",
+    category: ["teacher"],
+    keywords: "teacher tool math squares puzzle maker printable worksheet numbers addition logic problem solving",
+    link: "tools/math_squares_puzzle_final.html",
+    image: "images/math-squares-puzzle-thumbnail.png",
+    description: "Create printable math square puzzles for number practice, logic, and problem solving.",
+    recent: true,
+    popular: true,
+    action: "Open Tool"
+  },
+  {
     title: "🎁 Give or Keep",
     category: ["primary", "teacher"],
     keywords: "classroom review teams mystery boxes rewards primary teacher",

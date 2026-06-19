@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Maze Worksheet Studio V1.3 Publish Ready</title>
+<style>
+:root{
+  --bg:#eef6ff;--panel:#ffffff;--ink:#17324d;--muted:#61758b;--brand:#1769e0;--brand2:#24b6a8;--gold:#ffc84d;--line:#d9e6f5;--soft:#f7fbff;--danger:#d83a52;
+}
+*{box-sizing:border-box}body{margin:0;font-family:"Century Gothic",Arial,sans-serif;background:linear-gradient(135deg,#eaf4ff,#f9fdff 55%,#fff5d7);color:var(--ink)}
+.app{min-height:100vh;padding:18px}.shell{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:390px 1fr;gap:18px}.card{background:rgba(255,255,255,.94);border:1px solid rgba(23,105,224,.14);border-radius:22px;box-shadow:0 14px 35px rgba(31,73,125,.13);overflow:hidden}.brand{padding:18px 20px;background:linear-gradient(135deg,var(--brand),#0d91d9);color:white}.brand h1{margin:0;font-size:24px;line-height:1.1}.brand p{margin:6px 0 0;font-size:13px;opacity:.92}.controls{padding:16px;display:grid;gap:12px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.field label{display:block;font-size:12px;font-weight:800;color:#31516d;margin:0 0 5px}.field input,.field select,.field textarea{width:100%;border:1px solid #c8d9eb;background:#fbfdff;border-radius:12px;padding:10px 11px;font:14px "Century Gothic",Arial,sans-serif;color:var(--ink);outline:none}.field textarea{min-height:62px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(23,105,224,.12)}.checks{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check{display:flex;align-items:center;gap:8px;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:9px;font-size:12px;font-weight:700}.btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:14px;padding:12px 13px;font-weight:900;font-family:inherit;cursor:pointer;transition:.15s transform,.15s box-shadow}.btn:hover{transform:translateY(-1px)}.primary{background:linear-gradient(135deg,var(--brand),#0d91d9);color:white;box-shadow:0 8px 18px rgba(23,105,224,.25)}.green{background:linear-gradient(135deg,#0aae8f,#25c9b5);color:white}.gold{background:linear-gradient(135deg,#ffc84d,#ff9f1c);color:#3d2b00}.ghost{background:#edf5ff;color:#1b5fb8;border:1px solid #cfe1f7}.note{font-size:12px;color:var(--muted);line-height:1.45;background:#f7fbff;border:1px dashed #c9dcef;border-radius:14px;padding:10px}.stage{padding:18px;display:grid;gap:14px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}.homeBtn{display:inline-flex;align-items:center;gap:7px;border:1px solid #cfe1f7;background:#fff;color:#1769e0;border-radius:999px;padding:9px 13px;font-weight:900;font-family:inherit;cursor:pointer;box-shadow:0 6px 14px rgba(23,105,224,.08)}.homeBtn:hover{background:#edf5ff;transform:translateY(-1px)}.pill{display:inline-flex;gap:8px;align-items:center;background:#f4f9ff;border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:#31516d;font-size:12px;font-weight:800}.previewWrap{display:grid;grid-template-columns:1fr 260px;gap:14px}.preview{background:#fff;border:1px solid #dbe7f5;border-radius:18px;min-height:720px;padding:20px;display:flex;justify-content:center;align-items:flex-start;overflow:auto}.sheet{width:794px;min-height:1123px;background:white;color:#111;border:1px solid #edf1f5;box-shadow:0 8px 25px rgba(10,30,60,.08);padding:42px 46px;position:relative}.sheetHeader{border-bottom:3px solid #17324d;padding-bottom:12px;margin-bottom:12px}.sheetBrand{font-size:13px;font-weight:900;color:#1769e0;text-transform:uppercase;letter-spacing:.7px}.sheetTitle{font-size:30px;font-weight:900;text-align:center;margin:8px 0 6px}.sheetMeta{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;margin:12px 0}.metaBox{border-bottom:1.5px solid #111;padding:7px 4px;font-size:13px}.instructions{font-size:13px;line-height:1.35;border:1px solid #ccd6e0;background:#fbfbfb;border-radius:10px;padding:10px;margin:8px 0 12px}.mazeBox{display:flex;justify-content:center;align-items:center;margin:14px auto;border:2px solid #111;padding:10px;max-width:650px}.footer{position:absolute;bottom:24px;left:46px;right:46px;border-top:1px solid #ccd6e0;padding-top:8px;font-size:11px;color:#555;display:flex;justify-content:space-between}.sidePanel{background:#f8fbff;border:1px solid var(--line);border-radius:18px;padding:14px;height:max-content}.sidePanel h3{margin:0 0 10px;font-size:16px}.stat{display:flex;justify-content:space-between;border-bottom:1px solid #e3edf7;padding:8px 0;font-size:12px}.stat b{color:#17324d}.legend{font-size:12px;color:var(--muted);line-height:1.5}.toast{position:fixed;right:18px;bottom:18px;background:#17324d;color:white;border-radius:14px;padding:12px 16px;box-shadow:0 12px 30px rgba(0,0,0,.2);font-weight:800;display:none}.modal{position:fixed;inset:0;background:rgba(9,30,55,.45);display:none;align-items:center;justify-content:center;padding:18px;z-index:10}.modalContent{background:white;border-radius:22px;max-width:760px;width:100%;max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}.modalHead{padding:18px 20px;background:linear-gradient(135deg,var(--brand),#0d91d9);color:white}.modalHead h2{margin:0}.modalBody{padding:18px 22px;line-height:1.55}.modalBody h3{margin:16px 0 6px}.closeX{float:right;background:white;color:#1769e0;border:0;border-radius:999px;font-weight:900;padding:6px 10px;cursor:pointer}
+svg{display:block}.mazeLine{stroke:#111;stroke-width:3;stroke-linecap:square}.solutionLine{fill:none;stroke:#1769e0;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;opacity:.9}.startEnd{font-weight:900;font-size:16px}.smallMark{font-size:11px;font-weight:900}
+@media(max-width:1000px){.shell{grid-template-columns:1fr}.previewWrap{grid-template-columns:1fr}.sidePanel{order:-1}.preview{min-height:500px}.sheet{transform:scale(.82);transform-origin:top center;margin-bottom:-170px}}
+@media(max-width:620px){.app{padding:8px}.row,.btns,.checks{grid-template-columns:1fr}.sheet{transform:scale(.52);margin-bottom:-520px}.brand h1{font-size:20px}}
+@media print{body{background:white}.app>.shell>.card:first-child,.toolbar,.sidePanel,.toast,.modal{display:none!important}.app,.stage,.preview,.card{padding:0;margin:0;box-shadow:none;border:0;background:white}.shell,.previewWrap{display:block;max-width:none}.sheet{width:210mm;min-height:297mm;border:0;box-shadow:none;padding:12mm;page-break-after:always;transform:none;margin:0}.footer{left:12mm;right:12mm;bottom:8mm}.mazeBox{page-break-inside:avoid}.answerPage{display:block!important}.noPrint{display:none!important}}
+.answerPage{display:none}
+
+/* V1.1 Professional landing page + trace-free worksheet output */
+.hero{max-width:1240px;margin:0 auto 18px;position:relative;overflow:hidden;border-radius:30px;padding:28px;background:
+  radial-gradient(circle at 12% 18%,rgba(255,200,77,.42),transparent 22%),
+  radial-gradient(circle at 86% 8%,rgba(36,182,168,.34),transparent 24%),
+  linear-gradient(135deg,#17324d 0%,#1769e0 52%,#24b6a8 100%);
+  color:white;box-shadow:0 22px 55px rgba(23,50,77,.22);border:1px solid rgba(255,255,255,.25)}
+.hero:before{content:"";position:absolute;inset:-80px -40px auto auto;width:280px;height:280px;border-radius:50%;border:34px solid rgba(255,255,255,.10)}
+.heroGrid{position:relative;display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center}
+.kicker{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:8px 13px;font-size:12px;font-weight:900;letter-spacing:.7px;text-transform:uppercase}
+.hero h1{font-size:46px;line-height:1;margin:16px 0 10px;letter-spacing:-1px}
+.hero p{font-size:16px;line-height:1.55;max-width:720px;margin:0;color:rgba(255,255,255,.92)}
+.heroActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.heroBtn{border:0;border-radius:999px;padding:12px 18px;font-weight:900;font-family:inherit;cursor:pointer}.heroBtn.light{background:white;color:#1769e0}.heroBtn.glow{background:#ffc84d;color:#332400;box-shadow:0 10px 25px rgba(255,200,77,.28)}
+.heroArt{min-height:220px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.25);border-radius:26px;padding:16px;display:grid;place-items:center;backdrop-filter:blur(8px)}
+.miniMaze{width:100%;max-width:330px;aspect-ratio:1.15;background:white;border-radius:18px;padding:14px;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.miniMaze svg{width:100%;height:100%}.miniMaze line{stroke:#17324d;stroke-width:6;stroke-linecap:round}.miniMaze path{stroke:#24b6a8;stroke-width:9;fill:none;stroke-linecap:round;stroke-linejoin:round}.featureStrip{max-width:1240px;margin:0 auto 18px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.feature{background:rgba(255,255,255,.82);border:1px solid rgba(23,105,224,.12);border-radius:18px;padding:14px 15px;box-shadow:0 10px 24px rgba(31,73,125,.08)}.feature b{display:block;color:#17324d;font-size:13px}.feature span{display:block;color:#61758b;font-size:12px;margin-top:3px;line-height:1.35}
+.sheetHeader{border-bottom:2.2px solid #111}.sheetTitle{margin-top:0}.sheetBrand,.footer{display:none!important}.sheet{padding-bottom:42px}.traceFreeNote{color:#0b7c6f;font-weight:900}
+@media(max-width:900px){.heroGrid{grid-template-columns:1fr}.hero h1{font-size:34px}.featureStrip{grid-template-columns:1fr 1fr}}
+@media(max-width:620px){.hero{padding:20px;border-radius:22px}.featureStrip{grid-template-columns:1fr}.hero h1{font-size:30px}.heroArt{min-height:170px}}
+@media print{.hero,.featureStrip{display:none!important}.sheet{padding-bottom:12mm}.sheetBrand,.footer{display:none!important}}
+
+
+/* V1.2 Clean Classroom PDF + one-screen welcome */
+html, body { min-height:100%; }
+body.landing-mode { overflow:hidden; }
+body.builder-mode { overflow:auto; }
+.hero{height:calc(100vh - 36px);display:flex;align-items:center;max-width:1240px;margin:0 auto;}
+.heroGrid{width:100%;}
+.hero h1{font-size:clamp(38px,5vw,64px);}
+.hero p{font-size:clamp(15px,1.6vw,20px);}
+.featureStrip{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(1240px,calc(100% - 36px));margin:0;z-index:2;}
+#builderShell{display:none;}
+.builder-mode #builderShell{display:grid;}
+.builder-mode .hero,.builder-mode .featureStrip{display:none!important;}
+.screenBtn{border:0;border-radius:999px;padding:12px 18px;font-weight:900;font-family:inherit;cursor:pointer;}
+#sampleModal .sheet{transform:scale(.55);transform-origin:top center;margin-bottom:-500px;}
+@media(max-height:760px){.featureStrip{grid-template-columns:repeat(4,1fr);gap:8px}.feature{padding:10px 12px}.feature span{display:none}.hero{height:calc(100vh - 20px);padding:20px}.heroArt{min-height:180px}.miniMaze{max-width:260px}}
+@media(max-width:900px){body.landing-mode{overflow:auto}.hero{height:auto;min-height:100vh}.featureStrip{position:relative;left:auto;bottom:auto;transform:none;width:auto;margin:12px auto 18px}}
+@page { size:A4; margin:8mm; }
+@media print{
+  html,body{margin:0!important;background:#fff!important;overflow:visible!important;}
+  .app,.stage,.preview,.card,#builderShell,.previewWrap{display:block!important;padding:0!important;margin:0!important;border:0!important;box-shadow:none!important;background:#fff!important;}
+  .hero,.featureStrip,.controls,.toolbar,.sidePanel,.toast,.modal,.noPrint{display:none!important;}
+  .sheet{width:194mm!important;height:281mm!important;min-height:281mm!important;border:0!important;box-shadow:none!important;padding:0!important;margin:0 auto!important;page-break-after:always;break-after:page;transform:none!important;display:flex!important;flex-direction:column!important;}
+  .sheetHeader{border-bottom:2px solid #111!important;margin:0 0 8px!important;padding:0 0 8px!important;flex:0 0 auto!important;}
+  .sheetTitle{font-size:27px!important;margin:0 0 5px!important;line-height:1.1!important;}
+  .sheetMeta{margin:8px 0 6px!important;flex:0 0 auto!important;}
+  .instructions{border:1px solid #c9d3dd!important;background:#fff!important;margin:6px 0 8px!important;padding:8px 10px!important;flex:0 0 auto!important;}
+  .mazeBox{width:184mm!important;max-width:184mm!important;padding:8px!important;margin:auto auto!important;border:2px solid #111!important;page-break-inside:avoid;break-inside:avoid;flex:0 0 auto!important;display:flex!important;justify-content:center!important;align-items:center!important;}
+  .mazeBox svg{width:100%!important;height:auto!important;max-height:210mm!important;}
+  .answerPage{display:flex!important;}
+  #answerSheet[style*="none"]{display:none!important;}
+  .sheetBrand,.footer{display:none!important;}
+}
+
+</style>
+</head>
+<body class="landing-mode">
+<div class="app">
+  <section class="hero noPrint">
+    <div class="heroGrid">
+      <div>
+        <div class="kicker">Teacher Kevin’s Learning Arcade · Worksheet Studio</div>
+        <h1>Maze Worksheet Studio</h1>
+        <p>Create classroom-ready maze worksheets in seconds. Choose a level, topic, difficulty, size, and answer key, then save a clean A4 worksheet for your class.</p>
+        <div class="heroActions">
+          <button class="heroBtn glow" onclick="showBuilder()">Start Creating</button>
+          <button class="heroBtn light" onclick="smartFromLanding()">Smart Random Maze</button>
+          <button class="heroBtn light" onclick="openHelp()">How It Works</button>
+          <button class="heroBtn light" onclick="openSample()">Sample PDF</button>
+          <button class="heroBtn light" onclick="resetSettings()">Reset Settings</button>
+        </div>
+      </div>
+      <div class="heroArt" aria-hidden="true">
+        <div class="miniMaze">
+          <svg viewBox="0 0 300 260">
+            <path d="M34 36 C72 34 75 82 112 79 S151 42 185 57 196 108 159 116 99 111 91 151 136 201 189 182 200 146 241 143"/>
+            <line x1="24" y1="24" x2="276" y2="24"/><line x1="24" y1="24" x2="24" y2="236"/><line x1="276" y1="24" x2="276" y2="236"/><line x1="24" y1="236" x2="276" y2="236"/>
+            <line x1="66" y1="24" x2="66" y2="94"/><line x1="66" y1="132" x2="66" y2="236"/><line x1="112" y1="70" x2="112" y2="190"/><line x1="156" y1="24" x2="156" y2="112"/><line x1="202" y1="70" x2="202" y2="236"/><line x1="248" y1="24" x2="248" y2="146"/>
+            <line x1="24" y1="70" x2="112" y2="70"/><line x1="156" y1="70" x2="248" y2="70"/><line x1="66" y1="112" x2="202" y2="112"/><line x1="24" y1="154" x2="112" y2="154"/><line x1="156" y1="154" x2="276" y2="154"/><line x1="66" y1="196" x2="248" y2="196"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="featureStrip noPrint">
+    <div class="feature"><b>Clean PDF</b><span>No branding, teacher name, website name, or worksheet footer in the printed pages.</span></div>
+    <div class="feature"><b>Smart difficulty</b><span>Easy to challenge presets with editable rows and columns.</span></div>
+    <div class="feature"><b>A4 ready</b><span>Student page and answer key are formatted for browser PDF saving.</span></div>
+    <div class="feature"><b>Classroom clean</b><span>Simple header, student information lines, and centered maze.</span></div>
+  </section>
+
+  <div class="shell" id="builderShell">
+    <section class="card">
+      <div class="brand">
+        <h1>Maze Generator</h1>
+        <p>Professional Worksheet Maker · A4 PDF Export</p>
+      </div>
+      <div class="controls">
+        <div class="field"><label>Worksheet Title</label><input id="title" value="Find the Way Out!" maxlength="60"></div>
+        <div class="row">
+          <div class="field"><label>Grade / Level</label><input id="level" value="Kindergarten / Primary"></div>
+          <div class="field"><label>Subject / Topic</label><input id="topic" value="Vocabulary Practice"></div>
+        </div>
+        <div class="field"><label>Instructions</label><textarea id="instructions">Help the student find the path from START to FINISH. Do not cross the walls.</textarea></div>
+        <div class="row">
+          <div class="field"><label>Difficulty</label><select id="difficulty"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option><option value="challenge">Challenge</option></select></div>
+          <div class="field"><label>Maze Style</label><select id="style"><option value="classic">Classic Box</option><option value="rounded">Rounded Classroom</option><option value="escape">Escape Challenge</option></select></div>
+        </div>
+        <div class="row">
+          <div class="field"><label>Columns</label><input id="cols" type="number" min="6" max="40" value="18"></div>
+          <div class="field"><label>Rows</label><input id="rows" type="number" min="6" max="40" value="18"></div>
+        </div>
+        <div class="checks">
+          <label class="check"><input id="showName" type="checkbox" checked> Name line</label>
+          <label class="check"><input id="showClass" type="checkbox" checked> Class line</label>
+          <label class="check"><input id="showStudent" type="checkbox" checked> Student No.</label>
+          <label class="check"><input id="showAnswer" type="checkbox" checked> Answer key page</label>
+        </div>
+        <div class="row">
+          <div class="field"><label>Start Label</label><input id="startLabel" value="START" maxlength="12"></div>
+          <div class="field"><label>Finish Label</label><input id="endLabel" value="FINISH" maxlength="12"></div>
+        </div>
+        <div class="btns">
+          <button class="btn primary" onclick="generateMaze()">Generate Maze</button>
+          <button class="btn gold" onclick="window.print()">Download PDF</button>
+          <button class="btn green" onclick="randomSmart()">Smart Random</button>
+          <button class="btn ghost" onclick="openHelp()">How to Use</button>
+          <button class="btn ghost" onclick="resetSettings()">Reset Settings</button>
+          <button class="btn ghost" onclick="saveMazePNG()">Save Maze PNG</button>
+        </div>
+        <div class="note"><b>PDF Tip:</b> Click <b>Download PDF</b>, then choose <b>Save as PDF</b>. The worksheet design is trace-free and centered. In Chrome/Edge print settings, turn off <b>Headers and footers</b> so the browser date, file path, and page number will not appear.<br><br><b>Website card title:</b> Maze Worksheet Studio</div>
+      </div>
+    </section>
+
+    <section class="card stage">
+      <div class="toolbar">
+        <button class="homeBtn noPrint" onclick="goHome()">🏠 Home</button>
+        <div class="pill">🧩 Student Worksheet Preview</div>
+        <div class="pill" id="seedInfo">Seed: ready</div>
+      </div>
+      <div class="previewWrap">
+        <div class="preview" id="printArea">
+          <div>
+            <article class="sheet" id="studentSheet"></article>
+            <article class="sheet answerPage" id="answerSheet"></article>
+          </div>
+        </div>
+        <aside class="sidePanel">
+          <h3>Worksheet Intelligence</h3>
+          <div class="stat"><span>Difficulty</span><b id="statDiff">Medium</b></div>
+          <div class="stat"><span>Grid</span><b id="statGrid">18 × 18</b></div>
+          <div class="stat"><span>Estimated time</span><b id="statTime">5–8 min</b></div>
+          <div class="stat"><span>Pages</span><b id="statPages">1 + Key</b></div>
+          <p class="legend">This version creates a solvable maze every time and prints a clean A4 worksheet with a separate answer key.</p>
+        </aside>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast">Maze generated.</div>
+<div class="modal" id="helpModal">
+  <div class="modalContent">
+    <div class="modalHead"><button class="closeX" onclick="closeHelp()">X</button><h2>How to Use</h2></div>
+    <div class="modalBody">
+      <h3>1. Prepare the worksheet</h3>
+      <p>Type a title, level, topic, and short instructions. Choose the difficulty and maze size.</p>
+      <h3>2. Generate</h3>
+      <p>Click <b>Generate Maze</b>. The tool creates a new maze and answer path instantly.</p>
+      <h3>3. Save as PDF</h3>
+      <p>Click <b>Download PDF</b>. In your browser print window, choose <b>Save as PDF</b>. The student page and answer key are formatted for A4. The worksheet itself does not include Teacher Kevin branding, website text, or custom footer marks. In Chrome/Edge, turn off “Headers and footers” in the print dialog to remove the browser date, file path, and page number.</p>
+      <h3>4. Extra tools</h3>
+      <p>Use <b>Smart Random</b> for a quick ready-made maze, <b>Reset Settings</b> to return to the default worksheet setup, and <b>Save Maze PNG</b> if you only need the maze image.</p>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal" id="sampleModal">
+  <div class="modalContent">
+    <div class="modalHead"><button class="closeX" onclick="closeSample()">X</button><h2>Sample PDF Layout</h2></div>
+    <div class="modalBody">
+      <p>This preview shows the clean classroom worksheet style. The real PDF/print pages contain no Teacher Kevin name, website name, or custom footer.</p>
+      <div style="overflow:hidden;border:1px solid #e3edf7;border-radius:16px;background:#f7fbff;padding:10px;display:flex;justify-content:center;min-height:650px;">
+        <article class="sheet" id="sampleSheet"></article>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let maze=[], solution=[], currentSeed=Date.now();
+function showBuilder(){document.body.classList.remove('landing-mode');document.body.classList.add('builder-mode');setTimeout(()=>document.getElementById('title').focus(),80);}
+function goHome(){document.body.classList.remove('builder-mode');document.body.classList.add('landing-mode');window.scrollTo({top:0,behavior:'smooth'});}
+function smartFromLanding(){showBuilder();setTimeout(()=>randomSmart(),80);}
+function openSample(){if(!maze.length) generateMaze(); if(document.getElementById('sampleSheet')) document.getElementById('sampleSheet').innerHTML = studentSheet.innerHTML; sampleModal.style.display='flex';}
+function closeSample(){sampleModal.style.display='none';}
+function clamp(n,min,max){return Math.max(min,Math.min(max,parseInt(n)||min));}
+function rnd(seed){let t=seed+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return ((t^t>>>14)>>>0)/4294967296;}
+function shuffle(arr,seedObj){for(let i=arr.length-1;i>0;i--){let j=Math.floor(rnd(seedObj.v++)*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}return arr;}
+function presets(){let d=document.getElementById('difficulty').value;let c={easy:[10,10],medium:[18,18],hard:[26,24],challenge:[34,30]}[d];document.getElementById('cols').value=c[0];document.getElementById('rows').value=c[1];generateMaze();}
+document.getElementById('difficulty').addEventListener('change',presets);
+function makeGrid(cols,rows){return Array.from({length:rows},(_,y)=>Array.from({length:cols},(_,x)=>({x,y,w:{n:1,e:1,s:1,w:1},v:0,p:null})));}
+function generateMaze(){
+  const cols=clamp(document.getElementById('cols').value,6,40), rows=clamp(document.getElementById('rows').value,6,40);
+  document.getElementById('cols').value=cols;document.getElementById('rows').value=rows;
+  currentSeed=Date.now()+Math.floor(Math.random()*99999); let seedObj={v:currentSeed}; maze=makeGrid(cols,rows);
+  let stack=[maze[0][0]]; maze[0][0].v=1;
+  const bias=document.getElementById('difficulty').value;
+  while(stack.length){let cell=stack[stack.length-1];let dirs=[['n',0,-1,'s'],['e',1,0,'w'],['s',0,1,'n'],['w',-1,0,'e']];
+    if(bias==='easy') dirs=[['e',1,0,'w'],['s',0,1,'n'],['n',0,-1,'s'],['w',-1,0,'e']];
+    if(bias==='hard'||bias==='challenge') dirs=shuffle(dirs,seedObj); else if(rnd(seedObj.v++)>.62) dirs=shuffle(dirs,seedObj);
+    let next=null, chosen=null;
+    for(const d of dirs){let nx=cell.x+d[1],ny=cell.y+d[2];if(nx>=0&&ny>=0&&nx<cols&&ny<rows&&!maze[ny][nx].v){next=maze[ny][nx];chosen=d;break;}}
+    if(next){cell.w[chosen[0]]=0;next.w[chosen[3]]=0;next.v=1;next.p=cell;stack.push(next);}else stack.pop();
+  }
+  solution=[];let cur=maze[rows-1][cols-1];while(cur){solution.push(cur);cur=cur.p;}solution.reverse();
+  renderSheets();showToast();
+}
+function solvePolyline(cellSize,pad){return solution.map(c=>(pad+c.x*cellSize+cellSize/2)+','+(pad+c.y*cellSize+cellSize/2)).join(' ')}
+function mazeSvg(showSolution=false){
+ const rows=maze.length, cols=maze[0].length, maxW=620, cell=Math.floor(maxW/Math.max(cols,rows)), pad=12, w=cols*cell+pad*2, h=rows*cell+pad*2;
+ let lines='', style=document.getElementById('style').value;
+ for(let y=0;y<rows;y++){for(let x=0;x<cols;x++){let c=maze[y][x], x1=pad+x*cell,y1=pad+y*cell,x2=x1+cell,y2=y1+cell;
+ if(c.w.n) lines+=`<line class="mazeLine" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y1}"/>`; if(c.w.e) lines+=`<line class="mazeLine" x1="${x2}" y1="${y1}" x2="${x2}" y2="${y2}"/>`; if(c.w.s) lines+=`<line class="mazeLine" x1="${x1}" y1="${y2}" x2="${x2}" y2="${y2}"/>`; if(c.w.w) lines+=`<line class="mazeLine" x1="${x1}" y1="${y1}" x2="${x1}" y2="${y2}"/>`;}}
+ let deco=''; if(style==='rounded') deco=`<rect x="3" y="3" width="${w-6}" height="${h-6}" rx="20" ry="20" fill="none" stroke="#1769e0" stroke-width="3" opacity=".18"/>`; if(style==='escape') deco=`<text x="${w/2}" y="${h-4}" text-anchor="middle" class="smallMark" fill="#777">ESCAPE CHALLENGE</text>`;
+ let sol=showSolution?`<polyline class="solutionLine" points="${solvePolyline(cell,pad)}"/>`:'';
+ let sLab=document.getElementById('startLabel').value||'START', eLab=document.getElementById('endLabel').value||'FINISH';
+ return `<svg viewBox="0 0 ${w} ${h}" width="100%" height="auto" aria-label="maze">${deco}${sol}${lines}<text x="${pad+cell/2}" y="${pad+cell*.72}" text-anchor="middle" class="startEnd" fill="#0aae8f">${escapeHtml(sLab)}</text><text x="${pad+(cols-0.5)*cell}" y="${pad+(rows-0.28)*cell}" text-anchor="middle" class="startEnd" fill="#d83a52">${escapeHtml(eLab)}</text></svg>`;
+}
+function escapeHtml(s){return String(s).replace(/[&<>'"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[m]));}
+function metaHtml(){let parts=[]; if(showName.checked)parts.push('<div class="metaBox">Name:</div>'); if(showStudent.checked)parts.push('<div class="metaBox">Student No.:</div>'); if(showClass.checked)parts.push('<div class="metaBox">Class:</div>'); return parts.join('')||'<div class="metaBox">Name:</div><div class="metaBox">Class:</div>';}
+function renderSheets(){if(!maze.length)return;let title=escapeHtml(document.getElementById('title').value||'Maze Worksheet'), level=escapeHtml(document.getElementById('level').value||''), topic=escapeHtml(document.getElementById('topic').value||''), inst=escapeHtml(document.getElementById('instructions').value||'Find the path from START to FINISH.');
+ let commonHead=`<div class="sheetHeader"><div class="sheetTitle">${title}</div><div style="text-align:center;font-size:13px;color:#444"><b>Level:</b> ${level} &nbsp; | &nbsp; <b>Topic:</b> ${topic}</div></div>`;
+ studentSheet.innerHTML=`${commonHead}<div class="sheetMeta">${metaHtml()}</div><div class="instructions"><b>Instructions:</b> ${inst}</div><div class="mazeBox">${mazeSvg(false)}</div>`;
+ answerSheet.innerHTML=`${commonHead}<div class="instructions"><b>Answer Key:</b> Follow the blue path from START to FINISH.</div><div class="mazeBox">${mazeSvg(true)}</div>`;
+ answerSheet.style.display=document.getElementById('showAnswer').checked?'block':'none';
+ updateStats();}
+function updateStats(){let d=difficulty.options[difficulty.selectedIndex].text;statDiff.textContent=d;statGrid.textContent=cols.value+' × '+rows.value;let cells=(+cols.value)*(+rows.value);statTime.textContent=cells<150?'3–5 min':cells<550?'5–8 min':cells<900?'8–12 min':'12–18 min';statPages.textContent=showAnswer.checked?'1 + Key':'1 page';seedInfo.textContent='Seed: '+String(currentSeed).slice(-6)}
+function showToast(){toast.style.display='block';setTimeout(()=>toast.style.display='none',1600)}
+function randomSmart(){let list=[['Easy Morning Maze','easy','classic'],['Vocabulary Escape','medium','escape'],['Fast Finisher Challenge','hard','rounded'],['Puzzle Master Maze','challenge','escape']];let pick=list[Math.floor(Math.random()*list.length)];title.value=pick[0];difficulty.value=pick[1];style.value=pick[2];presets();}
+function openHelp(){helpModal.style.display='flex'}function closeHelp(){helpModal.style.display='none'}
+['title','level','topic','instructions','showName','showClass','showStudent','showAnswer','startLabel','endLabel','style'].forEach(id=>document.getElementById(id).addEventListener('input',renderSheets));
+
+function resetSettings(){
+  document.getElementById('title').value='Find the Way Out!';
+  document.getElementById('level').value='Kindergarten / Primary';
+  document.getElementById('topic').value='Vocabulary Practice';
+  document.getElementById('instructions').value='Help the student find the path from START to FINISH. Do not cross the walls.';
+  document.getElementById('difficulty').value='medium';
+  document.getElementById('style').value='classic';
+  document.getElementById('cols').value='18';
+  document.getElementById('rows').value='18';
+  document.getElementById('showName').checked=true;
+  document.getElementById('showClass').checked=true;
+  document.getElementById('showStudent').checked=true;
+  document.getElementById('showAnswer').checked=true;
+  document.getElementById('startLabel').value='START';
+  document.getElementById('endLabel').value='FINISH';
+  generateMaze();
+}
+function saveMazePNG(){
+  if(!maze.length) generateMaze();
+  const svgText=mazeSvg(false);
+  const match=svgText.match(/viewBox="0 0 ([0-9.]+) ([0-9.]+)"/);
+  const width=match?parseFloat(match[1]):700;
+  const height=match?parseFloat(match[2]):700;
+  const svgBlob=new Blob([svgText],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(svgBlob);
+  const img=new Image();
+  img.onload=function(){
+    const canvas=document.createElement('canvas');
+    const scale=3;
+    canvas.width=Math.ceil(width*scale);
+    canvas.height=Math.ceil(height*scale);
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#ffffff';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.scale(scale,scale);
+    ctx.drawImage(img,0,0,width,height);
+    URL.revokeObjectURL(url);
+    const a=document.createElement('a');
+    const safe=(document.getElementById('title').value||'maze').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,40)||'maze';
+    a.download=safe+'.png';
+    a.href=canvas.toDataURL('image/png');
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+  img.onerror=function(){URL.revokeObjectURL(url);alert('PNG export could not be created in this browser. Please try another browser or use Download PDF.');};
+  img.src=url;
+}
+
+generateMaze();
+</script>
+</body>
+</html>

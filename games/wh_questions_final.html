@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WH-Questions Team Challenge V5.4</title>
+<style>
+:root{
+  --blue:#2563eb;--sky:#38bdf8;--yellow:#facc15;--green:#22c55e;--red:#ef4444;
+  --purple:#7c3aed;--pink:#ec4899;--dark:#0f172a;--light:#f8fafc;--orange:#f97316;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--dark);overflow:hidden}
+body{
+  background:
+  radial-gradient(circle at 10% 12%,rgba(255,255,255,.7) 0 5%,transparent 6%),
+  radial-gradient(circle at 88% 16%,rgba(250,204,21,.9) 0 7%,transparent 8%),
+  radial-gradient(circle at 18% 83%,rgba(236,72,153,.75) 0 6%,transparent 7%),
+  linear-gradient(135deg,#4338ca,#0ea5e9 55%,#22c55e);
+}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+.screen{display:none;width:100vw;height:100vh;padding:18px;overflow:auto}
+.screen.active{display:block}
+.centerScreen{display:flex!important;align-items:center;justify-content:center}
+.heroBox{text-align:center;width:min(1050px,96vw)}
+.title{
+  color:#fff;font-size:clamp(36px,7vw,82px);line-height:.95;margin:0;
+  text-shadow:0 7px 0 rgba(0,0,0,.2),0 18px 35px rgba(0,0,0,.35);
+}
+.subtitle{color:#fff;font-size:clamp(18px,3vw,32px);font-weight:900;margin:20px 0 28px}
+.card{
+  background:rgba(255,255,255,.96);border-radius:28px;padding:22px;
+  border:5px solid rgba(255,255,255,.7);box-shadow:0 24px 60px rgba(0,0,0,.25);
+  width:min(1180px,96vw);margin:0 auto;
+}
+.row{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:18px;padding:15px 22px;font-weight:900;font-size:19px;
+  box-shadow:0 7px 0 rgba(0,0,0,.23);transition:.06s;min-width:120px;
+}
+.btn:active{transform:translateY(5px);box-shadow:0 2px 0 rgba(0,0,0,.23)}
+.btnSmall{font-size:14px;padding:9px 12px;border-radius:12px;min-width:auto}
+.yellow{background:linear-gradient(#fde68a,#f59e0b);color:#3b2600}
+.blue{background:linear-gradient(#7dd3fc,#2563eb);color:white}
+.green{background:linear-gradient(#86efac,#16a34a);color:white}
+.red{background:linear-gradient(#fb7185,#dc2626);color:white}
+.purple{background:linear-gradient(#c084fc,#7c3aed);color:white}
+.gray{background:#e5e7eb;color:#111827}
+.orange{background:linear-gradient(#fdba74,#f97316);color:white}
+h2{margin:0 0 14px;font-size:32px}
+h3{margin:16px 0 8px}
+label{display:block;font-weight:900;margin-top:10px}
+input,select,textarea{
+  width:100%;padding:11px 13px;border:3px solid #dbeafe;border-radius:14px;font-size:16px;background:#fff;
+}
+textarea{min-height:85px;resize:vertical}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.teamLine{display:grid;grid-template-columns:50px 1fr 115px;gap:8px;align-items:center;margin:9px 0}
+.avatarBig{font-size:28px;text-align:center}
+.scoreboard{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.teamCard{
+  background:white;border:4px solid #dbeafe;border-radius:18px;text-align:center;padding:8px;
+  box-shadow:0 5px 14px rgba(0,0,0,.15);min-height:92px;
+}
+.teamCard.current{border-color:#facc15;box-shadow:0 0 0 5px rgba(250,204,21,.35);transform:scale(1.02)}
+.teamCard .a{font-size:26px}.teamCard .n{font-weight:900;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.teamCard .s{font-size:25px;font-weight:900}
+.gameWrap{height:calc(100vh - 36px);display:grid;grid-template-rows:auto 1fr auto;gap:10px}
+.status{text-align:center;color:white;font-size:21px;font-weight:900;text-shadow:0 2px 7px rgba(0,0,0,.35);min-height:34px}
+.questionBox{
+  background:linear-gradient(#fff,#f0f9ff);border:6px solid white;border-radius:30px;padding:18px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  box-shadow:0 18px 42px rgba(0,0,0,.22);
+}
+.meta{font-weight:900;color:#6d28d9;font-size:17px;margin-bottom:8px}
+.question{font-size:clamp(28px,5vw,56px);font-weight:900;line-height:1.08;margin:4px 0 18px}
+.choices{width:100%;max-width:930px;display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.choice{
+  border:4px solid #bfdbfe;border-radius:20px;background:white;padding:18px;
+  font-size:clamp(19px,2.5vw,27px);font-weight:900;box-shadow:0 7px 0 #93c5fd;
+}
+.choice:hover{background:#eff6ff}
+.choice.selected{background:#fef3c7;border-color:#f59e0b;box-shadow:0 7px 0 #d97706}
+.choice.correct{background:#bbf7d0;border-color:#16a34a}
+.choice.wrong{background:#fecdd3;border-color:#e11d48}
+.choice:disabled{opacity:.95;cursor:not-allowed}
+.editorList{max-height:270px;overflow:auto;border:3px solid #e5e7eb;border-radius:16px;padding:8px;background:#fff}
+.qItem{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;background:#f8fafc;border-radius:12px;margin:7px 0;padding:8px}
+.badge{display:inline-block;background:#ede9fe;color:#5b21b6;border-radius:999px;padding:5px 10px;font-weight:900;font-size:13px}
+.reportTable{width:100%;border-collapse:separate;border-spacing:0 8px}
+.reportTable th,.reportTable td{padding:10px;background:#f8fafc;text-align:left}
+.reportTable th{background:#bfdbfe}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.72);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal.show{display:flex}
+.modalBox{width:min(820px,94vw);background:white;border:6px solid #facc15;border-radius:30px;padding:25px;text-align:center;box-shadow:0 30px 90px rgba(0,0,0,.45)}
+.modalEmoji{font-size:76px}
+.modalTitle{font-size:clamp(34px,6vw,68px);color:#7c3aed;margin:0 0 8px}
+.modalText{font-size:22px;font-weight:800}
+.wheelArrow{font-size:48px;font-weight:900;color:#ef4444;line-height:1;margin-bottom:8px}
+.powerWheel{
+  width:min(360px,78vw);height:min(360px,78vw);border-radius:50%;margin:12px auto 18px;border:12px solid white;
+  display:grid;place-items:center;box-shadow:0 18px 40px rgba(0,0,0,.25);
+  background:conic-gradient(#facc15 0 36deg,#f97316 36deg 72deg,#22c55e 72deg 108deg,#38bdf8 108deg 144deg,#a855f7 144deg 180deg,#ec4899 180deg 216deg,#ef4444 216deg 252deg,#14b8a6 252deg 288deg,#84cc16 288deg 324deg,#6366f1 324deg 360deg);
+  font-size:64px;font-weight:900;
+}
+.spin{animation:spin .95s ease-out}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(1080deg)}}
+.confetti{position:fixed;inset:0;z-index:100;pointer-events:none;overflow:hidden}
+.confetti span{position:absolute;width:12px;height:22px;top:-30px;animation:fall 3s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@media(max-width:900px){
+  html,body{overflow:auto}.screen{height:auto;min-height:100vh}.centerScreen{min-height:100vh}
+  .grid2{grid-template-columns:1fr}.scoreboard{grid-template-columns:repeat(2,1fr)}
+  .choices{grid-template-columns:1fr}.gameWrap{height:auto;min-height:calc(100vh - 36px)}
+}
+
+/* V5.4 Professional Landing Page Redesign */
+.proLanding{
+  position:relative;
+  min-height:calc(100vh - 36px);
+  width:min(1180px,96vw);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1.08fr .92fr;
+  gap:22px;
+  align-items:center;
+}
+.proLanding:before{
+  content:"";
+  position:absolute;
+  inset:-18px;
+  border-radius:34px;
+  background:
+    radial-gradient(circle at 10% 15%,rgba(250,204,21,.35),transparent 22%),
+    radial-gradient(circle at 90% 10%,rgba(236,72,153,.28),transparent 24%),
+    radial-gradient(circle at 50% 95%,rgba(34,197,94,.24),transparent 24%);
+  filter:blur(2px);
+  z-index:-1;
+}
+.stagePanel{
+  background:rgba(15,23,42,.72);
+  border:4px solid rgba(255,255,255,.35);
+  border-radius:34px;
+  padding:30px;
+  box-shadow:0 26px 70px rgba(0,0,0,.35);
+  overflow:hidden;
+  position:relative;
+}
+.stagePanel:before{
+  content:"";
+  position:absolute;
+  width:240px;height:240px;border-radius:50%;
+  background:rgba(250,204,21,.18);
+  top:-90px;right:-80px;
+}
+.brandPill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:9px 14px;
+  border-radius:999px;
+  color:#0f172a;
+  background:linear-gradient(#fef3c7,#facc15);
+  font-weight:900;
+  box-shadow:0 6px 0 rgba(0,0,0,.2);
+}
+.proTitle{
+  margin:18px 0 10px;
+  color:white;
+  font-size:clamp(40px,6.8vw,86px);
+  line-height:.88;
+  letter-spacing:-2px;
+  text-shadow:0 8px 0 rgba(0,0,0,.22),0 18px 30px rgba(0,0,0,.36);
+}
+.proTitle span{
+  color:#facc15;
+}
+.proTagline{
+  color:#e0f2fe;
+  font-size:clamp(19px,2.4vw,30px);
+  font-weight:900;
+  margin:12px 0 20px;
+}
+.proBadges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:18px 0 22px;
+}
+.proBadge{
+  color:white;
+  background:rgba(255,255,255,.13);
+  border:2px solid rgba(255,255,255,.24);
+  border-radius:999px;
+  padding:9px 12px;
+  font-weight:900;
+  backdrop-filter:blur(8px);
+}
+.mainMenuV54{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.menuBtnV54{
+  min-height:74px;
+  font-size:20px;
+  border-radius:22px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+.playBig{
+  grid-column:1 / -1;
+  min-height:88px;
+  font-size:28px;
+}
+.sideShowcase{
+  display:grid;
+  gap:14px;
+}
+.trophyCard{
+  min-height:210px;
+  background:linear-gradient(145deg,#ffffff,#eff6ff);
+  border-radius:34px;
+  border:5px solid rgba(255,255,255,.75);
+  box-shadow:0 22px 55px rgba(0,0,0,.28);
+  padding:22px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.trophyCard:before{
+  content:"?";
+  position:absolute;
+  font-size:180px;
+  font-weight:900;
+  color:rgba(37,99,235,.08);
+  right:10px;
+  top:-30px;
+}
+.trophyIcon{
+  font-size:78px;
+  margin:4px 0 8px;
+}
+.trophyCard h2{
+  font-size:30px;
+  margin:0;
+  color:#1e3a8a;
+}
+.trophyCard p{
+  font-size:18px;
+  font-weight:800;
+  color:#475569;
+  margin:8px 0 0;
+}
+.featureGridV54{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.featureTile{
+  background:rgba(255,255,255,.94);
+  border-radius:22px;
+  padding:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+  border:3px solid rgba(255,255,255,.8);
+  min-height:100px;
+}
+.featureTile .ico{font-size:30px}
+.featureTile b{display:block;font-size:16px;margin:4px 0;color:#111827}
+.featureTile span{display:block;font-size:13px;font-weight:800;color:#64748b}
+.footerBrand{
+  margin-top:16px;
+  color:rgba(255,255,255,.9);
+  font-weight:900;
+  text-align:center;
+  font-size:14px;
+}
+@media(max-width:900px){
+  .proLanding{grid-template-columns:1fr;min-height:auto}
+  .mainMenuV54{grid-template-columns:1fr}
+  .playBig{grid-column:auto}
+  .featureGridV54{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+
+<section id="landing" class="screen active centerScreen">
+  <div class="proLanding">
+    <div class="stagePanel">
+      <div class="brandPill">🎓 Teacher Kevin's Learning Arcade</div>
+      <h1 class="proTitle"><span>WH</span>-Questions<br>Team Challenge</h1>
+      <div class="proTagline">Think Fast • Work Together • Win Big!</div>
+
+      <div class="proBadges">
+        <div class="proBadge">🎓 Primary 6</div>
+        <div class="proBadge">👥 2–6 Teams</div>
+        <div class="proBadge">📚 30 Built-in Questions</div>
+        <div class="proBadge">💾 Offline Ready</div>
+      </div>
+
+      <div class="mainMenuV54">
+        <button id="playBtn" class="btn yellow menuBtnV54 playBig">▶ Play Now</button>
+        <button id="editorBtn" class="btn blue menuBtnV54">✏ Teacher Editor</button>
+        <button id="howBtn" class="btn purple menuBtnV54">❔ How to Play</button>
+      </div>
+
+      <div class="footerBrand">Classroom Quiz Series • Website-ready HTML Game</div>
+    </div>
+
+    <div class="sideShowcase">
+      <div class="trophyCard">
+        <div class="trophyIcon">🏆</div>
+        <h2>Classroom Championship Mode</h2>
+        <p>Random starting team, fast steal rounds, power wheel events, and final reports.</p>
+      </div>
+
+      <div class="featureGridV54">
+        <div class="featureTile">
+          <div class="ico">🎡</div>
+          <b>Power Wheel</b>
+          <span>Spin for double points, swaps, shields, and surprises.</span>
+        </div>
+        <div class="featureTile">
+          <div class="ico">🏴</div>
+          <b>Fast Steal</b>
+          <span>One steal attempt: +50 correct, -50 wrong.</span>
+        </div>
+        <div class="featureTile">
+          <div class="ico">🎲</div>
+          <b>Random Start</b>
+          <span>The game fairly chooses which team plays first.</span>
+        </div>
+        <div class="featureTile">
+          <div class="ico">📊</div>
+          <b>Reports</b>
+          <span>Champion, scores, accuracy, and class statistics.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="setup" class="screen">
+  <div class="card">
+    <div class="top"><h2>Game Setup</h2><button class="btn btnSmall gray navHome">Home</button></div>
+    <div class="grid2">
+      <div>
+        <h3>Teams</h3>
+        <label>Number of Teams</label>
+        <select id="teamCount">
+          <option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option>
+        </select>
+        <div id="teamEditors"></div>
+      </div>
+      <div>
+        <h3>Options</h3>
+        <label>Number of Questions</label>
+        <select id="questionCount">
+          <option>10</option><option selected>15</option><option>20</option><option>25</option><option>30</option>
+        </select>
+        <label>Power Wheel</label>
+        <select id="powerWheelMode">
+          <option value="teacher" selected>Teacher Triggered Button</option>
+          <option value="every3">Auto Spin After Every 3 Questions</option>
+          <option value="off">Off</option>
+        </select>
+        <p><span class="badge">V5.1</span> Fast auto-check gameplay</p>
+        <p><span class="badge">Steal</span> One steal attempt: +50 correct, -50 wrong</p>
+        <p><span class="badge">Power Wheel</span> Real animated power events</p>
+      </div>
+    </div>
+    <div class="row" style="margin-top:18px">
+      <button id="startBtn" class="btn green">Start Game</button>
+      <button id="setupEditorBtn" class="btn blue">Edit Questions</button>
+    </div>
+  </div>
+</section>
+
+<section id="game" class="screen">
+  <div class="gameWrap">
+    <div>
+      <div class="top">
+        <div id="scoreboard" class="scoreboard"></div>
+        <div class="row">
+          <button id="fullBtn" class="btn btnSmall gray">⛶</button>
+          <button id="endBtn" class="btn btnSmall red">End</button>
+        </div>
+      </div>
+      <div id="status" class="status"></div>
+    </div>
+
+    <div class="questionBox">
+      <div id="meta" class="meta"></div>
+      <div id="questionText" class="question">Question</div>
+      <div id="choices" class="choices"></div>
+    </div>
+
+    <div class="row">
+      <button id="skipBtn" class="btn blue">Skip / Next Team</button>
+      <button id="powerWheelBtn" class="btn orange">🎡 Power Wheel</button>
+      <button id="reportBtn" class="btn yellow">📊 Report</button>
+    </div>
+  </div>
+</section>
+
+<section id="teacher" class="screen">
+  <div class="card">
+    <div class="top"><h2>Teacher Question Editor</h2><button class="btn btnSmall gray navHome">Home</button></div>
+    <div class="grid2">
+      <div>
+        <h3>Add / Edit Question</h3>
+        <input id="editIndex" type="hidden">
+        <label>WH Category</label>
+        <select id="catInput">
+          <option>What</option><option>When</option><option>Where</option><option>Who</option><option>Why</option><option>How</option><option>How many</option><option>How much</option><option>Which</option>
+        </select>
+        <label>Question</label>
+        <textarea id="questionInput" placeholder="Example: ______ do you use an umbrella?"></textarea>
+        <label>Choices separated by commas</label>
+        <input id="choicesInput" placeholder="What, When, Where, Why">
+        <label>Correct Answer</label>
+        <input id="answerInput" placeholder="When">
+        <div class="row" style="margin-top:12px">
+          <button id="saveQBtn" class="btn btnSmall green">Save Question</button>
+          <button id="clearQBtn" class="btn btnSmall gray">Clear</button>
+        </div>
+      </div>
+      <div>
+        <h3>Question Bank</h3>
+        <div class="row">
+          <button id="saveBankBtn" class="btn btnSmall blue">Save Browser</button>
+          <button id="exportBtn" class="btn btnSmall purple">Export JSON</button>
+          <button id="importBtn" class="btn btnSmall yellow">Import JSON</button>
+          <button id="resetBtn" class="btn btnSmall red">Reset Built-in</button>
+          <input id="importFile" type="file" accept=".json" style="display:none">
+        </div>
+        <div id="questionList" class="editorList"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how" class="screen">
+  <div class="card">
+    <div class="top"><h2>How to Play</h2><button class="btn btnSmall gray navHome">Home</button></div>
+    <p><b>1.</b> Teacher chooses 2–6 teams and team avatars.</p>
+    <p><b>2.</b> The current team discusses and clicks an answer.</p>
+    <p><b>3.</b> Correct answer gives points automatically.</p>
+    <p><b>4.</b> Wrong answer opens a Steal popup.</p>
+    <p><b>5.</b> One steal attempt only: correct steal = +50 points, wrong steal = -50 points.</p>
+    <p><b>6.</b> The Power Wheel affects scores: Double Points, Triple Points, Bonus Question, Lucky +50, Shield, Steal 50, Give 50, Swap Scores, Lose 50, or Team Choice.</p>
+    <div class="row"><button class="btn yellow" id="howSetupBtn">Set Up Game</button></div>
+  </div>
+</section>
+
+<section id="report" class="screen">
+  <div class="card">
+    <div class="top"><h2>Classroom Statistics Report</h2><button class="btn btnSmall gray navHome">Home</button></div>
+    <div id="reportContent"></div>
+    <div class="row" style="margin-top:16px">
+      <button id="backGameBtn" class="btn blue">Back to Game</button>
+      <button id="printBtn" class="btn green">Print Report</button>
+      <button id="againBtn" class="btn yellow">Play Again</button>
+    </div>
+  </div>
+</section>
+
+<div id="modal" class="modal">
+  <div class="modalBox">
+    <div id="wheelWrap" style="display:none"><div class="wheelArrow">▲</div><div id="wheelGraphic" class="powerWheel">🎡</div></div>
+    <div id="modalEmoji" class="modalEmoji">🎉</div>
+    <h2 id="modalTitle" class="modalTitle">Message</h2>
+    <p id="modalText" class="modalText"></p>
+    <div id="modalActions" class="row"></div>
+  </div>
+</div>
+
+<div id="confetti" class="confetti"></div>
+
+<script>
+(function(){
+"use strict";
+
+var builtIn = [
+ {cat:"Where",q:"______ do you usually eat lunch at school?",choices:["What","Where","When","Why"],a:"Where"},
+ {cat:"When",q:"______ do Thai students usually start school in the morning?",choices:["When","Where","Who","Which"],a:"When"},
+ {cat:"Who",q:"______ is responsible for helping sick people?",choices:["Who","How","What","Where"],a:"Who"},
+ {cat:"Why",q:"______ do people wear helmets when riding a motorcycle?",choices:["What","Why","When","Which"],a:"Why"},
+ {cat:"How many",q:"______ planets are in our solar system?",choices:["How much","How many","How","Which"],a:"How many"},
+ {cat:"How much",q:"______ does this notebook cost?",choices:["How much","How many","Why","Where"],a:"How much"},
+ {cat:"Which",q:"______ subject do you prefer, English or science?",choices:["Who","Which","When","How"],a:"Which"},
+ {cat:"How",q:"______ do you get to school every day?",choices:["How","Who","Where","What"],a:"How"},
+ {cat:"What",q:"______ should you do before crossing the road?",choices:["What","Where","How many","Who"],a:"What"},
+ {cat:"Where",q:"______ can you borrow books?",choices:["Why","Where","When","How much"],a:"Where"},
+ {cat:"When",q:"______ is your birthday?",choices:["When","What","How","Who"],a:"When"},
+ {cat:"Who",q:"______ helps students learn in the classroom?",choices:["Who","Why","Which","How much"],a:"Who"},
+ {cat:"Why",q:"______ should we save water?",choices:["Why","Where","What","When"],a:"Why"},
+ {cat:"How",q:"______ can we protect the environment?",choices:["How","How much","Who","Which"],a:"How"},
+ {cat:"How many",q:"______ students are in your class today?",choices:["How many","How much","What","Where"],a:"How many"},
+ {cat:"How much",q:"______ sugar do you want in your drink?",choices:["How much","How many","When","Who"],a:"How much"},
+ {cat:"Which",q:"______ answer is correct, A or B?",choices:["Which","Why","Where","How many"],a:"Which"},
+ {cat:"What",q:"______ did you learn in English class today?",choices:["What","When","How much","Who"],a:"What"},
+ {cat:"Where",q:"______ do you go when you need medicine?",choices:["Where","Which","Why","How"],a:"Where"},
+ {cat:"When",q:"______ do people celebrate Songkran?",choices:["Who","When","Where","What"],a:"When"},
+ {cat:"Who",q:"______ wrote the answer on the board?",choices:["Who","Which","How much","When"],a:"Who"},
+ {cat:"Why",q:"______ are plants important to people?",choices:["Why","Where","How many","Who"],a:"Why"},
+ {cat:"How",q:"______ do you solve this problem?",choices:["How","How many","Which","When"],a:"How"},
+ {cat:"Which",q:"______ team has the highest score?",choices:["Which","Who","What","Why"],a:"Which"},
+ {cat:"What",q:"______ kind of food is healthy for students?",choices:["What","When","Where","How much"],a:"What"},
+ {cat:"How many",q:"______ hours do you sleep each night?",choices:["How much","How many","Why","Which"],a:"How many"},
+ {cat:"How much",q:"______ time do you need to finish your homework?",choices:["How much","How many","Where","Who"],a:"How much"},
+ {cat:"Where",q:"______ should we throw rubbish?",choices:["Where","When","Why","How many"],a:"Where"},
+ {cat:"Why",q:"______ is teamwork useful in class?",choices:["Why","Who","Which","What"],a:"Why"},
+ {cat:"How",q:"______ often do you practice English?",choices:["How","What","Where","How many"],a:"How"}
+];
+
+var avatars = ["🚀","🦁","🦅","🐯","🐉","🦈"];
+var defaultNames = ["Red Rockets","Blue Sharks","Green Tigers","Yellow Eagles","Purple Dragons","Orange Lions"];
+var bank = loadBank();
+var teams = [];
+var deck = [];
+var currentTeam = 0;
+var currentQuestion = null;
+var answered = false;
+var selectedButton = null;
+var selectedAnswer = null;
+var activePower = null;
+var bonusMode = false;
+var stealMode = false;
+var questionCounted = false;
+var modalActions = [];
+var stats = {asked:0, correct:0, wrong:0, powers:0};
+
+function copy(obj){ return JSON.parse(JSON.stringify(obj)); }
+function $(id){ return document.getElementById(id); }
+
+function show(id){
+  var screens = document.querySelectorAll(".screen");
+  for(var i=0;i<screens.length;i++){ screens[i].classList.remove("active","centerScreen"); }
+  $(id).classList.add("active");
+  if(id === "landing") $("landing").classList.add("centerScreen");
+  if(id === "teacher") renderQuestionList();
+}
+
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=arr[i]; arr[i]=arr[j]; arr[j]=t;
+  }
+  return arr;
+}
+
+function loadBank(){
+  try{
+    var saved = localStorage.getItem("whQuestionsV5Bank");
+    if(saved){
+      var parsed = JSON.parse(saved);
+      if(Array.isArray(parsed) && parsed.length){ return parsed; }
+    }
+  }catch(e){}
+  return copy(builtIn);
+}
+
+function renderTeamEditors(){
+  var count = parseInt($("teamCount").value,10);
+  var box = $("teamEditors");
+  box.innerHTML = "";
+  for(var i=0;i<count;i++){
+    var line = document.createElement("div");
+    line.className = "teamLine";
+    line.innerHTML =
+      '<div class="avatarBig">'+avatars[i]+'</div>'+
+      '<input id="teamName'+i+'" value="'+defaultNames[i]+'">'+
+      '<select id="teamAvatar'+i+'">'+avatars.map(function(a){return '<option value="'+a+'" '+(a===avatars[i]?'selected':'')+'>'+a+'</option>';}).join("")+'</select>';
+    box.appendChild(line);
+  }
+}
+
+
+function startRandomTeamSelector(){
+  var chosen = Math.floor(Math.random()*teams.length);
+  var current = 0;
+  var cycles = 15;
+
+  showModal("🎲","Who Plays First?","Selecting a starting team...",[]);
+  $("modalActions").innerHTML = "";
+
+  var timer = setInterval(function(){
+    $("modalText").textContent = teams[current].avatar + " " + teams[current].name;
+    current = (current + 1) % teams.length;
+    cycles--;
+
+    if(cycles <= 0){
+      clearInterval(timer);
+      currentTeam = chosen;
+      $("modalTitle").textContent = "🏆 Starting Team!";
+      $("modalText").textContent = teams[chosen].avatar + " " + teams[chosen].name + " plays first!";
+
+      var box = $("modalActions");
+      box.innerHTML = "";
+      var btn = document.createElement("button");
+      btn.className = "btn green";
+      btn.textContent = "Start Question 1";
+      btn.onclick = function(){
+        hideModal();
+        renderScoreboard();
+        loadQuestion();
+      };
+      box.appendChild(btn);
+    }
+  },150);
+}
+
+function startGame(){
+  var count = parseInt($("teamCount").value,10);
+  teams = [];
+  for(var i=0;i<count;i++){
+    teams.push({
+      name: $("teamName"+i).value || ("Team "+(i+1)),
+      avatar: $("teamAvatar"+i).value || avatars[i],
+      score: 0,
+      shield: false,
+      asked: 0,
+      correct: 0
+    });
+  }
+  var qCount = parseInt($("questionCount").value,10);
+  deck = shuffle(copy(bank)).slice(0, Math.min(qCount, bank.length));
+  currentTeam = 0;
+  answered = false;
+  selectedButton = null;
+  selectedAnswer = null;
+  activePower = null;
+  bonusMode = false;
+  stealMode = false;
+  questionCounted = false;
+  stats = {asked:0, correct:0, wrong:0, powers:0};
+  show("game");
+  renderScoreboard();
+  startRandomTeamSelector();
+}
+
+function renderScoreboard(){
+  var sb = $("scoreboard");
+  sb.innerHTML = "";
+  for(var i=0;i<teams.length;i++){
+    var t = teams[i];
+    var card = document.createElement("div");
+    card.className = "teamCard" + (i===currentTeam ? " current" : "");
+    card.innerHTML =
+      '<div class="a">'+t.avatar+(t.shield?' 🛡️':'')+'</div>'+
+      '<div class="n">'+escapeHtml(t.name)+'</div>'+
+      '<div class="s">'+t.score+'</div>';
+    sb.appendChild(card);
+  }
+}
+
+function loadQuestion(){
+  if(deck.length === 0){ endGame(); return; }
+  currentQuestion = deck.shift();
+  answered = false;
+  selectedButton = null;
+  selectedAnswer = null;
+  stealMode = false;
+  questionCounted = false;
+  var powerText = "";
+  if(activePower === "double") powerText = " • 💎 Double Points Active";
+  if(activePower === "triple") powerText = " • 🔥 Triple Points Active";
+  if(activePower === "bonus") powerText = " • 🎁 Bonus Question Active";
+  $("status").textContent = teams[currentTeam].avatar+" "+teams[currentTeam].name+"'s turn" + powerText;
+  $("meta").textContent = "Question "+(stats.asked+1)+" of "+(stats.asked + deck.length + 1);
+  $("questionText").textContent = currentQuestion.q;
+
+  renderChoices();
+  renderScoreboard();
+}
+
+function renderChoices(){
+  var choices = shuffle(copy(currentQuestion.choices));
+  var box = $("choices");
+  box.innerHTML = "";
+  for(var i=0;i<choices.length;i++){
+    var b = document.createElement("button");
+    b.className = "choice";
+    b.textContent = choices[i];
+    b.setAttribute("data-answer", choices[i]);
+    b.addEventListener("click", function(){
+      selectAnswer(this, this.getAttribute("data-answer"));
+    });
+    box.appendChild(b);
+  }
+}
+
+function selectAnswer(button, selected){
+  if(answered){ return; }
+  answered = true;
+  selectedButton = button;
+  selectedAnswer = selected;
+
+  var choiceButtons = document.querySelectorAll(".choice");
+  for(var i=0;i<choiceButtons.length;i++){ choiceButtons[i].disabled = true; }
+
+  if(!questionCounted){
+    stats.asked++;
+    questionCounted = true;
+  }
+  teams[currentTeam].asked++;
+
+  if(selected === currentQuestion.a){
+    var points = stealMode ? 50 : 100;
+    if(!stealMode && activePower === "double") points = 200;
+    if(!stealMode && activePower === "triple") points = 300;
+
+    teams[currentTeam].score += points;
+    teams[currentTeam].correct++;
+    stats.correct++;
+
+    button.classList.add("correct");
+    $("status").textContent = stealMode ? "🏴 Correct steal! +50 points" : "✅ Correct! +" + points + " points";
+    renderScoreboard();
+    setTimeout(function(){ afterAnswer(true); }, 900);
+  }else{
+    button.classList.add("wrong");
+    stats.wrong++;
+
+    if(stealMode){
+      teams[currentTeam].score = Math.max(0, teams[currentTeam].score - 50);
+      $("status").textContent = "❌ Steal missed! -50 points";
+      renderScoreboard();
+      showModal("💥","Steal Missed","The stealing team loses 50 points. This question is over.",[
+        {text:"Next Team",cls:"blue",fn:function(){ hideModal(); endQuestionNoReveal(); }}
+      ]);
+    }else{
+      $("status").textContent = "❌ Wrong answer. One steal attempt is available.";
+      renderScoreboard();
+      showModal("🏴","Steal Chance!","Choose one team to steal for +50 points.",[
+        {text:"Choose Stealing Team",cls:"purple",fn:function(){ hideModal(); chooseStealTeam(); }},
+        {text:"No Steal / Next",cls:"gray",fn:function(){ hideModal(); endQuestionNoReveal(); }}
+      ]);
+    }
+  }
+}
+
+function chooseStealTeam(){
+  var actions = [];
+  for(var i=0;i<teams.length;i++){
+    if(i === currentTeam){ continue; }
+    (function(index){
+      actions.push({text:teams[index].avatar+" "+teams[index].name,cls:"blue",fn:function(){ hideModal(); startStealAttempt(index); }});
+    })(i);
+  }
+  showModal("🏴","Choose Stealing Team","One steal attempt only. Correct = +50, Wrong = -50.",actions);
+}
+
+function startStealAttempt(teamIndex){
+  currentTeam = teamIndex;
+  stealMode = true;
+  answered = false;
+  selectedButton = null;
+  selectedAnswer = null;
+  $("status").textContent = "🏴 Steal Round: "+teams[currentTeam].avatar+" "+teams[currentTeam].name+" can answer for +50 points";
+  $("meta").textContent = "Steal Round • One Attempt";
+  $("questionText").textContent = currentQuestion.q;
+  renderChoices();
+  renderScoreboard();
+}
+
+function endQuestionNoReveal(){
+  activePower = null;
+  bonusMode = false;
+  stealMode = false;
+  selectedButton = null;
+  selectedAnswer = null;
+
+  if($("powerWheelMode").value === "every3" && stats.asked > 0 && stats.asked % 3 === 0 && deck.length > 0){
+    setTimeout(function(){ openPowerWheel(true); }, 350);
+  }else{
+    setTimeout(nextTeam, 250);
+  }
+}
+
+function afterAnswer(correct){
+  if(correct && activePower === "bonus" && !bonusMode && !stealMode){
+    bonusMode = true;
+    activePower = null;
+    showModal("🎁","Bonus Question!","Same team gets one extra question.",[
+      {text:"Continue",cls:"yellow",fn:function(){ hideModal(); loadQuestion(); }}
+    ]);
+    return;
+  }
+  activePower = null;
+  bonusMode = false;
+  stealMode = false;
+  selectedButton = null;
+  selectedAnswer = null;
+
+  if($("powerWheelMode").value === "every3" && stats.asked > 0 && stats.asked % 3 === 0 && deck.length > 0){
+    setTimeout(function(){ openPowerWheel(true); }, 500);
+  }else{
+    setTimeout(nextTeam, 400);
+  }
+}
+
+function nextTeam(){
+  if(deck.length === 0){ endGame(); return; }
+  currentTeam = (currentTeam + 1) % teams.length;
+  loadQuestion();
+}
+
+function openPowerWheel(autoContinue){
+  if(teams.length === 0){
+    alert("Start the game first.");
+    return;
+  }
+  var ww=document.getElementById("wheelWrap"); if(ww){ww.style.display="block";}
+  $("wheelGraphic").classList.remove("spin");
+  showModal("","Power Wheel!","Spin for a game-changing event.",[
+    {text:"SPIN",cls:"orange",fn:function(){ spinPowerWheel(autoContinue); }},
+    {text:"Cancel",cls:"gray",fn:function(){ hideModal(); if(autoContinue) nextTeam(); }}
+  ]);
+}
+
+function spinPowerWheel(autoContinue){
+  var wheel = $("wheelGraphic");
+  wheel.classList.remove("spin");
+  void wheel.offsetWidth;
+  wheel.classList.add("spin");
+  $("modalActions").innerHTML = "";
+  $("modalText").textContent = "🎡 The wheel is spinning... Watch where it stops!";
+  setTimeout(function(){
+    var events = ["double","triple","bonus","lucky","shield","steal","give","swap","lose","choice"];
+    var ev = events[Math.floor(Math.random()*events.length)];
+    applyPowerEvent(ev, autoContinue);
+  }, 950);
+}
+
+function applyPowerEvent(ev, autoContinue){
+  stats.powers++;
+  var ww=document.getElementById("wheelWrap"); if(ww){ww.style.display="none";}
+
+  if(ev === "double"){
+    activePower = "double";
+    showModal("💎","Double Points!","Current team's next correct answer is worth 200 points.",[
+      {text:"Continue",cls:"yellow",fn:function(){ hideModal(); loadQuestion(); }}
+    ]);
+  }else if(ev === "triple"){
+    activePower = "triple";
+    showModal("🔥","Triple Points!","Current team's next correct answer is worth 300 points.",[
+      {text:"Continue",cls:"orange",fn:function(){ hideModal(); loadQuestion(); }}
+    ]);
+  }else if(ev === "bonus"){
+    activePower = "bonus";
+    showModal("🎁","Bonus Question!","If the current team answers correctly, they get one extra question.",[
+      {text:"Continue",cls:"yellow",fn:function(){ hideModal(); loadQuestion(); }}
+    ]);
+  }else if(ev === "lucky"){
+    teams[currentTeam].score += 50;
+    showModal("🍀","Lucky +50!","Current team instantly gains 50 points.",[
+      {text:"Continue",cls:"green",fn:function(){ hideModal(); renderScoreboard(); if(autoContinue) nextTeam(); }}
+    ]);
+  }else if(ev === "shield"){
+    teams[currentTeam].shield = true;
+    showModal("🛡️","Shield!","Current team blocks one future negative Power Wheel event.",[
+      {text:"Continue",cls:"blue",fn:function(){ hideModal(); renderScoreboard(); if(autoContinue) nextTeam(); }}
+    ]);
+  }else if(ev === "lose"){
+    if(teams[currentTeam].shield){
+      teams[currentTeam].shield = false;
+      showModal("🛡️","Shield Used!","Lose 50 was blocked.",[
+        {text:"Continue",cls:"blue",fn:function(){ hideModal(); renderScoreboard(); if(autoContinue) nextTeam(); }}
+      ]);
+    }else{
+      teams[currentTeam].score = Math.max(0, teams[currentTeam].score - 50);
+      showModal("💥","Lose 50!","Current team loses 50 points.",[
+        {text:"Continue",cls:"red",fn:function(){ hideModal(); renderScoreboard(); if(autoContinue) nextTeam(); }}
+      ]);
+    }
+  }else if(ev === "steal"){
+    chooseOtherTeam("🦹","Steal 50!","Choose a team to steal 50 points from.",function(target){
+      var amount = Math.min(50, teams[target].score);
+      teams[target].score -= amount;
+      teams[currentTeam].score += amount;
+      renderScoreboard();
+      if(autoContinue) nextTeam();
+    });
+  }else if(ev === "give"){
+    chooseOtherTeam("🎯","Give 50!","Choose another team to receive +50 points.",function(target){
+      teams[target].score += 50;
+      renderScoreboard();
+      if(autoContinue) nextTeam();
+    });
+  }else if(ev === "swap"){
+    chooseOtherTeam("🔄","Swap Scores!","Choose a team to swap scores with.",function(target){
+      var temp = teams[target].score;
+      teams[target].score = teams[currentTeam].score;
+      teams[currentTeam].score = temp;
+      renderScoreboard();
+      if(autoContinue) nextTeam();
+    });
+  }else if(ev === "choice"){
+    showModal("👑","Team Choice!","Choose one reward for the current team.",[
+      {text:"+50 Points",cls:"green",fn:function(){ hideModal(); teams[currentTeam].score += 50; renderScoreboard(); }},
+      {text:"Shield",cls:"blue",fn:function(){ hideModal(); teams[currentTeam].shield = true; renderScoreboard(); }},
+      {text:"Double Points",cls:"yellow",fn:function(){ hideModal(); activePower = "double"; loadQuestion(); }},
+      {text:"Bonus Question",cls:"purple",fn:function(){ hideModal(); activePower = "bonus"; loadQuestion(); }}
+    ]);
+  }
+}
+
+function chooseOtherTeam(emoji,title,text,callback){
+  var actions = [];
+  for(var i=0;i<teams.length;i++){
+    if(i === currentTeam){ continue; }
+    (function(index){
+      actions.push({text:teams[index].avatar+" "+teams[index].name,cls:"blue",fn:function(){ hideModal(); callback(index); }});
+    })(i);
+  }
+  showModal(emoji,title,text,actions);
+}
+
+function endGame(){ showReport(true); }
+
+function showReport(final){
+  var sorted = copy(teams).sort(function(a,b){ return b.score-a.score; });
+  var winner = sorted[0] || {name:"No team",avatar:"🏆"};
+  var html = "";
+  if(final){
+    html += "<h2>🏆 Champion: "+escapeHtml(winner.avatar+" "+winner.name)+"</h2>";
+    makeConfetti();
+  }else{
+    html += "<h2>Current Game Report</h2>";
+  }
+  html += "<p><b>Questions Answered:</b> "+stats.asked+
+          " &nbsp; <b>Correct:</b> "+stats.correct+
+          " &nbsp; <b>Wrong:</b> "+stats.wrong+
+          " &nbsp; <b>Power Spins:</b> "+stats.powers+"</p>";
+  html += '<table class="reportTable"><tr><th>Rank</th><th>Team</th><th>Score</th><th>Correct</th><th>Questions</th><th>Accuracy</th></tr>';
+  for(var i=0;i<sorted.length;i++){
+    var t=sorted[i];
+    var acc=t.asked?Math.round((t.correct/t.asked)*100):0;
+    html += "<tr><td>"+(i+1)+"</td><td>"+escapeHtml(t.avatar+" "+t.name)+"</td><td>"+t.score+"</td><td>"+t.correct+"</td><td>"+t.asked+"</td><td>"+acc+"%</td></tr>";
+  }
+  html += "</table>";
+  $("reportContent").innerHTML = html;
+  show("report");
+}
+
+function saveQuestion(){
+  var q = $("questionInput").value.trim();
+  var choices = $("choicesInput").value.split(",").map(function(x){return x.trim();}).filter(function(x){return x;});
+  var a = $("answerInput").value.trim();
+  if(!q || choices.length < 2 || !a){
+    alert("Please complete the question, choices, and correct answer.");
+    return;
+  }
+  if(choices.indexOf(a) === -1){ choices.push(a); }
+  var item = {cat:$("catInput").value, q:q, choices:choices, a:a};
+  var idx = $("editIndex").value;
+  if(idx !== ""){ bank[parseInt(idx,10)] = item; }
+  else{ bank.push(item); }
+  localStorage.setItem("whQuestionsV5Bank", JSON.stringify(bank));
+  clearEditor();
+  renderQuestionList();
+}
+
+function clearEditor(){
+  $("editIndex").value = "";
+  $("questionInput").value = "";
+  $("choicesInput").value = "";
+  $("answerInput").value = "";
+}
+
+function renderQuestionList(){
+  var list = $("questionList");
+  if(!list){ return; }
+  list.innerHTML = "";
+  for(var i=0;i<bank.length;i++){
+    (function(index){
+      var item = bank[index];
+      var div = document.createElement("div");
+      div.className = "qItem";
+      var text = document.createElement("div");
+      text.innerHTML = "<b>"+escapeHtml(item.cat)+"</b>: "+escapeHtml(item.q);
+      var edit = document.createElement("button");
+      edit.className = "btn btnSmall blue";
+      edit.textContent = "Edit";
+      edit.addEventListener("click", function(){ editQuestion(index); });
+      var del = document.createElement("button");
+      del.className = "btn btnSmall red";
+      del.textContent = "Delete";
+      del.addEventListener("click", function(){ deleteQuestion(index); });
+      div.appendChild(text); div.appendChild(edit); div.appendChild(del);
+      list.appendChild(div);
+    })(i);
+  }
+}
+
+function editQuestion(index){
+  var item = bank[index];
+  $("editIndex").value = index;
+  $("catInput").value = item.cat;
+  $("questionInput").value = item.q;
+  $("choicesInput").value = item.choices.join(", ");
+  $("answerInput").value = item.a;
+}
+
+function deleteQuestion(index){
+  if(confirm("Delete this question?")){
+    bank.splice(index,1);
+    localStorage.setItem("whQuestionsV5Bank", JSON.stringify(bank));
+    renderQuestionList();
+  }
+}
+
+function resetBank(){
+  if(confirm("Reset to the built-in Primary 6 WH-question bank?")){
+    bank = copy(builtIn);
+    localStorage.setItem("whQuestionsV5Bank", JSON.stringify(bank));
+    renderQuestionList();
+  }
+}
+
+function saveBankToBrowser(){
+  localStorage.setItem("whQuestionsV5Bank", JSON.stringify(bank));
+  alert("Question bank saved in this browser.");
+}
+
+function exportJSON(){
+  var blob = new Blob([JSON.stringify(bank,null,2)], {type:"application/json"});
+  var link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "wh_questions_primary6_bank_v5.json";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function importJSON(evt){
+  var file = evt.target.files[0];
+  if(!file){ return; }
+  var reader = new FileReader();
+  reader.onload = function(){
+    try{
+      var data = JSON.parse(reader.result);
+      if(!Array.isArray(data)){ throw new Error("Not an array"); }
+      bank = data;
+      localStorage.setItem("whQuestionsV5Bank", JSON.stringify(bank));
+      renderQuestionList();
+      alert("Question bank imported successfully.");
+    }catch(e){
+      alert("Invalid JSON file.");
+    }
+  };
+  reader.readAsText(file);
+  evt.target.value = "";
+}
+
+function showModal(emoji,title,text,actions){
+  modalActions = actions || [];
+  var ww=document.getElementById("wheelWrap"); if(ww){ww.style.display="none";}
+  $("modalEmoji").style.display = "block";
+  $("modalEmoji").textContent = emoji;
+  $("modalTitle").textContent = title;
+  $("modalText").textContent = text;
+  var actionBox = $("modalActions");
+  actionBox.innerHTML = "";
+  for(var i=0;i<modalActions.length;i++){
+    (function(index){
+      var b = document.createElement("button");
+      b.className = "btn " + (modalActions[index].cls || "yellow");
+      b.textContent = modalActions[index].text;
+      b.addEventListener("click", function(){ modalActions[index].fn(); });
+      actionBox.appendChild(b);
+    })(i);
+  }
+  $("modal").classList.add("show");
+}
+
+function hideModal(){ $("modal").classList.remove("show"); }
+
+function makeConfetti(){
+  var box = $("confetti");
+  box.innerHTML = "";
+  var colors = ["#facc15","#ef4444","#22c55e","#38bdf8","#a855f7","#ec4899"];
+  for(var i=0;i<120;i++){
+    var piece = document.createElement("span");
+    piece.style.left = (Math.random()*100) + "vw";
+    piece.style.background = colors[i % colors.length];
+    piece.style.animationDelay = (Math.random()*0.8) + "s";
+    piece.style.transform = "rotate("+Math.floor(Math.random()*180)+"deg)";
+    box.appendChild(piece);
+  }
+  setTimeout(function(){ box.innerHTML = ""; }, 3600);
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g,function(m){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m];
+  });
+}
+
+function toggleFullscreen(){
+  if(!document.fullscreenElement && document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen();
+  }else if(document.exitFullscreen){
+    document.exitFullscreen();
+  }
+}
+
+function bindEvents(){
+  $("playBtn").addEventListener("click", function(){ show("setup"); });
+  $("editorBtn").addEventListener("click", function(){ show("teacher"); });
+  $("howBtn").addEventListener("click", function(){ show("how"); });
+  $("howSetupBtn").addEventListener("click", function(){ show("setup"); });
+  $("setupEditorBtn").addEventListener("click", function(){ show("teacher"); });
+  $("startBtn").addEventListener("click", startGame);
+  $("teamCount").addEventListener("change", renderTeamEditors);
+
+  $("skipBtn").addEventListener("click", nextTeam);
+  $("powerWheelBtn").addEventListener("click", function(){ openPowerWheel(false); });
+  $("reportBtn").addEventListener("click", function(){ showReport(false); });
+  $("endBtn").addEventListener("click", endGame);
+  $("fullBtn").addEventListener("click", toggleFullscreen);
+
+  $("saveQBtn").addEventListener("click", saveQuestion);
+  $("clearQBtn").addEventListener("click", clearEditor);
+  $("saveBankBtn").addEventListener("click", saveBankToBrowser);
+  $("exportBtn").addEventListener("click", exportJSON);
+  $("importBtn").addEventListener("click", function(){ $("importFile").click(); });
+  $("importFile").addEventListener("change", importJSON);
+  $("resetBtn").addEventListener("click", resetBank);
+
+  $("backGameBtn").addEventListener("click", function(){ show("game"); });
+  $("printBtn").addEventListener("click", function(){ window.print(); });
+  $("againBtn").addEventListener("click", function(){ show("setup"); });
+
+  var homeButtons = document.querySelectorAll(".navHome");
+  for(var i=0;i<homeButtons.length;i++){
+    homeButtons[i].addEventListener("click", function(){ show("landing"); });
+  }
+}
+
+bindEvents();
+renderTeamEditors();
+renderQuestionList();
+
+})();
+</script>
+</body>
+</html>

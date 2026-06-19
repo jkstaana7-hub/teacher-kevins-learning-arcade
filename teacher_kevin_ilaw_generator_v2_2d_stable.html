@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher Kevin's ILAW Generator V2.2D Stable</title>
+<style>
+:root{
+  --navy:#0f172a;--blue:#2563eb;--cyan:#06b6d4;--green:#16a34a;
+  --yellow:#facc15;--orange:#fb923c;--ink:#152033;--muted:#64748b;
+  --line:#dbe7f2;--card:rgba(255,255,255,.92);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);
+  min-height:100vh;background:linear-gradient(135deg,#e0f2fe 0%,#f8fbff 42%,#fff7d6 100%);
+}
+body:before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:radial-gradient(circle at 8% 12%,rgba(37,99,235,.16),transparent 18%),
+  radial-gradient(circle at 85% 18%,rgba(6,182,212,.16),transparent 20%),
+  radial-gradient(circle at 80% 85%,rgba(250,204,21,.20),transparent 18%);
+}
+.hidden{display:none!important}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 20px;
+  background:rgba(15,23,42,.96);color:white;box-shadow:0 12px 34px rgba(15,23,42,.22);
+  position:sticky;top:0;z-index:20;
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--yellow),var(--orange));display:grid;place-items:center;font-size:24px}
+.brand strong{display:block;font-size:17px}.brand span{display:block;font-size:12px;color:#cbd5e1}
+.top-actions,.footer-actions,.page-tabs{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:14px;padding:11px 15px;min-height:42px;font-weight:900;cursor:pointer;
+  background:#e2e8f0;color:#0f172a;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 22px rgba(15,23,42,.12)}
+.btn.primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:white}
+.btn.yellow{background:linear-gradient(135deg,var(--yellow),var(--orange));color:#422006}
+.btn.green{background:linear-gradient(135deg,#22c55e,#16a34a);color:white}
+.btn.small{padding:8px 10px;min-height:34px;font-size:12px;border-radius:11px}
+.screen{padding:24px}
+.hero{
+  max-width:1180px;margin:0 auto;border-radius:30px;overflow:hidden;color:white;padding:36px;
+  background:linear-gradient(135deg,rgba(37,99,235,.96),rgba(6,182,212,.82));
+  box-shadow:0 18px 60px rgba(37,99,235,.24);position:relative;
+}
+.hero:after{content:"";position:absolute;right:-80px;top:-90px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.16)}
+.kicker{display:inline-flex;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);padding:7px 12px;border-radius:999px;font-size:13px;font-weight:900;margin-bottom:14px}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.02;margin:0 0 12px;font-weight:900}
+.hero p{font-size:18px;line-height:1.55;max-width:850px;color:#e0f2fe}
+.container{max-width:1180px;margin:20px auto 0}
+.grid{display:grid;gap:16px}.grid3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{
+  background:var(--card);border:1px solid rgba(255,255,255,.75);border-radius:24px;padding:18px;
+  box-shadow:0 14px 45px rgba(15,23,42,.08);backdrop-filter:blur(10px);
+}
+.stat{background:white;border:1px solid #e2e8f0;border-radius:22px;padding:18px;box-shadow:0 10px 30px rgba(15,23,42,.06)}
+.stat .num{font-size:28px;font-weight:900;color:var(--blue)}.stat .label{color:var(--muted);font-size:13px;font-weight:800;line-height:1.35}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+label{display:block;margin:8px 0 5px;font-weight:900;font-size:13px;color:#1e293b}
+input,select,textarea{width:100%;border:1px solid #dbe7f2;border-radius:13px;padding:11px;font-size:14px;background:white}
+textarea{min-height:92px;resize:vertical}
+.notice{border-left:5px solid var(--blue);padding:12px;background:#eff6ff;border-radius:14px;color:#1e3a8a;line-height:1.45;font-weight:700}
+.warn{border-left-color:#f97316;background:#fff7ed;color:#9a3412}.success{border-left-color:#22c55e;background:#f0fdf4;color:#166534}
+.match-card{background:white;border:1px solid #e2e8f0;border-radius:20px;padding:14px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;margin-bottom:10px}
+.match-title{font-weight:900;font-size:16px;color:#0f172a}.match-meta{font-size:13px;color:#64748b;line-height:1.5;margin-top:4px}
+.score{display:grid;place-items:center;width:76px;height:76px;border-radius:22px;background:linear-gradient(135deg,#eff6ff,#e0f2fe);color:#1d4ed8;font-size:21px;font-weight:900;border:1px solid #bfdbfe}
+.workflow{display:grid;grid-template-columns:380px 1fr;gap:18px;height:calc(100vh - 78px);padding:18px}
+.panel{overflow:auto;background:rgba(255,255,255,.93);border:1px solid rgba(255,255,255,.75);border-radius:24px;padding:16px;box-shadow:0 14px 45px rgba(15,23,42,.08)}
+.preview-wrap{overflow:auto;padding:12px}
+.a4{
+  background:white;color:#111827;box-shadow:0 12px 40px rgba(15,23,42,.18);
+  border-radius:4px;outline:none;margin:0 auto 30px;padding:10mm;font-family:Arial,Helvetica,sans-serif;
+}
+.a4.portrait{width:210mm;min-height:297mm}
+.a4.landscape{width:297mm;min-height:210mm}
+.orientation-pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:12px;font-weight:900}
+.ilaw-doc{font-size:11px;line-height:1.22}
+.ilaw-doc table{width:100%;border-collapse:collapse;table-layout:fixed}
+.ilaw-doc td,.ilaw-doc th{border:1px solid #4b5563;padding:6px;vertical-align:top;word-wrap:break-word;overflow-wrap:anywhere}
+.ilaw-label{width:22%;background:#f1f5f9;font-weight:800}
+.ilaw-small{font-size:9.5px;color:#334155;font-style:italic;font-weight:400}
+.ilaw-title{font-size:14px;letter-spacing:1px;text-align:center;margin:0 0 6px}
+.ilaw-section{background:#d1d5db;font-weight:900;font-size:14px}
+.ilaw-section span{font-weight:400;display:block;font-size:11px;margin-top:2px}
+.ilaw-session-head{background:#e5e7eb;font-weight:900;text-align:center}
+.ilaw-side{width:16%;background:#f3f4f6;font-weight:900}
+.ilaw-cell ul{margin:0;padding-left:18px}.ilaw-cell li{margin-bottom:4px}
+.ilaw-guide{font-size:9px;font-style:italic;color:#374151;line-height:1.25}
+.ilaw-note{color:#1d4ed8;text-decoration:underline}
+.ilaw-official .ilaw-label{font-style:italic;font-size:12px}
+.ilaw-official .ilaw-section{font-size:20px;text-align:left}
+.ilaw-official .ilaw-section span{display:inline;font-size:11px;margin-left:12px}
+.brain-list{max-height:330px;overflow:auto}
+@media(max-width:1000px){
+  .grid3,.grid2,.form-grid{grid-template-columns:1fr}
+  .workflow{grid-template-columns:1fr;height:auto}
+  .a4.portrait,.a4.landscape{width:100%;min-height:650px}
+}
+@page{size:A4 portrait;margin:8mm}
+body.print-landscape @page{size:A4 landscape;margin:8mm}
+@media print{
+  body{background:white}.topbar,.panel,.screen .no-print,.no-print{display:none!important}
+  .workflow{display:block;height:auto;padding:0}.preview-wrap{padding:0;overflow:visible}
+  .a4{width:100%!important;min-height:auto!important;box-shadow:none;margin:0;border-radius:0;padding:0!important}
+  .ilaw-doc{font-size:10px}.ilaw-doc td,.ilaw-doc th{padding:4px}
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">💡</div>
+      <div><strong>Teacher Kevin's ILAW Generator</strong><span>V2.2D Stable • Professional Export & Orientation Engine</span></div>
+    </div>
+    <div class="top-actions no-print">
+      <button class="btn small" onclick="showScreen('welcome')">Home</button>
+      <button class="btn small primary" onclick="showScreen('search')">Search Banks</button>
+      <button class="btn small" onclick="showScreen('how')">How To Use</button>
+    </div>
+  </div>
+
+  <section id="welcome" class="screen">
+    <div class="hero">
+      <div class="kicker">🔒 Bank first. AI second. Same editor always.</div>
+      <h1>Professional ILAW Templates with Portrait & Landscape Export</h1>
+      <p>Search the lesson bank first, load an authentic session-based ILAW template, edit in the live preview, choose orientation, and export. Export still triggers privacy-safe auto-learning.</p>
+      <div class="footer-actions no-print" style="margin-top:22px">
+        <button class="btn yellow" onclick="showScreen('search')">🔍 Search Banks</button>
+        <button class="btn" onclick="showScreen('how')">📘 How To Use</button>
+      </div>
+    </div>
+    <div class="container grid grid3">
+      <div class="stat"><div class="num" id="statLessons">0</div><div class="label">Lessons in Generator Brain</div></div>
+      <div class="stat"><div class="num">AUTO</div><div class="label">1–3 sessions portrait, 4–5 sessions landscape</div></div>
+      <div class="stat"><div class="num">PADB</div><div class="label">Privacy-safe auto-learning on PDF/DOC export</div></div>
+    </div>
+  </section>
+
+  <section id="search" class="screen hidden">
+    <div class="container grid grid2">
+      <div class="card">
+        <h2>Search Generator Brain</h2>
+        <p>Before using AI credits, search existing lesson patterns first.</p>
+        <div class="form-grid">
+          <div><label>Choose Level</label><select id="level" onchange="updateGradeOptions()"><option>SHS</option><option>JHS</option><option>Elementary</option><option>Kindergarten</option></select></div>
+          <div><label>Grade</label><select id="grade"></select></div>
+          <div><label>Learning Area</label><input id="subject" value="Mabisang Komunikasyon"></div>
+          <div><label>Number of Sessions</label><select id="sessions" onchange="updateOrientationAuto()"><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></div>
+          <div><label>Topic</label><input id="topic" value="Komunikasyon"></div>
+          <div><label>Competency</label><input id="competency" value="Mabisang komunikasyon"></div>
+          <div><label>Page Orientation</label><select id="orientationMode" onchange="updateOrientationAuto()"><option selected>Auto</option><option>Portrait</option><option>Landscape</option></select></div>
+          <div><label>Current Export Orientation</label><input id="orientationDisplay" readonly value="Portrait"></div>
+        </div>
+        <div class="footer-actions">
+          <button class="btn primary" onclick="searchBrain()">🔍 Search Brain</button>
+          <button class="btn yellow" onclick="openAIPrompt()">✨ Generate New using AI Credits</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Brain Results</h2>
+        <div id="resultSummary" class="notice">No search yet. Search the bank first before using AI credits.</div>
+        <div id="results" class="brain-list" style="margin-top:12px"></div>
+      </div>
+    </div>
+    <div class="container card">
+      <h2>Brain Statistics</h2>
+      <div class="grid grid3">
+        <div class="stat"><div class="num" id="brainTotal">0</div><div class="label">Total Stored Lessons</div></div>
+        <div class="stat"><div class="num" id="brainSubjects">0</div><div class="label">Subjects Covered</div></div>
+        <div class="stat"><div class="num" id="brainLocal">0</div><div class="label">Auto-Learned Local Lessons</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how" class="screen hidden">
+    <div class="container card">
+      <h1>How To Use</h1>
+      <ol>
+        <li>Search the Brain first before using AI credits.</li>
+        <li>Select session count and orientation. Auto is recommended.</li>
+        <li>Load a matching lesson or generate a placeholder AI draft.</li>
+        <li>Edit directly in the live A4 preview.</li>
+        <li>Export PDF or Word-compatible DOC. Export automatically stores a sanitized copy in the local Brain.</li>
+      </ol>
+      <div class="notice success">V2.2D supports Portrait, Landscape, and Auto orientation. DOC export is improved Word-compatible HTML; true pixel-identical DOCX will require a dedicated DOCX library in a future cloud/advanced version.</div>
+    </div>
+  </section>
+
+  <section id="editor" class="hidden">
+    <div class="workflow">
+      <aside class="panel no-print">
+        <h2>Live Editor</h2>
+        <div class="notice" id="editorSource">Source: Generator Brain</div>
+        <label>Lesson Title</label><input id="editTitle" oninput="syncEditorFields()">
+        <label>Teacher Name</label><input id="teacherName" value="Teacher Name" oninput="syncEditorFields()">
+        <label>School / Section</label><input id="schoolName" value="Grade 11" oninput="syncEditorFields()">
+        <label>References</label><textarea id="references" oninput="syncEditorFields()">Learning Activity Sheets, Lesson Exemplar, teacher-made resources</textarea>
+        <label>Page Orientation</label><select id="editorOrientation" onchange="setEditorOrientation(this.value)"><option>Auto</option><option>Portrait</option><option>Landscape</option></select>
+        <div class="page-tabs">
+          <button class="btn small primary" onclick="showScreen('search')">← Back to Search</button>
+          <button class="btn small" onclick="printPDF()">Export PDF</button>
+          <button class="btn small green" onclick="exportDoc()">Export DOC</button>
+        </div>
+        <div class="notice warn">PADB-1.0: Export auto-saves a sanitized copy. Teacher and school names are removed before storage.</div>
+        <h3>AI-Ready Prompt Area</h3>
+        <textarea id="aiPrompt" placeholder="Future AI prompt area."></textarea>
+        <button class="btn yellow" onclick="simulateAI()">Load AI Placeholder to Editor</button>
+      </aside>
+      <main class="preview-wrap"><article id="a4" class="a4 portrait" contenteditable="true"></article></main>
+    </div>
+  </section>
+</div>
+
+<script>
+const builtInLessons=[
+{id:"mk-w1",title:"Ang Wika at Antas ng Komunikasyon sa Pakikipag-ugnayang Pilipino",level:"SHS",grade:"Grade 11",subject:"Mabisang Komunikasyon",topic:"Wika at Antas ng Komunikasyon",competency:"wika tono personal interpersonal komunikasyon",sessions:"2",content:{competency:"Natutukoy kung paano ginagamit nang may layunin ang wika at tono sa pagtalakay ng iba’t ibang personal at interpersonal na paksa. Nahihinuha ang mga pangunahing idea mula sa mga tekstong pasalita, pasulat, at multimodal.",standards:"Content Standards: Naipamamalas ng mga mag-aaral ang mabisang komunikasyon sa personal at interpersonal na konteksto.\\n\\nPerformance Standards: Nakabubuo ng personal at interpersonal na korespondensiya tulad ng liham, email, text message, chat, at post sa social media.",objectives:["Natutukoy ang kahulugan at kalikasan ng wika sa personal at interpersonal na sitwasyon.","Nasusuri ang tono at layunin ng wika sa isang diyalogo.","Naipaliliwanag ang pagkakaiba ng antas ng komunikasyon.","Nakabubuo ng personal na korespondensiya na may angkop na wika at tono."],context:"Ang mga mag-aaral ay aktibong nakikilahok kapag ang paksa ay may kaugnayan sa kanilang pang-araw-araw na interaksyon sa tahanan at social media. May mataas na interes sila sa lokal na ekspresyon at digital communication.",pre:"Wika Ko, Buhay Ko; Hanapin ang Antas.",flow:"Scaffolding sa pamamagitan ng pagbasa ng diyalogo; active retrieval sa konsepto ng wika; mind mapping; role-play; talakayan sa mabisang komunikasyon.",resources:"Laptop/projector, LAS LE1, larawan, video, rubrik.",integration:"Values Education; Media Literacy.",assessment:"Komunikasyon Match-up; pagsulat ng liham o email.",forward:"Pagninilay tungkol sa karanasan kung saan ang tono ng wika ay nagdulot ng hindi pagkakaunawaan."}},
+{id:"mk-w2",title:"Mabisang Komunikasyon: Mula sa Sarili Tungo sa Kapwa",level:"SHS",grade:"Grade 11",subject:"Mabisang Komunikasyon",topic:"Personal at Interpersonal na Komunikasyon",competency:"personal interpersonal komunikasyon korespondensiya tono wika",sessions:"2",content:{competency:"Nasusuri ang nilalaman at layunin ng personal at interpersonal na komunikasyon. Nakagagamit ng angkop na wika, tono, at estruktura ayon sa awdyens, layon, at konteksto.",standards:"Content Standards: Mabisang komunikasyon sa personal at interpersonal na konteksto.\\n\\nPerformance Standards: Pakikilahok sa malalim na talakayan at pagbuo ng korespondensiya.",objectives:["Naipaliliwanag ang kahulugan, kahalagahan, at kalikasan ng wika.","Nasusuri ang layunin ng personal na komunikasyon.","Nakapagpapahayag ng saloobin sa magalang na paraan.","Nakagagamit ng angkop na wika sa korespondensiya."],context:"Grade 11 learners are active in technology and social media but need guidance in formal language use, deep reflection, and netiquette.",pre:"Wika ko, Buhay ko; Puso at Pananaw; Hanapin ang Antas.",flow:"Pagtalakay sa wika; think-pair-share; social learning; graphic organizer; communication match-up; role-play; email modeling.",resources:"Laptop, projector, PowerPoint, LAS, video lecture, rubrics.",integration:"EsP; Kultura at Sining; MIL.",assessment:"Sanaysay; check for understanding; liham o email; peer feedback.",forward:"Personal journal reflection tungkol sa paggamit ng wika sa pamilya at komunidad."}},
+{id:"gm-5s",title:"Financial Literacy: Navigating Income and Payroll in the Philippine Context",level:"SHS",grade:"Grade 11",subject:"General Mathematics",topic:"Income and Payroll",competency:"salary wage commission piecework gross net pay deductions payroll",sessions:"5",content:{competency:"Calculate weekly or monthly wages from annual salary, hourly rate, overtime, allowances, commission, or piecework. Solve problems involving salaries, wages, benefits, and deductions using technology.",standards:"Content Standards: Business and finance through problems involving earning money, buying, selling, and financial applications.\\n\\nPerformance Standards: Prepare accurate payrolls and digital payslips with correct gross pay, deductions, and net income.",objectives:["Identify salary, wage, commission, and piecework income.","Calculate wages from annual salary and hourly rates.","Compute commission and piecework earnings.","Differentiate gross pay and net pay and estimate deductions.","Analyze job offers and create a payslip or financial report."],context:"The class consists of Grade 11 students with mixed readiness levels. Learners show engagement in real-world mathematical applications but need scaffolding in multi-step word problems.",pre:"Word Mapping Activity; Math Skills Check-in; Percentage Warm-up; Payslip Analysis; Financial Goal Setting.",flow:"Compare job roles; solve salary and wage problems; compute overtime and night differential; solve commission and piecework tasks; analyze gross and net pay; compare job offers; create a case study payslip.",resources:"Projector, manila paper, LAS, calculators, task cards, payslip templates, spreadsheets, budget templates.",integration:"Entrepreneurship, Social Studies, Work Immersion, Business Math, Filipino, Civics/AP, ICT, Personal Development.",assessment:"Exit ticket, problem set, quick quiz, computation task, peer review, payroll case study.",forward:"Interview a family member about salary/wage/commission; search DOLE wage guidelines; create a future budget."}},
+{id:"gs-4s",title:"Dynamics of Motion: Unifying Translational and Rotational Physics in Daily Life",level:"SHS",grade:"Grade 11",subject:"General Science",topic:"Translational and Rotational Motion",competency:"translational rotational motion linear angular physics",sessions:"4",content:{competency:"Compare and contrast translational and rotational motion in terms of linear and angular quantities. Demonstrate the relationship through simple activities.",standards:"Content Standards: Physics principles apply to everyday living and efficient machine design.\\n\\nPerformance Standards: Learners identify physics principles and use them to solve problems and make informed decisions.",objectives:["Identify examples of translational and rotational motion.","Compare linear and angular quantities.","Demonstrate the relationship between linear and angular quantities.","Explain physics in safety designs like helmets and airbags."],context:"Learners benefit from visual prompts, peer sharing, hands-on demonstrations, kinesthetic movement, and non-threatening feedback.",pre:"Think-Pair-Share; 4 Pics 1 Word; Body Check; helmet/airbag prompt.",flow:"Captured Moments activity; instruction on linear/angular quantities; human movement experiment; ergonomics analysis; safety design investigation.",resources:"Mobile devices, projector, measuring tapes, worksheets, crash videos, rubrics.",integration:"Media Literacy, Mathematics, Health/PE, Values/DRRM.",assessment:"Synthesis table, quantity matching, exit ticket, role-play rubric.",forward:"Observe household chores involving motion and explain physics behind safety features."}},
+{id:"pklp-4s",title:"Kamalayang Pangkasaysayan: Ugat ng Pagkakakilanlan at Kalinangang Pilipino",level:"SHS",grade:"Grade 11",subject:"Pag-Aaral ng Kasaysayan at Lipunang Pilipino",topic:"Kamalayang Pangkasaysayan",competency:"kamalayang pangkasaysayan kultura pagkakakilanlan",sessions:"4",content:{competency:"Natatalakay ang kahulugan at katuturan ng kamalayang pangkasaysayan.",standards:"Content Standards: Mapanuring pag-unawa at pagpapahalaga sa pagkahubog ng kamalayang pangkasaysayan.\\n\\nPerformance Standards: Nakapagsasagawa ng proyektong nagpapamalas ng kamalayang pangkasaysayan.",objectives:["Nabibigyang-kahulugan ang kamalayang pangkasaysayan.","Naiisa-isa ang layunin at katangian ng taong may kamalayang pangkasaysayan.","Natatalakay ang ugnayan ng heograpiya at kultura.","Nakapagpapahayag ng paninindigan sa pagpapanatili ng lokal na kultura."],context:"Inclusive classroom with visual aids, maps, simplified readings, and group roles for diverse learners.",pre:"Pinoy Henyo; Quotable Quotes Analysis; Ilugar Mo Ako; Kasabihan Relay.",flow:"Active retrieval; scaffolding of kasaysayan; discussion; mapping; performance task draft.",resources:"Laptop, projector, maps, worksheets, manila paper, rubrics.",integration:"Filipino, AP, Values, Geography, ICT.",assessment:"One-sentence summary, exit ticket, graphic organizer, performance task draft.",forward:"Research local history, interview elders, and create a poster or slogan."}}
+];
+
+let localLessons=JSON.parse(localStorage.getItem("tk_ilaw_brain_v22d")||"[]");
+let currentLesson=null;
+let currentOrientation="portrait";
+function allLessons(){return builtInLessons.concat(localLessons)}
+function showScreen(id){["welcome","search","how","editor"].forEach(s=>document.getElementById(s).classList.add("hidden"));document.getElementById(id).classList.remove("hidden");updateStats()}
+function updateGradeOptions(){const level=document.getElementById("level").value,grade=document.getElementById("grade");let opts=[];if(level==="Kindergarten")opts=["Kindergarten"];if(level==="Elementary")opts=["Grade 1","Grade 2","Grade 3","Grade 4","Grade 5","Grade 6"];if(level==="JHS")opts=["Grade 7","Grade 8","Grade 9","Grade 10"];if(level==="SHS")opts=["Grade 11","Grade 12"];grade.innerHTML=opts.map(o=>`<option>${o}</option>`).join("")}
+function getAutoOrientation(sessions){return parseInt(sessions)>=4?"landscape":"portrait"}
+function resolveOrientation(){const mode=document.getElementById("orientationMode")?.value || document.getElementById("editorOrientation")?.value || "Auto";const sessions=currentLesson?.sessions || document.getElementById("sessions").value;return mode==="Auto"?getAutoOrientation(sessions):mode.toLowerCase()}
+function updateOrientationAuto(){const o=resolveOrientation();currentOrientation=o;document.getElementById("orientationDisplay").value=o[0].toUpperCase()+o.slice(1);const a4=document.getElementById("a4");if(a4){a4.classList.remove("portrait","landscape");a4.classList.add(o)}}
+function setEditorOrientation(v){document.getElementById("orientationMode").value=v;updateOrientationAuto();if(currentLesson)renderLesson(currentLesson)}
+function norm(s){return(s||"").toLowerCase().replace(/[^\w\sñáéíóúü]/g," ").replace(/\s+/g," ").trim()}
+function words(s){return new Set(norm(s).split(" ").filter(w=>w.length>2))}
+function overlap(a,b){const A=words(a),B=words(b);if(!A.size||!B.size)return 0;let hit=0;A.forEach(w=>{if(B.has(w))hit++});return hit/Math.max(A.size,B.size)}
+function scoreLesson(l,q){let score=0;if(norm(l.subject).includes(norm(q.subject))||norm(q.subject).includes(norm(l.subject)))score+=40;else score+=Math.round(overlap(l.subject,q.subject)*40);if(norm(l.grade)===norm(q.grade))score+=25;if(norm(l.sessions)===norm(q.sessions))score+=5;score+=Math.round(overlap(l.competency,q.competency)*15);score+=Math.round(overlap(l.topic+" "+l.title,q.topic)*15);return Math.min(100,score)}
+function searchBrain(){
+  const q={level:level.value,grade:grade.value,subject:subject.value,topic:topic.value,competency:competency.value,sessions:sessions.value};
+  const scored=allLessons().map(l=>({...l,score:scoreLesson(l,q)})).sort((a,b)=>b.score-a.score);
+  resultSummary.className=scored.length&&scored[0].score>=50?"notice success":"notice warn";
+  resultSummary.innerHTML=scored.length&&scored[0].score>=50?`Found ${scored.filter(x=>x.score>=50).length} possible match(es). Load a lesson first to save AI credits.`:"No strong match found. You may use Generate New using AI Credits.";
+  results.innerHTML=scored.map(l=>`<div class="match-card"><div><div class="match-title">${l.title}</div><div class="match-meta">${l.level} • ${l.grade} • ${l.subject} • ${l.sessions} session(s)<br>Topic: ${l.topic}<br>Template: ${templateName(l.sessions)}<br>Source: ${l.source||"Built-in Brain"}</div><div class="footer-actions"><button class="btn small primary" onclick="loadLessonById('${l.id}')">Load to Editor</button><button class="btn small" onclick="previewBrief('${l.id}')">Preview</button></div></div><div class="score">${l.score}%</div></div>`).join("")
+}
+function templateName(n){n=parseInt(n)||1;if(n===5)return"Official 5-Session Landscape";if(n===4)return"Authentic 4-Session Landscape";if(n===3)return"Authentic 3-Session";if(n===2)return"Authentic 2-Session";return"Authentic 1-Session"}
+function previewBrief(id){const l=allLessons().find(x=>x.id===id);alert(`${l.title}\n${l.grade} | ${l.subject}\n${l.sessions} session(s)\nTemplate: ${templateName(l.sessions)}`)}
+function loadLessonById(id){const l=allLessons().find(x=>x.id===id);currentLesson=JSON.parse(JSON.stringify(l));editorSource.innerHTML="Source: Generator Brain";editTitle.value=l.title;editorOrientation.value=orientationMode.value;renderLesson(l);showScreen("editor")}
+function makeAIPlaceholder(){const subject=document.getElementById("subject").value,grade=document.getElementById("grade").value,topic=document.getElementById("topic").value,competency=document.getElementById("competency").value,sessions=document.getElementById("sessions").value;return{id:"ai-"+Date.now(),title:`AI Draft: ${topic}`,level:level.value,grade,subject,topic,competency,sessions,source:"AI Placeholder",content:{competency:competency||"Teacher-entered competency will appear here.",standards:"Content and performance standards will be generated or edited by the teacher.",objectives:["Identify key ideas related to the topic.","Explain the concept using grade-appropriate examples.","Apply learning through guided activities.","Reflect on learning and identify next steps."],context:`Learners in ${grade} will connect the topic "${topic}" to familiar situations.`,pre:"Begin with review, motivation, and diagnostic activity.",flow:"Use scaffolding, guided practice, social learning, checks for understanding, application, and reflection.",resources:"Slides, worksheets, visual aids, board, learner activity sheets.",integration:"Language, values, ICT, numeracy, or real-life application.",assessment:"Exit tickets, quizzes, performance tasks, feedback, and teacher observation.",forward:"Provide remediation and enrichment activities."}}}
+function openAIPrompt(){currentLesson=makeAIPlaceholder();editorSource.innerHTML="Source: AI Placeholder / Future Credits";editTitle.value=currentLesson.title;editorOrientation.value=orientationMode.value;renderLesson(currentLesson);showScreen("editor")}
+function toArrayBySession(value,n){if(Array.isArray(value)){let out=[];for(let i=0;i<n;i++)out.push(value[i]||value[i%value.length]||"");return out}const text=value||"";const parts=text.split(/\n{2,}|(?=Session\s+\d[:\-])/i).map(x=>x.trim()).filter(Boolean);if(parts.length>=n)return parts.slice(0,n);let out=[];for(let i=0;i<n;i++)out.push(parts[i]||text||"Editable content for this session.");return out}
+function splitObjectives(objs,n){let arr=Array.isArray(objs)?objs:String(objs||"").split(/[\n;]/).filter(Boolean);if(!arr.length)arr=["Write the smaller knowledge, skills, or tasks that learners will show by the end of the session."];let out=Array.from({length:n},()=>[]);arr.forEach((o,i)=>out[i%n].push(o));return out.map(x=>x.length?x:[arr[0]])}
+function sessionHeads(n){return Array.from({length:n},(_,i)=>`<th class="ilaw-session-head">Session ${i+1}</th>`).join("")}
+function listHTML(items){if(Array.isArray(items))return`<ul>${items.map(x=>`<li>${x}</li>`).join("")}</ul>`;const text=String(items||"").trim();if(!text)return"";const pieces=text.split(/\n|•|·/).map(x=>x.trim()).filter(Boolean);if(pieces.length>1)return`<ul>${pieces.map(x=>`<li>${x}</li>`).join("")}</ul>`;return text}
+function paragraphToBullets(text){const pieces=String(text||"").split(/\n|;|\. /).map(x=>x.trim()).filter(Boolean);if(pieces.length>1)return`<ul>${pieces.map(x=>`<li>${x.replace(/\.$/,"")}.</li>`).join("")}</ul>`;return text||"Editable content."}
+function renderLesson(l){
+  currentOrientation=resolveOrientation();
+  const a4=document.getElementById("a4");a4.classList.remove("portrait","landscape");a4.classList.add(currentOrientation);
+  const n=Math.max(1,Math.min(5,parseInt(l.sessions)||1)),c=l.content||{},objectives=splitObjectives(c.objectives,n),contexts=toArrayBySession(c.context,n),pre=toArrayBySession(c.pre,n),flows=toArrayBySession(c.flow,n),resources=toArrayBySession(c.resources,n),integrations=toArrayBySession(c.integration,n),assessments=toArrayBySession(c.assessment,n),forwards=toArrayBySession(c.forward,n),reflections=toArrayBySession("What worked well? What needs improvement? Which learners need support? What should be adjusted for the next session?",n),isOfficial=n===5,docClass=isOfficial?"ilaw-doc ilaw-official":"ilaw-doc";
+  const guideIntent=isOfficial?`<span>Meaningful learning experiences are anchored in how we frame them. Start by deciding what you want learners to master by the end of the lesson – keep it clear and simple.<br>Remember: Understanding your learners’ evolving context and designing around it ensure that your lessons connect with and are relevant to them.</span>`:`<span>Meaningful learning experiences are anchored in how we frame them. Start by deciding what you want learners to master by the end of the lesson – keep it clear and simple.</span>`;
+  a4.innerHTML=`<div class="${docClass}"><div style="text-align:right;margin-bottom:4px"><span class="orientation-pill">${currentOrientation.toUpperCase()} • ${templateName(n)}</span></div><h1 class="ilaw-title">${isOfficial?"LESSON PLAN TEMPLATE (OFFICIAL)":"LESSON PLAN TEMPLATE"}</h1><table><tr><td class="ilaw-label">Lesson Title</td><td colspan="${n}" data-field="lessonTitle">${l.title}</td></tr><tr><td class="ilaw-label">Learning Area/s</td><td colspan="${n}">${l.subject}</td></tr><tr><td class="ilaw-label">Name of Teacher/s</td><td colspan="${n}" id="pTeacher">${teacherName.value}</td></tr><tr><td class="ilaw-label">Grade Level and Section</td><td colspan="${n}" id="pSchool">${schoolName.value}</td></tr><tr><td class="ilaw-label">No. of Sessions</td><td colspan="${n}">${n} Session${n>1?"s":""}${n>=4?" (1 Week)":""}</td></tr><tr><td class="ilaw-label">References<br><span class="ilaw-small">(books, websites, toolkits, etc.)</span></td><td colspan="${n}" id="pRefs">${references.value}</td></tr><tr><td class="ilaw-label">Declaration of AI use<br><span class="ilaw-small">Cite how AI was used in the formulation of the lesson plan.${isOfficial?'<br>See <span class="ilaw-note">DO 3 s.2026 Annex A.</span>':''}</span></td><td colspan="${n}">${l.source&&l.source.includes("AI")?"This draft was generated using AI assistance and must be reviewed, edited, and validated by the teacher before classroom use.":"N/A or teacher may edit if AI was used."}</td></tr></table><table style="margin-top:14px"><tr><td class="ilaw-section" colspan="${n+1}">Intentions. ${guideIntent}</td></tr><tr><td class="ilaw-side">Learning Competency and Curriculum Standards:${isOfficial?'<br><span class="ilaw-guide">Write the competency/ies from the curriculum that we are targeting, and the content or performance standards applicable to the sessions.</span>':''}</td><td colspan="${n}" class="ilaw-cell"><b>Learning Competency:</b><br>${listHTML(c.competency)}<br><br><b>Content Standards / Performance Standards:</b><br>${listHTML(c.standards)}</td></tr><tr><td></td>${sessionHeads(n)}</tr><tr><td class="ilaw-side">Learning Objectives:${isOfficial?'<br><span class="ilaw-guide">Write the smaller knowledge, skills, or tasks from the competency that learners will work on.</span>':''}</td>${objectives.map(items=>`<td class="ilaw-cell">${listHTML(items)}</td>`).join("")}</tr><tr><td class="ilaw-side">Learner Context:${isOfficial?'<br><span class="ilaw-guide">Write observations, strengths, interests, and possible barriers.</span>':''}</td>${contexts.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-section" colspan="${n+1}">Learning Experience. <span>A learning experience is like a thoughtfully designed journey. Each activity and interaction builds towards meaningful understanding and growth.</span></td></tr><tr><td class="ilaw-side">Pre-Lesson:${isOfficial?'<br><span class="ilaw-guide">Describe how you will help learners get ready.</span>':''}</td>${pre.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-side">Flow:${isOfficial?'<br><span class="ilaw-guide">Describe activities that meet objectives and apply Learning Design Principles.</span>':''}</td>${flows.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-side">Learning Resources:${isOfficial?'<br><span class="ilaw-guide">List available and inclusive resources.</span>':''}</td>${resources.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-side">Opportunities for integration:</td>${integrations.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-section" colspan="${n+1}">Assessment. <span>Assessments reveal what learners have gained and what they still need help with.</span></td></tr><tr><td class="ilaw-side">Formative Assessment:</td>${assessments.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-section" colspan="${n+1}">Ways Forward. <span>Meaningful learning can also happen beyond the classroom – for both the learners and the teacher.</span></td></tr><tr><td class="ilaw-side">Extended learning opportunities:</td>${forwards.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr><tr><td class="ilaw-side">Reflections:</td>${reflections.map(x=>`<td class="ilaw-cell">${paragraphToBullets(x)}</td>`).join("")}</tr></table>${isOfficial?`<table style="margin-top:14px"><tr><td class="ilaw-section" colspan="4">RUBRIC FOR LESSON PLANNING SELF-CHECK AND/OR PEER COACHING</td></tr><tr><th>I can say that in my lesson plan…</th><th>Yes</th><th>Not Yet</th><th>Why? / What will make it better?</th></tr><tr><td>Intentions are clearly stated, with appropriate learning competencies articulated.</td><td></td><td></td><td></td></tr><tr><td>Learning experience is clear and implementable by another teacher.</td><td></td><td></td><td></td></tr><tr><td>Learning experience is well-designed with Learning Design Principles.</td><td></td><td></td><td></td></tr><tr><td>Assessment strategies generate evidence of learning.</td><td></td><td></td><td></td></tr><tr><td colspan="4"><b>Notes for my instructional coaching session:</b><br><br><br></td></tr></table>`:""}</div>`;
+}
+function syncEditorFields(){const titleCell=document.querySelector('[data-field="lessonTitle"]');if(titleCell)titleCell.textContent=editTitle.value;const pTeacher=document.getElementById("pTeacher"),pSchool=document.getElementById("pSchool"),pRefs=document.getElementById("pRefs");if(pTeacher)pTeacher.textContent=teacherName.value;if(pSchool)pSchool.textContent=schoolName.value;if(pRefs)pRefs.textContent=references.value}
+function sanitizeLessonFromPreview(){const clone=a4.cloneNode(true);clone.querySelectorAll("#pTeacher,#pSchool").forEach(el=>el.textContent="[REMOVED]");return{id:"local-"+Date.now(),title:(editTitle.value||"Untitled Lesson").replace(/teacher|school/ig,"").trim(),level:currentLesson?.level||level.value,grade:currentLesson?.grade||grade.value,subject:currentLesson?.subject||subject.value,topic:currentLesson?.topic||topic.value,competency:currentLesson?.competency||competency.value,sessions:currentLesson?.sessions||sessions.value,orientation:currentOrientation,source:"Auto-Learned Local Brain",savedAt:new Date().toISOString(),content:currentLesson?currentLesson.content:makeAIPlaceholder().content,sanitizedText:clone.innerText}}
+function autoStoreSanitized(){localLessons.push(sanitizeLessonFromPreview());localStorage.setItem("tk_ilaw_brain_v22d",JSON.stringify(localLessons));updateStats()}
+function printPDF(){autoStoreSanitized();document.body.classList.toggle("print-landscape",currentOrientation==="landscape");alert("Privacy-safe copy added to local Generator Brain. The PDF print dialog will open now.");window.print()}
+function exportDoc(){autoStoreSanitized();const orientation=currentOrientation==="landscape"?"landscape":"portrait";const pageCss=orientation==="landscape"?"@page WordSection1 {size: 11in 8.5in; margin: .35in;}":"@page WordSection1 {size: 8.5in 11in; margin: .35in;}";const content=`<html><head><meta charset="utf-8"><style>${pageCss} div.WordSection1{page:WordSection1;} body{font-family:Arial,sans-serif;} table{border-collapse:collapse;width:100%;table-layout:fixed;}td,th{border:1px solid #4b5563;padding:5px;vertical-align:top;font-size:10pt;}.ilaw-section{background:#d1d5db;font-weight:bold}.ilaw-label,.ilaw-side,.ilaw-session-head{background:#f3f4f6;font-weight:bold}</style></head><body><div class="WordSection1">${a4.innerHTML}</div></body></html>`;const blob=new Blob([content],{type:"application/msword"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(editTitle.value||"ILAW Lesson Plan").replace(/[^\w\s-]/g,"").trim()+".doc";a.click();URL.revokeObjectURL(a.href);alert("Word-compatible DOC exported. Privacy-safe copy added to local Generator Brain.")}
+function simulateAI(){currentLesson=makeAIPlaceholder();currentLesson.content.flow+=" The teacher may revise this generated section before export.";editTitle.value=currentLesson.title;renderLesson(currentLesson)}
+function updateStats(){statLessons.textContent=allLessons().length;const bt=document.getElementById("brainTotal");if(bt)bt.textContent=allLessons().length;const bs=document.getElementById("brainSubjects");if(bs)bs.textContent=new Set(allLessons().map(l=>l.subject)).size;const bl=document.getElementById("brainLocal");if(bl)bl.textContent=localLessons.length}
+updateGradeOptions();updateOrientationAuto();updateStats();
+</script>
+</body>
+</html>

@@ -113,12 +113,11 @@ const gameData = [
     flagship: true,
     category: ["primary", "secondary", "teacher"],
     keywords: "monster battle quiz rpg forest adventure classroom game hero dragon quiz primary secondary",
-    link: "games/monster_battle_quiz_rpg_final.html",
+    link: "monster-battle-rpg-v1/monster_battle_quiz_rpg_final.html",
     image: "images/monster-battle-quiz-rpg-thumbnail.png",
-    description: "Battle monsters, answer questions, level up your hero, and clear the final boss.",
+    description: "Battle monsters, answer questions, level up your hero, and defeat the final dragon boss.",
     recent: true,
-    popular: true,
-    comingSoon: true
+    popular: true
   },
   {
     title: "🎙️ Conversation Master",

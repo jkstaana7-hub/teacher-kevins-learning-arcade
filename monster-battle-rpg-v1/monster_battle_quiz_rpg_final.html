@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Monster Battle Quiz RPG – V2B Hero Attack Styles</title>
+<title>Monster Battle Quiz RPG – V2B.3 Pre-Publish RPG Polish Final</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:100%;height:100%;overflow:hidden}
@@ -135,7 +135,10 @@ button,input,textarea{font-family:inherit}
 .answer:active{transform:translateY(4px);box-shadow:0 1px 0 rgba(0,0,0,.45)}
 .answer:disabled{opacity:.75;cursor:not-allowed}
 .answer .letter{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#123d68,#0a7cff);border:2px solid rgba(247,217,139,.75);display:flex;align-items:center;justify-content:center;color:#ffd166;font-size:21px;font-weight:1000;box-shadow:0 4px 10px rgba(0,0,0,.3)}
-.popup{position:fixed;left:50%;top:41%;transform:translate(-50%,-50%) scale(0);z-index:80;min-width:min(520px,86vw);padding:18px 24px;border-radius:22px;background:linear-gradient(180deg,#fff,#f7edcf);color:#07131f;border:4px solid #ffd166;box-shadow:0 22px 60px rgba(0,0,0,.55);text-align:center;font-size:clamp(24px,4.6vw,52px);font-weight:1000;transition:.18s}
+/* V2B.2.1 Combat Feedback Polish: top-center, color-coded feedback */
+.popup{position:fixed;left:50%;top:18%;transform:translate(-50%,-50%) scale(0);z-index:160;min-width:min(330px,58vw);padding:10px 18px;border-radius:18px;background:linear-gradient(180deg,#fff,#f7edcf);color:#07131f;border:4px solid #ffd166;box-shadow:0 14px 34px rgba(0,0,0,.48),0 0 28px rgba(255,209,102,.28);text-align:center;font-size:clamp(18px,3vw,36px);font-weight:1000;transition:.15s;pointer-events:none;text-transform:uppercase;letter-spacing:.5px;text-shadow:0 2px 0 rgba(0,0,0,.28)}
+.popup.correct{background:linear-gradient(180deg,#00c853,#2ecc71 55%,#0a8f3c);color:#fff;border-color:#ffd166}
+.popup.wrong{background:linear-gradient(180deg,#ff1744,#d9283f 60%,#8b1022);color:#fff;border-color:#ffd166}
 .popup.show{transform:translate(-50%,-50%) scale(1)}
 .damage{position:fixed;z-index:85;color:#ff1744;font-size:clamp(34px,6vw,70px);font-weight:1000;text-shadow:0 4px #fff,0 8px 18px rgba(0,0,0,.35);animation:floatUp .8s forwards;pointer-events:none}
 .effect{position:fixed;z-index:78;font-size:clamp(54px,9vw,105px);font-weight:1000;pointer-events:none;text-shadow:0 5px #fff,0 12px 22px rgba(0,0,0,.35);animation:impactPop .55s forwards}
@@ -175,6 +178,7 @@ button,input,textarea{font-family:inherit}
   #heroLabel,#monsterLabel{display:none}
   .question-dock{height:27%;width:95vw;border-radius:14px;padding:8px 10px;gap:7px}.answers{gap:7px}
   .answer{padding:8px 6px 8px 46px;min-height:42px}.answer .letter{left:8px;width:28px;height:28px;font-size:17px}
+  .popup{top:17%;min-width:min(260px,46vw);padding:8px 12px;font-size:clamp(16px,4.2vw,24px);border-radius:14px}
   .results-line{grid-template-columns:1fr;gap:8px}
 }
 
@@ -187,14 +191,315 @@ button,input,textarea{font-family:inherit}
   text-shadow:0 4px 0 #fff,0 12px 22px rgba(0,0,0,.35);
 }
 
+
+/* V2B.1 Clear Projectile Visibility Patch */
+.v2b-arrow-projectile,
+.v2b-magic-projectile,
+.v2b-energy-projectile{
+  position:fixed;
+  z-index:120;
+  pointer-events:none;
+  left:0;
+  top:0;
+}
+
+.v2b-arrow-projectile{
+  width:110px;
+  height:10px;
+  background:linear-gradient(90deg,#f8f9fa,#ffd166,#ff8c00);
+  border-radius:999px;
+  box-shadow:0 0 14px #fff,0 0 26px #ffd166,0 0 42px #ff8c00;
+}
+.v2b-arrow-projectile::after{
+  content:"";
+  position:absolute;
+  right:-18px;
+  top:50%;
+  transform:translateY(-50%);
+  border-left:24px solid #ffd166;
+  border-top:14px solid transparent;
+  border-bottom:14px solid transparent;
+  filter:drop-shadow(0 0 8px #fff);
+}
+.v2b-arrow-projectile::before{
+  content:"";
+  position:absolute;
+  left:-28px;
+  top:50%;
+  transform:translateY(-50%);
+  width:34px;
+  height:4px;
+  background:rgba(255,255,255,.75);
+  box-shadow:-20px 0 10px rgba(255,255,255,.45),-38px 0 16px rgba(255,255,255,.25);
+}
+
+.v2b-magic-projectile,
+.v2b-energy-projectile{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  background:radial-gradient(circle,#ffffff 0%,#9bf6ff 24%,#00b4d8 48%,#7b2cff 76%,rgba(123,44,255,0) 100%);
+  box-shadow:0 0 18px #fff,0 0 34px #00e5ff,0 0 58px #7b2cff;
+}
+.v2b-energy-projectile::before,
+.v2b-magic-projectile::before{
+  content:"";
+  position:absolute;
+  inset:-18px;
+  border-radius:50%;
+  border:4px solid rgba(255,255,255,.55);
+  animation:v2bPulse .42s infinite alternate;
+}
+.v2b-energy-projectile::after,
+.v2b-magic-projectile::after{
+  content:"";
+  position:absolute;
+  left:-95px;
+  top:50%;
+  transform:translateY(-50%);
+  width:100px;
+  height:16px;
+  border-radius:999px;
+  background:linear-gradient(90deg,rgba(0,229,255,0),rgba(0,229,255,.75),rgba(255,255,255,.95));
+  filter:blur(1px);
+}
+
+.v2b-slash-impact,
+.v2b-burst-impact{
+  position:fixed;
+  z-index:130;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+.v2b-slash-impact{
+  width:150px;
+  height:150px;
+}
+.v2b-slash-impact::before,
+.v2b-slash-impact::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:150px;
+  height:18px;
+  border-radius:999px;
+  background:linear-gradient(90deg,rgba(255,255,255,0),#fff,#ffd166,rgba(255,255,255,0));
+  box-shadow:0 0 20px #fff,0 0 38px #ffd166;
+}
+.v2b-slash-impact::before{transform:translate(-50%,-50%) rotate(35deg)}
+.v2b-slash-impact::after{transform:translate(-50%,-50%) rotate(-35deg)}
+
+.v2b-burst-impact{
+  width:160px;
+  height:160px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff 0%,#ffd166 18%,#ff6b35 42%,rgba(255,107,53,0) 72%);
+  box-shadow:0 0 28px #fff,0 0 60px #ff6b35;
+}
+
+.v2b-impact-animate{animation:v2bImpact .55s forwards}
+@keyframes v2bPulse{from{transform:scale(.92);opacity:.55}to{transform:scale(1.16);opacity:1}}
+@keyframes v2bImpact{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-10deg)}35%{opacity:1;transform:translate(-50%,-50%) scale(1.25) rotate(5deg)}100%{opacity:0;transform:translate(-50%,-50%) scale(.9) rotate(0)}}
+
+
+
+/* V2B.3 Pre-Publish RPG Polish Final */
+#titleScreen .title-wrap{
+  position:absolute;
+  inset:0;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:28px 18px 112px;
+}
+#titleScreen .game-title{
+  font-size:clamp(48px,8.6vw,112px);
+  line-height:.86;
+  text-transform:uppercase;
+  color:#fff7d6;
+  -webkit-text-stroke:2px #5a2e00;
+  text-shadow:
+    0 4px 0 #a45c00,
+    0 9px 0 #5a2e00,
+    0 0 22px rgba(255,209,102,.95),
+    0 20px 38px rgba(0,0,0,.62);
+  letter-spacing:2px;
+  margin-bottom:18px;
+  animation:titlePulse 2.2s infinite ease-in-out;
+}
+#titleScreen .subtitle{
+  background:linear-gradient(180deg,rgba(11,25,39,.86),rgba(4,10,17,.90));
+  color:#ffd166;
+  border:3px solid rgba(255,209,102,.9);
+  font-size:clamp(20px,3vw,38px);
+  padding:10px 24px;
+  box-shadow:0 0 26px rgba(255,209,102,.28),0 12px 28px rgba(0,0,0,.4);
+  margin-bottom:12px;
+  text-shadow:0 3px 0 #000;
+}
+.topic-badge{
+  display:inline-block;
+  color:#fff;
+  background:rgba(0,0,0,.52);
+  border:2px solid rgba(255,255,255,.72);
+  border-radius:999px;
+  padding:8px 18px;
+  font-size:clamp(14px,2vw,22px);
+  font-weight:1000;
+  text-shadow:0 2px 0 #000;
+  box-shadow:0 8px 20px rgba(0,0,0,.32);
+}
+.title-menu{
+  position:absolute;
+  left:50%;
+  bottom:28px;
+  transform:translateX(-50%);
+  width:min(960px,94vw);
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  z-index:20;
+}
+.title-menu .btn{font-size:clamp(16px,2vw,25px);padding:14px 12px}
+.ending-stack{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(920px,94vw);
+  height:94vh;
+  text-align:center;
+  z-index:20;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.ending-art{
+  width:min(470px,56vw);
+  height:min(470px,48vh);
+  object-fit:contain;
+  filter:drop-shadow(0 24px 20px rgba(0,0,0,.55));
+  animation:endingFloat 2.4s infinite ease-in-out;
+}
+.defeat-art{width:min(500px,60vw);height:min(500px,52vh)}
+.ending-title{
+  font-size:clamp(30px,5.5vw,70px);
+  line-height:.95;
+  font-weight:1000;
+  color:#fff;
+  text-shadow:0 6px 0 rgba(0,0,0,.58),0 18px 30px rgba(0,0,0,.55);
+}
+.ending-subtitle{
+  font-size:clamp(16px,2.6vw,30px);
+  font-weight:1000;
+  color:#fff;
+  text-shadow:0 3px 0 #000;
+}
+.ending-menu{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  width:min(520px,90vw);
+  margin-top:4px;
+}
+@keyframes titlePulse{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@keyframes endingFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+@media(max-width:760px){
+  #titleScreen .title-wrap{padding:18px 10px 122px}
+  .title-menu{grid-template-columns:1fr;bottom:14px;gap:8px;width:min(420px,92vw)}
+  .title-menu .btn{padding:10px 10px;font-size:17px;border-radius:14px}
+  .topic-badge{font-size:15px;padding:6px 12px}
+  .ending-stack{height:96vh;gap:5px}
+  .ending-art,.defeat-art{width:min(420px,84vw);height:min(360px,43vh)}
+  .ending-menu{grid-template-columns:1fr;gap:8px;width:min(360px,88vw)}
+  .ending-title{font-size:clamp(28px,8vw,48px)}
+  .ending-subtitle{font-size:clamp(15px,4vw,22px)}
+  .results-line{grid-template-columns:repeat(3,1fr);gap:6px;width:min(560px,92vw);margin:6px auto}
+  .result-box{padding:7px;font-size:12px}.result-box b{font-size:20px}
+}
+
+/* V2B.2 Battle Flow Repair Patch */
+.monster-claw-impact,
+.dragon-breath-effect,
+.hero-guard-effect{
+  position:fixed;
+  z-index:135;
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+}
+.monster-claw-impact{
+  width:165px;
+  height:165px;
+}
+.monster-claw-impact::before,
+.monster-claw-impact::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:150px;
+  height:20px;
+  border-radius:999px;
+  background:linear-gradient(90deg,rgba(255,255,255,0),#fff,#ff4d6d,rgba(255,255,255,0));
+  box-shadow:0 0 20px #fff,0 0 36px #ff4d6d;
+}
+.monster-claw-impact::before{transform:translate(-50%,-50%) rotate(28deg)}
+.monster-claw-impact::after{transform:translate(-50%,-50%) rotate(-28deg)}
+.dragon-breath-effect{
+  width:280px;
+  height:145px;
+  border-radius:999px;
+  background:radial-gradient(ellipse at left,#fff 0%,#ffd166 18%,#ff6b00 42%,#d00000 68%,rgba(208,0,0,0) 78%);
+  box-shadow:0 0 26px #fff,0 0 58px #ff6b00;
+  animation:dragonBreath .62s forwards;
+}
+.hero-guard-effect{
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  border:7px solid rgba(0,229,255,.82);
+  box-shadow:0 0 22px #fff,0 0 46px #00b4d8,inset 0 0 28px rgba(0,180,216,.45);
+  animation:guardPop .62s forwards;
+}
+.screen-hit-flash{animation:screenHitFlash .42s}
+.boss-warning-pop{
+  position:fixed;
+  left:50%;
+  top:24%;
+  transform:translate(-50%,-50%);
+  z-index:150;
+  padding:16px 26px;
+  border-radius:22px;
+  background:rgba(0,0,0,.68);
+  color:#ffd166;
+  border:4px solid #ffd166;
+  font-size:clamp(26px,5vw,68px);
+  font-weight:1000;
+  text-shadow:0 5px 0 #8b0000,0 14px 24px rgba(0,0,0,.48);
+  box-shadow:0 0 34px rgba(255,209,102,.45);
+  pointer-events:none;
+  animation:warningPop .9s forwards;
+}
+@keyframes dragonBreath{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(4deg)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.24) rotate(-4deg)}}
+@keyframes guardPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.24)}}
+@keyframes screenHitFlash{0%,100%{box-shadow:none}35%{box-shadow:inset 0 0 0 100vmax rgba(255,0,0,.20)}}
+@keyframes warningPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.55)}20%,72%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(-50%,-50%) scale(.9)}}
+
 </style>
 </head>
 <body>
 <section id="titleScreen" class="screen active">
   <div class="title-wrap">
-    <h1 class="game-title">Monster Battle<br>Quiz RPG</h1>
-    <div class="subtitle">Forest Adventure • My School Things</div>
-    <div class="menu">
+    <h1 class="game-title">MONSTER BATTLE<br>QUIZ RPG</h1>
+    <div class="subtitle">Forest Adventure</div>
+    <div class="topic-badge">Topic: My School Things</div>
+    <div class="title-menu">
       <button class="btn green" onclick="showScreen('heroScreen')">▶ Start Adventure</button>
       <button class="btn blue" onclick="openTeacher()">⚙ Teacher Panel</button>
       <button class="btn orange" onclick="showScreen('howScreen')">❔ How to Play</button>
@@ -216,10 +521,10 @@ button,input,textarea{font-family:inherit}
     <p>Choose Your Hero • Click a hero to begin</p>
   </div>
   <div class="hero-world-grid">
-    <div class="world-hero" onclick="chooseHero('Knight','heroes/knight.png','Balanced Warrior','⚔️')"><img src="heroes/knight.png"><div class="world-name"><h3>Knight</h3><span>Balanced Warrior</span></div></div>
-    <div class="world-hero" onclick="chooseHero('Wizard','heroes/wizard.png','Magic Caster','🔥')"><img src="heroes/wizard.png"><div class="world-name"><h3>Wizard</h3><span>Magic Caster</span></div></div>
-    <div class="world-hero" onclick="chooseHero('Archer','heroes/archer.png','Forest Ranger','🏹')"><img src="heroes/archer.png"><div class="world-name"><h3>Archer</h3><span>Forest Ranger</span></div></div>
-    <div class="world-hero" onclick="chooseHero('Ninja','heroes/ninja.png','Lightning Fighter','⚡')"><img src="heroes/ninja.png"><div class="world-name"><h3>Ninja</h3><span>Lightning Fighter</span></div></div>
+    <div class="world-hero" onclick="chooseHero('Knight','heroes/knight.png','Balanced Warrior','⚔️')"><img src="heroes/knight.png"><div class="world-name"><h3>Knight</h3><span>⚔️ Melee Warrior</span></div></div>
+    <div class="world-hero" onclick="chooseHero('Wizard','heroes/wizard.png','Magic Caster','🔥')"><img src="heroes/wizard.png"><div class="world-name"><h3>Wizard</h3><span>🔥 Magic Caster</span></div></div>
+    <div class="world-hero" onclick="chooseHero('Archer','heroes/archer.png','Forest Ranger','🏹')"><img src="heroes/archer.png"><div class="world-name"><h3>Archer</h3><span>🏹 Ranged Attacker</span></div></div>
+    <div class="world-hero" onclick="chooseHero('Ninja','heroes/ninja.png','Lightning Fighter','⚡')"><img src="heroes/ninja.png"><div class="world-name"><h3>Ninja</h3><span>⚡ Fast Striker</span></div></div>
   </div>
   <button class="btn blue world-back" onclick="showScreen('titleScreen')">⬅ Back</button>
   <div class="world-help">No windows. More world. Choose your hero.</div>
@@ -283,10 +588,11 @@ button,input,textarea{font-family:inherit}
 </section>
 
 <section id="gameOverScreen" class="screen">
-  <div class="float-stack">
-    <div class="big-world-text">Your Hero Has Fallen...</div>
-    <div class="sub-world-text">Better Luck Next Time</div>
-    <div class="menu">
+  <div class="ending-stack">
+    <img id="defeatArt" class="ending-art defeat-art" src="assets/endings/lose_knight.png" alt="Hero defeated">
+    <div class="ending-title">Your Hero Has Fallen...</div>
+    <div class="ending-subtitle">Better Luck Next Time</div>
+    <div class="ending-menu">
       <button class="btn green" onclick="showScreen('heroScreen')">Try Again</button>
       <button class="btn blue" onclick="showScreen('titleScreen')">Return Home</button>
     </div>
@@ -294,15 +600,16 @@ button,input,textarea{font-family:inherit}
 </section>
 
 <section id="endScreen" class="screen">
-  <div class="float-stack">
-    <div class="big-world-text">🏆 FOREST SAVED 🏆</div>
-    <div class="sub-world-text">Forest Dragon Defeated</div>
+  <div class="ending-stack">
+    <img id="victoryArt" class="ending-art" src="assets/endings/win_knight.png" alt="Hero victory">
+    <div class="ending-title">🏆 FOREST SAVED 🏆</div>
+    <div class="ending-subtitle">Forest Dragon Defeated</div>
     <div class="results-line">
       <div class="result-box">Final Level<b id="finalLevel">1</b></div>
       <div class="result-box">Final XP<b id="finalXP">0</b></div>
       <div class="result-box">Final Gold<b id="finalGold">0</b></div>
     </div>
-    <div class="menu">
+    <div class="ending-menu">
       <button class="btn green" onclick="showScreen('heroScreen')">Play Again</button>
       <button class="btn blue" onclick="showScreen('titleScreen')">Return Home</button>
     </div>
@@ -361,30 +668,33 @@ function chooseHero(name,img,role,effect){hero={name,img,role,effect,hp:100,maxH
 function startAdventure(){loadQuestions();monsterIndex=0;qIndex=0;hero.hp=100;hero.level=1;hero.xp=0;hero.gold=0;loadMonster()}
 function loadMonster(){const base=monsters[monsterIndex];monster={...base,maxHp:base.hp};if(monster.boss){showScreen("bossBattleScreen")}else showBattle()}
 function showBattle(){const battle=document.getElementById("battleScreen");battle.classList.toggle("boss",monster.boss);showScreen("battleScreen");document.getElementById("monsterName").textContent=monster.name;document.getElementById("monsterArt").src=monster.img;document.getElementById("monsterArt").classList.toggle("boss",monster.boss);document.getElementById("monsterArt").style.opacity=1;document.getElementById("monsterArt").style.transform="scaleX(-1)";document.getElementById("monsterBase").classList.toggle("boss",monster.boss);document.getElementById("monsterLabel").textContent=monster.name;document.getElementById("heroName").textContent=hero.name;document.getElementById("heroArt").src=hero.img;document.getElementById("heroArt").style.transform="translate(0,0)";document.getElementById("heroLabel").textContent=hero.name;document.getElementById("stageHud").textContent=monster.boss?"Boss Battle":"Monster "+(monsterIndex+1)+"/5";nextQuestion();updateUI()}
-function nextQuestion(){if(qIndex>=questions.length)qIndex=0;const q=questions[qIndex++];document.getElementById("questionText").textContent=q.q;const box=document.getElementById("answers");box.innerHTML="";const letters=["A","B","C","D"];shuffle([...q.choices]).forEach((choice,index)=>{const btn=document.createElement("button");btn.className="answer";btn.innerHTML=`<span class="letter">${letters[index]}</span><span>${choice}</span>`;btn.onclick=()=>answerQuestion(choice,q.answer);box.appendChild(btn)})}
-function answerQuestion(choice,correct){
+function nextQuestion(){if(qIndex>=questions.length)qIndex=0;const q=questions[qIndex++];renderQuestion(q)}
+function renderQuestion(q){document.getElementById("questionText").textContent=q.q;const box=document.getElementById("answers");box.innerHTML="";const letters=["A","B","C","D"];shuffle([...q.choices]).forEach((choice,index)=>{const btn=document.createElement("button");btn.className="answer";btn.innerHTML=`<span class="letter">${letters[index]}</span><span>${choice}</span>`;btn.onclick=()=>answerQuestion(choice,q);box.appendChild(btn)})}
+function setAnswersDisabled(state){document.querySelectorAll(".answer").forEach(b=>b.disabled=state)}
+function answerQuestion(choice,q){
  if(locked)return;
  locked=true;
- document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
- if(choice===correct){
-   popup("Correct!");
-   if(hero.name==="Archer") rangedHeroAttack("🏹");
-   else if(hero.name==="Wizard") rangedHeroAttack("🔥");
-   else if(hero.name==="Ninja") heroFullDashAttack("⚡");
-   else heroFullDashAttack("⚔️");
+ setAnswersDisabled(true);
+ if(choice===q.answer){
+   popup("✅ Correct!","correct");
+   if(hero.name==="Archer") archerArrowAttack();
+   else if(hero.name==="Wizard") wizardEnergyAttack();
+   else if(hero.name==="Ninja") heroDashAttack("⚡","energy");
+   else heroDashAttack("⚔️","slash");
  }else{
-   popup("Try Again!");
-   monsterFullDashAttack();
+   popup("❌ Try Again!","wrong");
+   monsterFullDashAttack(q);
  }
 }
-function heroFullDashAttack(symbol){
+
+function heroDashAttack(symbol,type){
  const heroEl=document.getElementById("heroArt"), monEl=document.getElementById("monsterArt");
  const h=heroEl.getBoundingClientRect(), m=monEl.getBoundingClientRect();
  const dx=(m.left - h.right) + (m.width*.18);
  heroEl.style.transition="transform .36s cubic-bezier(.2,.9,.3,1.25)";
  heroEl.style.transform=`translate(${dx}px,-8px) scale(1.08)`;
  setTimeout(()=>{
-   impactOn("monster",symbol || hero.effect);
+   showImpact("monster", type==="slash" ? "slash" : "burst");
    monster.hp=Math.max(0,monster.hp-10);
    floatDamage("-10","monster");
    monEl.classList.add("shake","hit-flash");
@@ -398,70 +708,225 @@ function heroFullDashAttack(symbol){
  setTimeout(()=>{if(monster.hp<=0)monsterDefeated();else{locked=false;nextQuestion()}},1120);
 }
 
-function rangedHeroAttack(symbol){
+function archerArrowAttack(){
  const heroEl=document.getElementById("heroArt"), monEl=document.getElementById("monsterArt");
  const h=heroEl.getBoundingClientRect(), m=monEl.getBoundingClientRect();
 
- // Caster/archer stays in place: small ready movement only.
+ // Archer stays in place and releases a clearly visible arrow.
  heroEl.style.transition="transform .18s ease";
- heroEl.style.transform="translate(-6px,-4px) scale(1.03)";
+ heroEl.style.transform="translate(-8px,-4px) scale(1.03)";
 
- setTimeout(()=>{
-   launchProjectile(symbol, h.right-8, h.top+h.height*.42, m.left+m.width*.48, m.top+m.height*.43, ()=>{
-     impactOn("monster", symbol==="🏹" ? "💥" : "✨");
-     monster.hp=Math.max(0,monster.hp-10);
-     floatDamage("-10","monster");
-     monEl.classList.add("shake","hit-flash");
-     updateUI();
-   });
- },180);
+ const startX=h.right-20, startY=h.top+h.height*.43;
+ const endX=m.left+m.width*.42, endY=m.top+m.height*.48;
 
- setTimeout(()=>{
-   heroEl.style.transition="transform .25s ease";
-   heroEl.style.transform="translate(0,0) scale(1)";
- },360);
+ launchVisibleProjectile("arrow",startX,startY,endX,endY,()=>{
+   showImpact("monster","slash");
+   monster.hp=Math.max(0,monster.hp-10);
+   floatDamage("-10","monster");
+   monEl.classList.add("shake","hit-flash");
+   updateUI();
+ });
 
+ setTimeout(()=>{heroEl.style.transform="translate(0,0) scale(1)"},320);
  setTimeout(()=>{
    monEl.classList.remove("shake","hit-flash");
    if(monster.hp<=0)monsterDefeated();else{locked=false;nextQuestion()}
  },1180);
 }
 
-function launchProjectile(symbol,startX,startY,endX,endY,onHit){
+function wizardEnergyAttack(){
+ const heroEl=document.getElementById("heroArt"), monEl=document.getElementById("monsterArt");
+ const h=heroEl.getBoundingClientRect(), m=monEl.getBoundingClientRect();
+
+ // Wizard stays in place and casts a large glowing energy ball.
+ heroEl.style.transition="transform .18s ease";
+ heroEl.style.transform="translate(-6px,-6px) scale(1.04)";
+
+ const startX=h.right-10, startY=h.top+h.height*.38;
+ const endX=m.left+m.width*.46, endY=m.top+m.height*.44;
+
+ launchVisibleProjectile("magic",startX,startY,endX,endY,()=>{
+   showImpact("monster","burst");
+   monster.hp=Math.max(0,monster.hp-10);
+   floatDamage("-10","monster");
+   monEl.classList.add("shake","hit-flash");
+   updateUI();
+ });
+
+ setTimeout(()=>{heroEl.style.transform="translate(0,0) scale(1)"},320);
+ setTimeout(()=>{
+   monEl.classList.remove("shake","hit-flash");
+   if(monster.hp<=0)monsterDefeated();else{locked=false;nextQuestion()}
+ },1180);
+}
+
+function launchVisibleProjectile(kind,startX,startY,endX,endY,onHit){
  const p=document.createElement("div");
- p.className="projectile v2b-projectile";
- p.textContent=symbol;
+ p.className = kind==="arrow" ? "v2b-arrow-projectile" : "v2b-magic-projectile";
  p.style.left=startX+"px";
  p.style.top=startY+"px";
  document.body.appendChild(p);
 
+ const dx=endX-startX, dy=endY-startY;
+ const angle=Math.atan2(dy,dx)*180/Math.PI;
+
+ if(kind==="arrow"){
+   p.style.transform=`translate(-50%,-50%) rotate(${angle}deg)`;
+ }else{
+   p.style.transform="translate(-50%,-50%) scale(.75)";
+ }
+
  requestAnimationFrame(()=>{
-   p.style.transition="left .55s cubic-bezier(.25,.8,.25,1), top .55s cubic-bezier(.25,.8,.25,1), transform .55s";
+   p.style.transition="left .68s cubic-bezier(.15,.85,.2,1), top .68s cubic-bezier(.15,.85,.2,1), transform .68s";
    p.style.left=endX+"px";
    p.style.top=endY+"px";
-   p.style.transform="scale(1.25) rotate(18deg)";
+   if(kind==="arrow") p.style.transform=`translate(-50%,-50%) rotate(${angle}deg) scale(1.08)`;
+   else p.style.transform="translate(-50%,-50%) scale(1.1) rotate(18deg)";
  });
 
- setTimeout(()=>{ if(onHit) onHit(); },560);
- setTimeout(()=>p.remove(),760);
+ setTimeout(()=>{ if(onHit) onHit(); },690);
+ setTimeout(()=>p.remove(),800);
 }
-function monsterFullDashAttack(){
+
+function showImpact(target,type){
+ const rect=(target==="monster"?document.getElementById("monsterArt"):document.getElementById("heroArt")).getBoundingClientRect();
+ const hit=document.createElement("div");
+ hit.className=(type==="slash"?"v2b-slash-impact":"v2b-burst-impact")+" v2b-impact-animate";
+ hit.style.left=(rect.left+rect.width*.48)+"px";
+ hit.style.top=(rect.top+rect.height*.43)+"px";
+ document.body.appendChild(hit);
+ setTimeout(()=>hit.remove(),650);
+}
+
+
+function monsterFullDashAttack(currentQuestion){
  const heroEl=document.getElementById("heroArt"), monEl=document.getElementById("monsterArt");
  const h=heroEl.getBoundingClientRect(), m=monEl.getBoundingClientRect();
- const dx=-((m.left - h.right) + (h.width*.20));
- monEl.style.transition="transform .36s cubic-bezier(.2,.9,.3,1.25)";
- monEl.style.transform=`translate(${dx}px,-6px) scaleX(-1) scale(1.08)`;
- setTimeout(()=>{impactOn("hero","💥");hero.hp=Math.max(0,hero.hp-10);floatDamage("-10","hero");heroEl.classList.add("shake","hit-flash");updateUI()},380);
- setTimeout(()=>{heroEl.classList.remove("shake","hit-flash");monEl.style.transition="transform .32s ease";monEl.style.transform="scaleX(-1) translate(0,0) scale(1)"},760);
- setTimeout(()=>{if(hero.hp<=0)gameOver();else{locked=false;nextQuestion()}},1120);
+ const dmg=monster.boss?18:10;
+ const isBoss=monster.boss;
+
+ // V2B.2.1: Boss uses breath only; normal monsters dash left toward the hero.
+ if(isBoss){
+   bossBreathAttack(currentQuestion,dmg);
+   return;
+ }
+
+ const dx=(h.right - m.left) - (m.width*.08); // negative value = toward the hero on the left
+ monEl.style.transition="transform .34s cubic-bezier(.2,.9,.3,1.2)";
+ monEl.style.transform=`translate(${dx}px,-8px) scaleX(-1) scale(1.06)`;
+
+ setTimeout(()=>{
+   showMonsterClaw();
+   showHeroGuard();
+   document.getElementById("battleScreen").classList.add("screen-hit-flash");
+   hero.hp=Math.max(0,hero.hp-dmg);
+   floatDamage("-"+dmg,"hero");
+   heroEl.classList.add("shake","hit-flash");
+   updateUI();
+ },360);
+
+ setTimeout(()=>{
+   monEl.style.transition="transform .32s ease";
+   monEl.style.transform="translate(0,0) scaleX(-1) scale(1)";
+   heroEl.classList.remove("shake","hit-flash");
+   document.getElementById("battleScreen").classList.remove("screen-hit-flash");
+ },830);
+
+ setTimeout(()=>{
+   if(hero.hp<=0){gameOver();return}
+   // V2B.2: wrong answers keep the same question available for another try.
+   locked=false;
+   setAnswersDisabled(false);
+ },1080);
 }
-function impactOn(target,symbol){const rect=(target==="monster"?document.getElementById("monsterArt"):document.getElementById("heroArt")).getBoundingClientRect();const e=document.createElement("div");e.className="effect";e.textContent=symbol;e.style.left=(rect.left+rect.width*.45)+"px";e.style.top=(rect.top+rect.height*.38)+"px";document.body.appendChild(e);setTimeout(()=>e.remove(),620)}
+
+function bossBreathAttack(currentQuestion,dmg){
+ const heroEl=document.getElementById("heroArt"), monEl=document.getElementById("monsterArt");
+ showBossWarning("⚠ DRAGON BREATH!");
+ monEl.style.transition="transform .22s ease";
+ monEl.style.transform="translate(-18px,-4px) scaleX(-1) scale(1.03)";
+
+ setTimeout(()=>{
+   showDragonBreath();
+   showHeroGuard();
+   document.getElementById("battleScreen").classList.add("screen-hit-flash");
+   hero.hp=Math.max(0,hero.hp-dmg);
+   floatDamage("-"+dmg,"hero");
+   heroEl.classList.add("shake","hit-flash");
+   updateUI();
+ },560);
+
+ setTimeout(()=>{
+   monEl.style.transition="transform .32s ease";
+   monEl.style.transform="translate(0,0) scaleX(-1) scale(1)";
+   heroEl.classList.remove("shake","hit-flash");
+   document.getElementById("battleScreen").classList.remove("screen-hit-flash");
+ },980);
+
+ setTimeout(()=>{
+   if(hero.hp<=0){gameOver();return}
+   locked=false;
+   setAnswersDisabled(false);
+ },1220);
+}
+
+function showMonsterClaw(){
+ const rect=document.getElementById("heroArt").getBoundingClientRect();
+ const hit=document.createElement("div");
+ hit.className="monster-claw-impact v2b-impact-animate";
+ hit.style.left=(rect.left+rect.width*.52)+"px";
+ hit.style.top=(rect.top+rect.height*.44)+"px";
+ document.body.appendChild(hit);
+ setTimeout(()=>hit.remove(),650);
+}
+
+function showDragonBreath(){
+ const heroRect=document.getElementById("heroArt").getBoundingClientRect();
+ const breath=document.createElement("div");
+ breath.className="dragon-breath-effect";
+ breath.style.left=(heroRect.left+heroRect.width*.62)+"px";
+ breath.style.top=(heroRect.top+heroRect.height*.43)+"px";
+ document.body.appendChild(breath);
+ setTimeout(()=>breath.remove(),720);
+}
+
+function showHeroGuard(){
+ const rect=document.getElementById("heroArt").getBoundingClientRect();
+ const guard=document.createElement("div");
+ guard.className="hero-guard-effect";
+ guard.style.left=(rect.left+rect.width*.5)+"px";
+ guard.style.top=(rect.top+rect.height*.5)+"px";
+ document.body.appendChild(guard);
+ setTimeout(()=>guard.remove(),700);
+}
+
+function showBossWarning(text){
+ const old=document.querySelector(".boss-warning-pop");
+ if(old)old.remove();
+ const warn=document.createElement("div");
+ warn.className="boss-warning-pop";
+ warn.textContent=text;
+ document.body.appendChild(warn);
+ setTimeout(()=>warn.remove(),920);
+}
+
+
+function heroKey(){return String(hero.name||"knight").toLowerCase()}
+function setEndingArt(type){
+ const key=heroKey();
+ const map={knight:"knight",wizard:"wizard",archer:"archer",ninja:"ninja"};
+ const safe=map[key]||"knight";
+ const file=type==="win"?`assets/endings/win_${safe}.png`:`assets/endings/lose_${safe}.png`;
+ const el=document.getElementById(type==="win"?"victoryArt":"defeatArt");
+ if(el)el.src=file;
+}
+
 function monsterDefeated(){const art=document.getElementById("monsterArt");art.classList.add("fade-out");const oldLevel=hero.level;hero.xp+=monster.xp;hero.gold+=monster.gold;updateLevel();updateUI();setTimeout(()=>{art.classList.remove("fade-out");const leveled=hero.level>oldLevel;document.getElementById("victoryMessage").innerHTML=`<div class="sub-world-text"><b>${monster.name}</b> Defeated!</div><div class="sub-world-text">+${monster.xp} XP</div><div class="sub-world-text">🪙 +${monster.gold} Gold</div>${leveled?'<div class="sub-world-text">⭐⭐⭐ LEVEL UP! ⭐⭐⭐</div>':''}`;pendingContinue=true;showScreen("victoryScreen")},760)}
-function continueAdventure(){if(!pendingContinue)return;pendingContinue=false;monsterIndex++;locked=false;if(monsterIndex>=monsters.length){document.getElementById("finalLevel").textContent=hero.level;document.getElementById("finalXP").textContent=hero.xp;document.getElementById("finalGold").textContent=hero.gold;showScreen("endScreen")}else loadMonster()}
-function gameOver(){locked=false;showScreen("gameOverScreen")}
+function continueAdventure(){if(!pendingContinue)return;pendingContinue=false;monsterIndex++;locked=false;if(monsterIndex>=monsters.length){document.getElementById("finalLevel").textContent=hero.level;document.getElementById("finalXP").textContent=hero.xp;document.getElementById("finalGold").textContent=hero.gold;setEndingArt("win");showScreen("endScreen")}else loadMonster()}
+function gameOver(){locked=false;setEndingArt("lose");showScreen("gameOverScreen")}
 function updateLevel(){if(hero.xp>=250)hero.level=3;else if(hero.xp>=100)hero.level=2;else hero.level=1}
 function updateUI(){const mhp=monster.hp/monster.maxHp,hhp=hero.hp/hero.maxHp;document.getElementById("monsterHpText").textContent=`${monster.hp}/${monster.maxHp}`;document.getElementById("heroHpText").textContent=`${hero.hp}/${hero.maxHp}`;document.getElementById("monsterHpFill").style.width=(mhp*100)+"%";document.getElementById("heroHpFill").style.width=(hhp*100)+"%";document.getElementById("monsterHpFill").classList.toggle("low",mhp<=.3);document.getElementById("heroHpFill").classList.toggle("low",hhp<=.3);const next=hero.level===1?100:hero.level===2?250:250;const prev=hero.level===1?0:hero.level===2?100:250;const xpPct=hero.level>=3?100:((hero.xp-prev)/(next-prev))*100;document.getElementById("levelText").textContent=`Level ${hero.level}`;document.getElementById("xpText").textContent=`XP ${hero.xp}/${next}`;document.getElementById("xpFill").style.width=Math.max(0,Math.min(100,xpPct))+"%";document.getElementById("goldText").textContent=hero.gold}
-function popup(text){const p=document.getElementById("popup");p.textContent=text;p.classList.add("show");setTimeout(()=>p.classList.remove("show"),650)}
+function popup(text,type="neutral"){const p=document.getElementById("popup");p.textContent=text;p.classList.remove("correct","wrong");if(type)p.classList.add(type);p.classList.add("show");setTimeout(()=>p.classList.remove("show"),500)}
 function floatDamage(text,target){const rect=(target==="monster"?document.getElementById("monsterArt"):document.getElementById("heroArt")).getBoundingClientRect();const d=document.createElement("div");d.className="damage";d.textContent=text;d.style.left=(rect.left+rect.width/2)+"px";d.style.top=(rect.top+rect.height/2)+"px";document.body.appendChild(d);setTimeout(()=>d.remove(),850)}
 function openTeacher(){loadQuestions();renderEditor();showScreen("teacherScreen")}
 function renderEditor(){const box=document.getElementById("editor");box.innerHTML="";questions.forEach((q,i)=>{const div=document.createElement("div");div.className="qedit";div.innerHTML=`<b>Question ${i+1}</b><textarea id="q${i}" rows="2">${esc(q.q)}</textarea><div class="grid2"><input id="q${i}c0" value="${esc(q.choices[0])}"><input id="q${i}c1" value="${esc(q.choices[1])}"><input id="q${i}c2" value="${esc(q.choices[2])}"><input id="q${i}c3" value="${esc(q.choices[3])}"></div><input id="q${i}a" value="${esc(q.answer)}" placeholder="Correct answer">`;box.appendChild(div)})}

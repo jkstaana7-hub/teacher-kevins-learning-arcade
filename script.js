@@ -11,6 +11,16 @@ const gameData = [
     action: "Open Tool"
   },
   {
+    title: "❓ WH-Questions",
+    category: ["primary", "secondary", "teacher"],
+    keywords: "wh questions who what where when why how classroom quiz teams english speaking primary secondary teacher",
+    link: "games/wh_questions_final.html",
+    image: "images/wh-questions-thumbnail.png",
+    description: "A fun team quiz game for practicing Who, What, Where, When, Why, and How questions.",
+    recent: true,
+    popular: true
+  },
+  {
     title: "🎲 Bingo Card Generator",
     category: ["teacher"],
     keywords: "teacher tool bingo card generator printable classroom worksheet custom words",

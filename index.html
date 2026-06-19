@@ -8,154 +8,260 @@
 </head>
 <body>
 
-  <main class="home-screen">
-    <div class="button-panel" aria-label="Main navigation">
-      <button class="home-btn play" onclick="openPopup('playPopup')">
-        <span class="btn-icon">🎮</span>
-        <span class="btn-title">Play Games</span>
-        <span class="btn-subtitle">Explore all our games</span>
-      </button>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top">
+        <span class="brand-icon">🎮</span>
+        <span>
+          <strong>Teacher Kevin's</strong>
+          <small>Learning Arcade</small>
+        </span>
+      </a>
 
-      <button class="home-btn recent" onclick="openPopup('recentPopup')">
-        <span class="btn-icon">🆕</span>
-        <span class="btn-title">Recently Added</span>
-        <span class="btn-subtitle">Check latest uploads</span>
-      </button>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#games">Games</a>
+        <a href="#teacher-tools">Teacher Tools</a>
+        <a href="#worksheets">Worksheets</a>
+        <a href="#lessons">Lessons</a>
+        <a href="https://teacherkevinslearningarcade.blogspot.com/" target="_blank" rel="noopener">Blog</a>
+        <a href="#premium">Premium</a>
+      </nav>
 
-      <button class="home-btn popular" onclick="openPopup('popularPopup')">
-        <span class="btn-icon">⭐</span>
-        <span class="btn-title">Popular Games</span>
-        <span class="btn-subtitle">Most loved games</span>
-      </button>
-
-      <button class="home-btn teacher" onclick="openPopup('teacherPopup')">
-        <span class="btn-icon">👩‍🏫</span>
-        <span class="btn-title">Teacher Hub</span>
-        <span class="btn-subtitle">Updates and tools</span>
-      </button>
-
-      <button class="home-btn about" onclick="openPopup('aboutPopup')">
-        <span class="btn-icon">ℹ️</span>
-        <span class="btn-title">About / Contact</span>
-        <span class="btn-subtitle">Learn more</span>
-      </button>
+      <div class="header-actions">
+        <a class="icon-link" href="#premium" title="Account / Login">👤</a>
+        <a class="icon-link" href="#premium" title="Downloads">⬇️</a>
+      </div>
     </div>
 
-    <a class="blog-link" href="https://teacherkevinslearningarcade.blogspot.com/" target="_blank" rel="noopener">
-      🌐 teacherkevinslearningarcade.blogspot.com
-    </a>
+    <div class="header-search-wrap">
+      <input
+        type="text"
+        id="mainSearchInput"
+        class="main-search"
+        placeholder="🔍 Search games, tools, worksheets, lessons..."
+        oninput="handleMainSearch()"
+      />
+    </div>
+  </header>
+
+  <main id="top">
+
+    <section class="hero-section">
+      <div class="hero-overlay">
+        <div class="hero-content">
+          <p class="hero-kicker">Online Classroom Games • Teacher Tools • Premium Downloads</p>
+          <h1>Teacher Kevin's Learning Arcade</h1>
+          <p class="hero-tagline">
+            The Home of Online Classroom Games, Teacher Tools, and Downloadable Premium Resources
+          </p>
+
+          <div class="hero-buttons">
+            <a href="#games" class="hero-btn primary">🎮 Play Online Games</a>
+            <a href="#teacher-tools" class="hero-btn secondary">👩‍🏫 Teacher Tools</a>
+            <a href="#worksheets" class="hero-btn light">📝 Worksheets</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content-section" id="games">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Flagship Showcase</p>
+          <h2>Featured Games</h2>
+        </div>
+        <button class="section-link" onclick="openSectionPopup('featured')">View All</button>
+      </div>
+
+      <div class="resource-grid" id="featuredGamesGrid"></div>
+    </section>
+
+    <section class="content-section" id="teacher-tools">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">For Teachers</p>
+          <h2>Teacher Tools</h2>
+        </div>
+        <button class="section-link" onclick="openSectionPopup('tools')">View All</button>
+      </div>
+
+      <div class="resource-grid" id="teacherToolsGrid"></div>
+    </section>
+
+    <section class="content-section" id="worksheets">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Free Downloads</p>
+          <h2>Worksheets & Printables</h2>
+        </div>
+        <button class="section-link" onclick="openSectionPopup('worksheets')">View All</button>
+      </div>
+
+      <div class="resource-grid" id="worksheetsGrid"></div>
+    </section>
+
+    <section class="content-section" id="lessons">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Teaching Support</p>
+          <h2>Lessons</h2>
+        </div>
+        <button class="section-link" onclick="openSectionPopup('lessons')">View All</button>
+      </div>
+
+      <div class="coming-grid" id="lessonsGrid">
+        <article class="coming-card">
+          <span>📚</span>
+          <h3>Lesson Plans</h3>
+          <p>Ready-to-use classroom lesson plans will be added soon.</p>
+        </article>
+
+        <article class="coming-card">
+          <span>🖥️</span>
+          <h3>PowerPoint Lessons</h3>
+          <p>Interactive PPT-style lessons for Kindergarten, Primary, and Secondary.</p>
+        </article>
+
+        <article class="coming-card">
+          <span>🧠</span>
+          <h3>Assessment Materials</h3>
+          <p>Pre-tests, post-tests, and printable classroom assessment resources.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Fresh Uploads</p>
+          <h2>Recently Added</h2>
+        </div>
+        <button class="section-link" onclick="openSectionPopup('recent')">View All</button>
+      </div>
+
+      <div class="resource-grid" id="recentGrid"></div>
+    </section>
+
+    <section class="library-cta-section" id="all-resources">
+      <div class="library-cta-card">
+        <div>
+          <p class="section-kicker">Complete Catalog</p>
+          <h2>All Resources Library</h2>
+          <p>
+            Browse the full collection of online classroom games, teacher tools,
+            worksheets, printables, lessons, and future premium resources.
+          </p>
+        </div>
+
+        <button class="library-btn" onclick="openLibraryPopup()">
+          🔍 Browse Full Library
+        </button>
+      </div>
+    </section>
+
+    <section class="premium-section" id="premium">
+      <div class="premium-card">
+        <div>
+          <p class="section-kicker">Coming Soon</p>
+          <h2>Premium Downloads</h2>
+          <p>
+            Play online now. In the future, premium members will be able to download offline versions
+            of classroom games, teacher tools, worksheets, and special resources.
+          </p>
+        </div>
+
+        <div class="premium-actions">
+          <button disabled>🔐 Login Coming Soon</button>
+          <button disabled>⬇️ Downloads Coming Soon</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+      <div class="contact-box">
+        <div>
+          <p class="section-kicker">Contact</p>
+          <h2>Request a Game or Teacher Tool</h2>
+          <p>
+            Need a custom classroom game, printable worksheet, or teacher tool?
+            Send a message to Teacher Kevin.
+          </p>
+        </div>
+
+        <form action="https://formspree.io/f/xzdqpyyq" method="POST" class="contact-form">
+          <input type="text" name="name" placeholder="Your name" />
+          <input type="email" name="email" placeholder="Your email *" required />
+          <textarea name="message" rows="4" placeholder="Type your message here..." required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+
   </main>
 
-  <div class="popup-overlay" id="playPopup">
-    <section class="popup wide-popup">
-      <button class="close-btn" onclick="closePopup('playPopup')">×</button>
-      <h2>🎮 Play Games</h2>
-      <p class="popup-subtitle">Choose a game or classroom tool and start learning.</p>
+  <footer class="site-footer">
+    <p>© Teacher Kevin's Learning Arcade</p>
+    <a href="https://teacherkevinslearningarcade.blogspot.com/" target="_blank" rel="noopener">
+      teacherkevinslearningarcade.blogspot.com
+    </a>
+  </footer>
+
+  <div class="modal-overlay" id="sectionPopup">
+    <section class="modal-box">
+      <button class="close-btn" onclick="closeSectionPopup()">×</button>
+
+      <p class="section-kicker" id="popupKicker">Browse</p>
+      <h2 id="popupTitle">All Resources</h2>
 
       <input
         type="text"
-        id="gameSearchInput"
-        class="game-search"
-        placeholder="🔍 Search games and tools..."
-        oninput="renderGames()"
+        id="popupSearchInput"
+        class="popup-search"
+        placeholder="🔍 Search inside this section..."
+        oninput="renderSectionPopupContent()"
       />
 
-      <div class="category-tabs">
-        <button class="category-tab active" data-category="all" onclick="setCategory('all')">All</button>
-        <button class="category-tab" data-category="kindergarten" onclick="setCategory('kindergarten')">Kindergarten</button>
-        <button class="category-tab" data-category="primary" onclick="setCategory('primary')">Primary</button>
-        <button class="category-tab" data-category="secondary" onclick="setCategory('secondary')">Secondary</button>
-        <button class="category-tab" data-category="teacher" onclick="setCategory('teacher')">Teacher Tools</button>
-      </div>
-
-      <div class="game-grid" id="gameGrid"></div>
+      <div class="resource-grid popup-grid" id="popupGrid"></div>
     </section>
   </div>
 
-  <div class="popup-overlay" id="recentPopup">
-    <section class="popup">
-      <button class="close-btn" onclick="closePopup('recentPopup')">×</button>
-      <h2>🆕 Recently Added</h2>
-      <p class="popup-subtitle">Latest games, activities, and teacher tools added to the arcade.</p>
-      <div class="simple-list" id="recentList"></div>
-    </section>
-  </div>
+  <div class="modal-overlay" id="libraryPopup">
+    <section class="modal-box library-modal">
+      <button class="close-btn" onclick="closeLibraryPopup()">×</button>
 
-  <div class="popup-overlay" id="popularPopup">
-    <section class="popup">
-      <button class="close-btn" onclick="closePopup('popularPopup')">×</button>
-      <h2>⭐ Popular Games</h2>
-      <p class="popup-subtitle">Quick access to featured classroom favorites.</p>
-      <div class="simple-list" id="popularList"></div>
-    </section>
-  </div>
+      <p class="section-kicker">Complete Catalog</p>
+      <h2>All Resources Library</h2>
 
-  <div class="popup-overlay" id="teacherPopup">
-    <section class="popup">
-      <button class="close-btn" onclick="closePopup('teacherPopup')">×</button>
-      <h2>👩‍🏫 Teacher Hub</h2>
-      <p class="popup-subtitle">Teacher tools, updates, and classroom resources.</p>
+      <input
+        type="text"
+        id="librarySearchInput"
+        class="popup-search"
+        placeholder="🔍 Search all games, tools, worksheets, lessons..."
+        oninput="renderLibraryPopupContent()"
+      />
 
-      <div class="teacher-grid">
-        <a class="teacher-card" href="tools/kindergarten_assessment_hub_final.html">
-          🏫 Kindergarten Assessment Hub
-        </a>
-
-        <a class="teacher-card" href="games/word_search_final.html">
-          📝 Word Search Generator
-        </a>
-
-        <div class="teacher-card">
-          🎧 Listen and Tap
-          <br>
-          <small>Coming Soon</small>
-        </div>
-
-        <a class="teacher-card" href="games/reading_quest_final.html?v=5">
-          📖 Reading Quest Dashboard
-        </a>
-
-        <a class="teacher-card" href="conversation-master/conversation_master_final.html">
-          🎙️ Conversation Master Dashboard
-        </a>
-
-        <div class="teacher-card">
-          🔐 Teacher Login Coming Soon
+      <div class="library-filter-group">
+        <p>Resource Type</p>
+        <div class="popup-tabs" id="libraryTypeTabs">
+          <button class="popup-tab active" data-library-type="all" onclick="setLibraryTypeFilter('all')">All</button>
+          <button class="popup-tab" data-library-type="game" onclick="setLibraryTypeFilter('game')">Games</button>
+          <button class="popup-tab" data-library-type="tool" onclick="setLibraryTypeFilter('tool')">Teacher Tools</button>
+          <button class="popup-tab" data-library-type="worksheet" onclick="setLibraryTypeFilter('worksheet')">Worksheets</button>
+          <button class="popup-tab" data-library-type="lesson" onclick="setLibraryTypeFilter('lesson')">Lessons</button>
         </div>
       </div>
-    </section>
-  </div>
 
-  <div class="popup-overlay" id="aboutPopup">
-    <section class="popup contact-popup">
-      <button class="close-btn" onclick="closePopup('aboutPopup')">×</button>
-      <h2>ℹ️ About / Contact</h2>
-      <p>
-        Teacher Kevin's Learning Arcade is a collection of fun educational games and classroom tools
-        for Kindergarten, Primary, and Secondary students.
-      </p>
-
-      <div class="website-box">
-        <strong>Website:</strong>
-        <a href="https://teacherkevinslearningarcade.blogspot.com/" target="_blank" rel="noopener">
-          teacherkevinslearningarcade.blogspot.com
-        </a>
+      <div class="library-filter-group">
+        <p>Level</p>
+        <div class="popup-tabs" id="libraryLevelTabs">
+          <button class="popup-tab active" data-library-level="all" onclick="setLibraryLevelFilter('all')">All Levels</button>
+          <button class="popup-tab" data-library-level="kindergarten" onclick="setLibraryLevelFilter('kindergarten')">Kindergarten</button>
+          <button class="popup-tab" data-library-level="primary" onclick="setLibraryLevelFilter('primary')">Primary</button>
+          <button class="popup-tab" data-library-level="secondary" onclick="setLibraryLevelFilter('secondary')">Secondary</button>
+        </div>
       </div>
 
-      <form action="https://formspree.io/f/xzdqpyyq" method="POST" class="contact-form">
-        <h3>📩 Contact Teacher Kevin</h3>
-
-        <label>Name</label>
-        <input type="text" name="name" placeholder="Your name" />
-
-        <label>Email *</label>
-        <input type="email" name="email" placeholder="Your email" required />
-
-        <label>Message *</label>
-        <textarea name="message" rows="5" placeholder="Type your message here..." required></textarea>
-
-        <button type="submit">Send Message</button>
-      </form>
+      <div class="resource-grid popup-grid" id="libraryGrid"></div>
     </section>
   </div>
 

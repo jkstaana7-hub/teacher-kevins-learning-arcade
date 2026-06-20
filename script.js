@@ -120,6 +120,18 @@ const gameData = [
     popular: true
   },
   {
+    title: "🌊 Monster Battle Quiz RPG – Ocean Adventure",
+    type: "game",
+    flagship: true,
+    category: ["primary", "secondary", "teacher"],
+    keywords: "monster battle quiz rpg ocean adventure kraken shark sea serpent diver mermaid mage turtle guardian captain ocean monsters classroom game primary secondary",
+    link: "monster-battle-water-adventure-rpg/monster_battle_water_adventure_rpg_v1.html",
+    image: "images/monster-battle-ocean-adventure-thumbnail.png",
+    description: "Explore the ocean, battle sea monsters, level up your hero, and defeat the mighty Kraken.",
+    recent: true,
+    popular: true
+  },
+  {
     title: "🎙️ Conversation Master",
     type: "game",
     category: ["secondary", "teacher"],
@@ -309,6 +321,7 @@ const allResources = [...gameData, ...worksheetData, ...lessonData];
 const flagshipOrder = [
   "🏆 Classroom Jeopardy",
   "🐉 Monster Battle Quiz RPG",
+  "🌊 Monster Battle Quiz RPG – Ocean Adventure",
   "📖 Reading Quest",
   "🛍️ Shopping Superstar!",
   "🎁 Give or Keep",

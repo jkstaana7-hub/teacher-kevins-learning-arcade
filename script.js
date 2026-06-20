@@ -718,8 +718,8 @@ document.addEventListener("click", event => {
 });
 // WEBSITE STATS
 const WEBSITE_STATS = {
-  gamesAvailable: 12,
-  resourcesAvailable: 15
+  gamesAvailable: 16,
+  resourcesAvailable: 13
 };
 
 // Display games/resources count
@@ -729,4 +729,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (gamesCount) gamesCount.textContent = WEBSITE_STATS.gamesAvailable;
   if (resourcesCount) resourcesCount.textContent = WEBSITE_STATS.resourcesAvailable;
+});
+// Firebase Website Counter
+
+window.addEventListener("load", async () => {
+
+  if (!window.firebaseDB) return;
+
+  const { database, ref, get, set } = window.firebaseDB;
+
+  const visitDisplay = document.getElementById("websiteVisits");
+
+  const visitRef = ref(database, "siteStats/visits");
+
+  try {
+
+    const snapshot = await get(visitRef);
+
+    let visits = snapshot.val() || 0;
+
+    if (!localStorage.getItem("tkla_visited")) {
+
+      visits++;
+
+      await set(visitRef, visits);
+
+      localStorage.setItem("tkla_visited", "true");
+    }
+
+    visitDisplay.textContent = visits.toLocaleString();
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
 });

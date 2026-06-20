@@ -286,6 +286,39 @@
     </section>
   </div>
 
-  <script src="script.js"></script>
+  <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  get,
+  set
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDLnE7xqhGwO2sY8gDkKZMFNH51ci9vxgQ",
+  authDomain: "teacher-kevin-s-website.firebaseapp.com",
+  databaseURL: "https://teacher-kevin-s-website-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "teacher-kevin-s-website",
+  storageBucket: "teacher-kevin-s-website.firebasestorage.app",
+  messagingSenderId: "319259561266",
+  appId: "1:319259561266:web:c45d8efaa13cda6f7d1b2b",
+  measurementId: "G-7ZFL8MGTGF"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+window.firebaseDB = {
+  database,
+  ref,
+  get,
+  set
+};
+
+</script>
+
+<script src="script.js"></script>
 </body>
 </html>

@@ -766,3 +766,56 @@ body.modal-open {
     font-size: 36px;
   }
 }
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px 30px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  font-family: "Century Gothic", sans-serif;
+  font-size: 14px;
+}
+
+.footer-left {
+  flex: 1;
+  text-align: left;   /* <-- important */
+}
+
+.footer-left p,
+.footer-right p {
+  margin: 5px 0;
+}
+
+.footer-left a {
+  color: #ffd166;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-left a:hover {
+  text-decoration: underline;
+}
+
+.footer-right {
+  text-align: right;
+  font-weight: bold;
+  min-width: 230px;
+}
+
+@media (max-width: 700px) {
+  .site-footer {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-left {
+    max-width: 100%;
+  }
+
+  .footer-right {
+    text-align: center;
+    width: 100%;
+  }
+}

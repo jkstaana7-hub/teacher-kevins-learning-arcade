@@ -716,3 +716,17 @@ document.addEventListener("click", event => {
     closeLibraryPopup();
   }
 });
+// WEBSITE STATS
+const WEBSITE_STATS = {
+  gamesAvailable: 12,
+  resourcesAvailable: 15
+};
+
+// Display games/resources count
+document.addEventListener("DOMContentLoaded", () => {
+  const gamesCount = document.getElementById("gamesAvailable");
+  const resourcesCount = document.getElementById("resourcesAvailable");
+
+  if (gamesCount) gamesCount.textContent = WEBSITE_STATS.gamesAvailable;
+  if (resourcesCount) resourcesCount.textContent = WEBSITE_STATS.resourcesAvailable;
+});

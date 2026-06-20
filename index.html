@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Kevin's Learning Arcade</title>
   <link rel="stylesheet" href="style.css" />
+  <!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4LLH8KR848"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4LLH8KR848');
+</script>
 </head>
 <body>
 
@@ -200,11 +209,23 @@
   </main>
 
   <footer class="site-footer">
+  <div class="footer-left">
     <p>© Teacher Kevin's Learning Arcade</p>
-    <a href="https://teacherkevinslearningarcade.blogspot.com/" target="_blank" rel="noopener">
-      teacherkevinslearningarcade.blogspot.com
-    </a>
-  </footer>
+    <p>Copyright © 2026, All Rights Reserved.</p>
+    <p>
+      Visit:
+      <a href="YOUR_BLOGSPOT_LINK_HERE" target="_blank">
+        Teacher Kevin's Blog
+      </a>
+    </p>
+  </div>
+
+  <div class="footer-right">
+    <p>Website Visits: <span id="websiteVisits">0</span></p>
+    <p>Games Available: <span id="gamesAvailable">0</span></p>
+    <p>Teaching Tools & Resources: <span id="resourcesAvailable">0</span></p>
+  </div>
+</footer>
 
   <div class="modal-overlay" id="sectionPopup">
     <section class="modal-box">

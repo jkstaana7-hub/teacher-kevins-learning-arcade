@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Teacher Kevin Spell It - V5.5 Landing Page Redesign</title>
+<style>
+:root{--blue:#2563eb;--purple:#7c3aed;--green:#16a34a;--red:#ef4444;--ink:#14213d;--muted:#64748b;--line:#dbeafe;--shadow:0 24px 60px rgba(24,43,86,.15)}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);background:radial-gradient(circle at 10% 5%,rgba(37,99,235,.18),transparent 30%),radial-gradient(circle at 90% 90%,rgba(124,58,237,.16),transparent 34%),linear-gradient(135deg,#eef7ff,#faf2ff)}body{overflow:hidden}button,input,select{font:inherit}button{border:0;cursor:pointer;border-radius:999px;font-weight:900;transition:.16s}button:hover{transform:translateY(-1px);filter:brightness(1.03)}.app{height:100vh;display:grid;grid-template-rows:70px 1fr 34px}.topbar{display:flex;align-items:center;justify-content:space-between;padding:12px 26px}.brand{display:flex;gap:12px;align-items:center;font-weight:1000}.logo{width:46px;height:46px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;display:grid;place-items:center;box-shadow:0 14px 32px rgba(37,99,235,.28)}.pill{padding:10px 15px;background:rgba(255,255,255,.76);border:1px solid rgba(37,99,235,.18);color:#1e40af}.screen{display:none;height:100%;padding:10px 24px 14px;overflow:hidden}.screen.active{display:block}.shell{max-width:1200px;height:100%;margin:0 auto}.card{background:rgba(255,255,255,.92);border:1px solid rgba(255,255,255,.95);border-radius:28px;box-shadow:var(--shadow)}.hero{height:100%;display:grid;grid-template-columns:.98fr 1.02fr;gap:24px;align-items:center}.hero-left{padding:38px}.kicker{display:inline-flex;padding:8px 14px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:13px;font-weight:1000}h1{font-size:clamp(58px,8vw,104px);letter-spacing:-4px;line-height:.86;margin:22px 0 12px;color:#122b7a}.tagline{font-size:clamp(22px,2.5vw,32px);font-weight:1000;margin:0 0 18px;color:#1e3a8a}.desc{font-size:17px;line-height:1.55;color:var(--muted);font-weight:700;margin:0;max-width:590px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.primary{background:linear-gradient(135deg,var(--blue),var(--purple));color:white;padding:16px 36px;font-size:18px;box-shadow:0 18px 38px rgba(37,99,235,.30)}.secondary{background:white;color:#1e3a8a;border:1px solid #bfdbfe;padding:12px 18px;font-size:15px}.feature-strip{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:22px}.feature{background:#f8fbff;border:1px solid #dbeafe;border-radius:18px;padding:12px 14px;font-weight:900;color:#1e40af}.hero-right{height:min(595px,78vh);padding:24px;display:grid;place-items:center}.art-stage{width:100%;height:100%;border-radius:38px;background:linear-gradient(135deg,#dbeafe,#f3e8ff 55%,#fef3c7);display:grid;place-items:center;padding:28px}.main-display{width:min(460px,85%);aspect-ratio:1/.92;background:rgba(255,255,255,.92);border:1px solid #dbeafe;border-radius:36px;box-shadow:0 24px 60px rgba(30,54,110,.16);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:26px}.icons{font-size:82px;letter-spacing:16px;margin-left:12px}.main-display h2{font-size:38px;line-height:1.15;color:#17358f;margin:18px 0 8px}.main-display p{margin:0;color:var(--muted);font-weight:900;font-size:17px}.footer{text-align:center;color:#64748b;font-size:12.5px;font-weight:700;padding-bottom:8px}
+.library-shell{display:grid;grid-template-rows:auto auto 1fr;gap:14px;height:100%}.library-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px}.library-title h2{margin:0;font-size:34px;color:#122b7a}.library-title p{margin:5px 0 0;color:var(--muted);font-weight:750}.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat-card{background:rgba(255,255,255,.9);border:1px solid #dbeafe;border-radius:22px;padding:14px 16px;box-shadow:0 12px 26px rgba(24,43,86,.08)}.stat-card b{display:block;font-size:25px;color:#1e40af;line-height:1}.stat-card span{font-size:12.5px;color:var(--muted);font-weight:900}.library-panel{display:grid;grid-template-columns:260px 1fr;gap:16px;min-height:0}.filters{padding:16px;overflow:auto}.filters h3{margin:0 0 12px;color:#122b7a}.search{width:100%;border:2px solid #bfdbfe;border-radius:18px;padding:12px 14px;font-weight:800;outline:none;background:white}.search:focus{box-shadow:0 0 0 4px rgba(37,99,235,.12)}.filter-group{margin-top:16px}.filter-label{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:1000;margin-bottom:8px}.filter-btn{width:100%;text-align:left;margin:5px 0;padding:11px 12px;border-radius:16px;background:#f8fafc;border:1px solid #dbeafe;color:#1e3a8a}.filter-btn.active{background:#dbeafe;outline:3px solid rgba(37,99,235,.10)}.sort-select{width:100%;border:1px solid #bfdbfe;border-radius:16px;padding:11px;background:white;font-weight:850;color:#1e3a8a}.recent-list{display:grid;gap:8px;margin-top:8px}.recent-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:15px;padding:10px;font-size:13px;font-weight:900;color:#334155;cursor:pointer}.library-main{min-height:0;display:grid;grid-template-rows:auto 1fr;gap:12px}.library-toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px}.chip{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;border-radius:999px;padding:8px 12px;font-weight:1000;font-size:13px}.lesson-grid{overflow:auto;padding:2px 4px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.lesson-card{background:white;border:1px solid #dbeafe;border-radius:26px;padding:13px;display:flex;flex-direction:column;gap:10px;box-shadow:0 16px 36px rgba(24,43,86,.10);position:relative;min-height:292px}.fav-btn{position:absolute;right:20px;top:20px;width:42px;height:42px;background:rgba(255,255,255,.92);border:1px solid #fde68a;color:#f59e0b;z-index:2}.thumb{height:145px;border-radius:20px;background:linear-gradient(135deg,#eff6ff,#faf5ff);display:grid;place-items:center;font-size:64px;overflow:hidden;border:1px solid #e0e7ff}.thumb img{width:100%;height:100%;object-fit:cover;display:block}.lesson-card h3{margin:0;font-size:20px;color:#172033}.lesson-meta{display:flex;gap:8px;flex-wrap:wrap}.meta-pill{font-size:12px;font-weight:950;color:#1e40af;background:#eff6ff;border:1px solid #dbeafe;border-radius:999px;padding:6px 9px}.card-actions{display:flex;gap:8px;margin-top:auto}.play{flex:1;padding:11px 16px;background:var(--blue);color:white}.preview{padding:11px 14px;background:#f8fafc;border:1px solid #dbeafe;color:#1e3a8a}.empty{grid-column:1/-1;background:white;border:2px dashed #bfdbfe;border-radius:26px;min-height:240px;display:grid;place-items:center;text-align:center;padding:24px;color:#1e3a8a}.empty h3{margin:0 0 8px;font-size:26px}
+.game-layout{display:grid;grid-template-columns:315px 1fr;gap:18px;height:100%}.side{padding:18px;overflow:auto}.progress{height:13px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin:14px 0}.progress span{display:block;height:100%;background:linear-gradient(90deg,var(--green),#84cc16);width:0}.mode{display:block;width:100%;text-align:left;margin:9px 0;padding:12px;border-radius:18px;border:1px solid #dbeafe;background:#f8fafc;color:#1e3a8a}.mode.active{background:#dbeafe;outline:3px solid rgba(37,99,235,.13)}.play-area{padding:20px;display:flex;flex-direction:column}.status{display:flex;justify-content:space-between;gap:10px}.badge{background:#eff6ff;color:#1e40af;border-radius:999px;padding:8px 13px;font-weight:1000}.visual{flex:1;min-height:230px;max-height:310px;border-radius:28px;background:linear-gradient(135deg,#f8fafc,#eff6ff);border:1px solid #dbeafe;display:grid;place-items:center;margin:12px 0}.word-img{width:280px;height:280px;object-fit:contain;display:none}.fallback{font-size:110px}.prompt{text-align:center}.prompt h2{margin:0;font-size:31px;color:#17358f}.prompt p{margin:5px 0;color:var(--muted);font-weight:800}.answer{width:min(560px,100%);border:2px solid #bfdbfe;border-radius:22px;padding:15px 17px;font-size:23px;text-align:center;font-weight:1000;outline:none}.answer-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.letters{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:10px}.letter{min-width:50px;height:50px;background:white;border:2px solid #bfdbfe;color:#1d4ed8;font-size:23px}.feedback{text-align:center;font-size:21px;font-weight:1000;min-height:32px;margin:9px 0}.good{color:#16a34a}.bad{color:#ef4444}.results-card{height:100%;display:grid;place-items:center;text-align:center;padding:34px}.results-card h2{font-size:42px;margin:8px;color:#122b7a}
+
+.study-layout{height:100%;display:grid;grid-template-columns:330px 1fr;gap:18px}.study-side{padding:20px;overflow:auto}.study-main{padding:12px;display:grid;grid-template-rows:auto 1fr auto;gap:8px}.study-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.study-card{min-height:0;border-radius:30px;background:linear-gradient(135deg,#f8fafc,#eff6ff);border:1px solid #dbeafe;display:grid;place-items:center;text-align:center;padding:10px}.study-img{width:min(520px,90%);height:min(520px,60vh);object-fit:contain;display:none}.study-fallback{font-size:130px}.study-word{font-size:clamp(72px,10vw,140px);line-height:1;margin:8px 0;color:#122b7a;font-weight:1000;letter-spacing:-2px}.study-hint{font-size:18px;color:var(--muted);font-weight:900}.study-controls{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}.small-round{min-width:56px;height:52px;background:white;border:1px solid #bfdbfe;color:#1e3a8a;padding:0 18px}.word-list{display:grid;gap:7px;margin-top:12px}.word-list button{width:100%;text-align:left;background:#f8fafc;border:1px solid #dbeafe;color:#1e3a8a;padding:9px 11px;border-radius:14px}.word-list button.active{background:#dbeafe;outline:3px solid rgba(37,99,235,.11)}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:40}.modal.active{display:flex}.modal-card{width:min(900px,96vw);max-height:90vh;overflow:auto;background:white;border-radius:30px;box-shadow:0 32px 90px rgba(0,0,0,.3);padding:26px}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px}.close{width:42px;height:42px;background:#f1f5f9;color:#334155}.word-preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.word-preview{background:#f8fafc;border:1px solid #dbeafe;border-radius:18px;padding:12px;text-align:center;font-weight:900}.word-preview .wicon{height:72px;display:grid;place-items:center;font-size:38px}.word-preview img{max-width:68px;max-height:68px;object-fit:contain;display:none;margin:auto}.splash{position:fixed;inset:0;z-index:100;background:linear-gradient(135deg,#2563eb,#7c3aed);display:grid;place-items:center;text-align:center;color:white}.splash.hide{animation:fadeOut .55s forwards}.loader{width:54px;height:54px;border-radius:50%;border:6px solid rgba(255,255,255,.25);border-top-color:white;animation:spin .85s linear infinite;margin:17px auto 0}@keyframes spin{to{transform:rotate(360deg)}}@keyframes fadeOut{to{opacity:0;visibility:hidden}}.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:80}.confetti span{position:absolute;top:-20px;width:11px;height:18px;border-radius:3px;animation:fall 1.7s linear forwards}@keyframes fall{to{transform:translateY(110vh) rotate(650deg);opacity:.2}}
+@media(max-width:1050px){body{overflow:auto}.study-layout{grid-template-columns:1fr}.study-img{height:260px}.app{height:auto;min-height:100vh;grid-template-rows:auto 1fr auto}.screen{height:auto;min-height:calc(100vh - 104px);overflow:visible}.hero{grid-template-columns:1fr}.hero-right{height:390px}.library-panel{grid-template-columns:1fr}.lesson-grid{grid-template-columns:repeat(2,1fr);overflow:visible}.game-layout{grid-template-columns:1fr;height:auto}}@media(max-width:680px){.topbar{padding:10px 14px}.brand{font-size:14px}.screen{padding:8px 14px 14px}.hero-left{padding:26px}.actions{flex-direction:column}.primary,.secondary{width:100%}.stats-row,.feature-strip,.lesson-grid,.word-preview-grid{grid-template-columns:1fr}.library-head{align-items:flex-start;flex-direction:column}h1{letter-spacing:-2px}}
+
+
+/* === Spell It! V5.5 Landing Page Redesign === */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: "Century Gothic", Arial, sans-serif !important;
+}
+
+* {
+  font-family: "Century Gothic", Arial, sans-serif !important;
+}
+
+.app {
+  height: 100dvh !important;
+  grid-template-rows: 58px 1fr 0px !important;
+}
+
+.footer {
+  display: none !important;
+}
+
+.topbar {
+  height: 58px !important;
+  padding: 8px 20px !important;
+}
+
+.logo {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.screen {
+  height: calc(100dvh - 58px) !important;
+  min-height: 0 !important;
+  padding: 8px 18px !important;
+  overflow: hidden !important;
+}
+
+.shell {
+  max-width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+}
+
+.study-layout {
+  height: 100% !important;
+  min-height: 0 !important;
+  display: grid !important;
+  grid-template-columns: 300px minmax(0, 1fr) !important;
+  gap: 14px !important;
+}
+
+.study-side {
+  min-height: 0 !important;
+  padding: 14px !important;
+  overflow: hidden !important;
+}
+
+.study-side h2 {
+  font-size: 28px !important;
+  line-height: 1.05 !important;
+  margin: 10px 0 2px !important;
+}
+
+.study-side .primary,
+.study-side .secondary {
+  padding: 12px 16px !important;
+  font-size: 18px !important;
+}
+
+.study-side .filter-group {
+  margin-top: 14px !important;
+}
+
+.word-list {
+  display: grid !important;
+  gap: 5px !important;
+  margin-top: 8px !important;
+}
+
+.word-list button {
+  padding: 7px 10px !important;
+  font-size: 17px !important;
+  line-height: 1.05 !important;
+  min-height: 0 !important;
+}
+
+.study-main {
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 10px !important;
+  display: grid !important;
+  grid-template-rows: 42px minmax(0, 1fr) 60px !important;
+  gap: 8px !important;
+  overflow: hidden !important;
+}
+
+.study-top {
+  min-height: 0 !important;
+}
+
+.study-card {
+  min-height: 0 !important;
+  height: 100% !important;
+  padding: 4px 10px !important;
+  overflow: visible !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.study-card > div {
+  height: 100% !important;
+  width: 100% !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  display: grid !important;
+  grid-template-rows: minmax(0, 1fr) auto auto !important;
+  place-items: center !important;
+}
+
+.study-img {
+  width: min(760px, 92%) !important;
+  height: min(400px, 48vh) !important;
+  object-fit: contain !important;
+  display: none;
+}
+
+.study-fallback {
+  font-size: min(280px, 34vh) !important;
+  line-height: 1 !important;
+}
+
+.study-word {
+  font-size: clamp(72px, 9vw, 140px) !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  padding: 10px 0 6px !important;
+  color: #122b7a !important;
+  font-weight: 1000 !important;
+  letter-spacing: -3px !important;
+  overflow: visible !important;
+  max-width: 100% !important;
+  text-align: center !important;
+  word-break: normal !important;
+}
+
+.study-hint {
+  font-size: 20px !important;
+  line-height: 1.1 !important;
+  margin: 0 !important;
+}
+
+.study-controls {
+  height: 60px !important;
+  gap: 8px !important;
+  align-items: center !important;
+  overflow: hidden !important;
+}
+
+.study-controls button {
+  height: 50px !important;
+  padding: 0 18px !important;
+  font-size: 17px !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 1050px) {
+  body {
+    overflow: hidden !important;
+  }
+
+  .app {
+    height: 100dvh !important;
+    min-height: 100dvh !important;
+  }
+
+  .screen {
+    height: calc(100dvh - 58px) !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .study-layout {
+    grid-template-columns: 260px minmax(0, 1fr) !important;
+  }
+
+  .study-img {
+    width: min(650px, 92%) !important;
+    height: min(360px, 46vh) !important;
+  }
+
+  .study-word {
+    font-size: clamp(64px, 8vw, 122px) !important;
+    line-height: 1 !important;
+    padding: 8px 0 6px !important;
+  }
+}
+
+
+/* V5.3A.2 Sidebar Scroll + Filename Safety Fix */
+.study-side{
+  display:flex !important;
+  flex-direction:column !important;
+  min-height:0 !important;
+}
+
+.word-list{
+  flex:1 1 auto !important;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
+  padding-right:4px !important;
+}
+
+.word-list::-webkit-scrollbar{
+  width:8px;
+}
+
+
+/* === V5.5 Landing Page Redesign === */
+.filters,
+.side,
+.study-side {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  min-height: 0 !important;
+  scrollbar-width: thin;
+}
+
+.study-side {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.study-side .filter-group {
+  min-height: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.word-list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  padding-right: 6px !important;
+  scrollbar-width: thin;
+}
+
+.filters::-webkit-scrollbar,
+.side::-webkit-scrollbar,
+.study-side::-webkit-scrollbar,
+.word-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.filters::-webkit-scrollbar-thumb,
+.side::-webkit-scrollbar-thumb,
+.study-side::-webkit-scrollbar-thumb,
+.word-list::-webkit-scrollbar-thumb {
+  background: #bfdbfe;
+  border-radius: 999px;
+}
+
+.filters::-webkit-scrollbar-track,
+.side::-webkit-scrollbar-track,
+.study-side::-webkit-scrollbar-track,
+.word-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+
+/* === V5.5 Landing Page Redesign === */
+.builder-card{width:min(1120px,96vw);max-height:92vh}
+.builder-grid{display:grid;grid-template-columns:340px 1fr;gap:14px;margin-top:14px}
+.builder-panel{background:#f8fafc;border:1px solid #dbeafe;border-radius:20px;padding:14px}
+.builder-panel label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:1000;margin:8px 0 6px}
+.builder-input,.builder-textarea{width:100%;border:2px solid #bfdbfe;border-radius:16px;padding:11px 12px;background:#fff;color:#122b7a;font-weight:900;outline:none}
+.builder-textarea{min-height:122px;resize:vertical;line-height:1.35}
+.builder-note{font-size:13px;color:#64748b;font-weight:800;line-height:1.35;margin-top:8px}
+.builder-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.word-editor-list{display:grid;gap:10px;max-height:58vh;overflow:auto;padding-right:6px}
+.word-editor-row{display:grid;grid-template-columns:150px 1fr 42px;gap:8px;align-items:center;background:#fff;border:1px solid #dbeafe;border-radius:18px;padding:10px}
+.word-editor-row input{border:2px solid #bfdbfe;border-radius:14px;padding:10px;font-weight:900;min-width:0}
+.image-drop{border:2px dashed #93c5fd;border-radius:16px;min-height:74px;background:#eff6ff;display:flex;align-items:center;justify-content:center;text-align:center;color:#1e40af;font-weight:1000;padding:8px;cursor:pointer;position:relative;overflow:hidden}
+.image-drop img{max-width:100%;max-height:92px;object-fit:contain;display:block}
+.image-drop small{display:block;font-size:11px;color:#64748b;margin-top:3px}
+.icon-danger{background:#fee2e2;color:#991b1b;width:42px;height:42px;border:1px solid #fecaca}
+.local-lesson-controls{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.local-lesson-controls button{padding:8px 10px;font-size:12px}
+.crop-stage{display:grid;gap:12px;margin-top:12px}
+.crop-box{width:min(560px,86vw);height:min(560px,62vh);margin:auto;border-radius:20px;border:2px dashed #93c5fd;background:#eff6ff;display:grid;place-items:center;overflow:hidden}
+.crop-box img{width:100%;height:100%;object-fit:contain}
+.file-hidden{display:none}
+@media(max-width:850px){.builder-grid{grid-template-columns:1fr}.word-editor-row{grid-template-columns:1fr}.builder-card{max-height:94vh}}
+
+
+/* === V5.5 Landing Page Redesign === */
+.study-side,
+.side,
+.filters {
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+}
+
+.word-list {
+  gap: 10px !important;
+  padding-right: 8px !important;
+}
+
+.word-list button {
+  min-height: 46px !important;
+  padding: 11px 14px !important;
+  font-size: 18px !important;
+  line-height: 1.2 !important;
+  border-radius: 16px !important;
+}
+
+.word-list button.active {
+  background: #dbeafe !important;
+  border-color: #93c5fd !important;
+  box-shadow: inset 0 0 0 2px rgba(37,99,235,.10) !important;
+}
+
+.mode,
+.filter-btn,
+.recent-item {
+  min-height: 48px !important;
+  padding: 12px 14px !important;
+  line-height: 1.25 !important;
+}
+
+.filters h3,
+.side h3,
+.study-side h2 {
+  line-height: 1.12 !important;
+}
+
+.filter-group {
+  margin-top: 18px !important;
+}
+
+.recent-list {
+  gap: 10px !important;
+}
+
+
+/* === V5.5 Landing Page Redesign === */
+.landing-v55{
+  height:100%;
+  display:grid;
+  grid-template-columns:minmax(420px,.92fr) minmax(520px,1.08fr);
+  gap:22px;
+  align-items:stretch;
+}
+
+.landing-left-v55,
+.landing-preview-v55{
+  height:100%;
+  min-height:0;
+  padding:28px;
+  overflow:hidden;
+}
+
+.landing-left-v55{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.landing-left-v55 h1{
+  font-size:clamp(56px,7vw,96px) !important;
+  line-height:.86 !important;
+  letter-spacing:-4px !important;
+  margin:18px 0 10px !important;
+}
+
+.landing-left-v55 .tagline{
+  font-size:clamp(24px,2.6vw,38px) !important;
+  line-height:1.05 !important;
+  margin:0 0 14px !important;
+}
+
+.landing-left-v55 .desc{
+  font-size:18px !important;
+  line-height:1.45 !important;
+  max-width:650px !important;
+}
+
+.landing-actions-v55{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:22px;
+}
+
+.landing-actions-v55 .primary,
+.landing-actions-v55 .secondary{
+  padding:14px 22px !important;
+  font-size:17px !important;
+}
+
+.landing-features-v55{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-top:22px;
+}
+
+.landing-feature-v55{
+  background:#f8fbff;
+  border:1px solid #dbeafe;
+  border-radius:20px;
+  padding:14px 15px;
+}
+
+.landing-feature-v55 b{
+  display:block;
+  color:#122b7a;
+  font-size:17px;
+  line-height:1.1;
+  margin-bottom:5px;
+}
+
+.landing-feature-v55 span{
+  display:block;
+  color:#64748b;
+  font-weight:800;
+  font-size:13.5px;
+  line-height:1.25;
+}
+
+.landing-preview-v55{
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  gap:14px;
+  background:rgba(255,255,255,.92);
+}
+
+.preview-top-v55{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.mini-study-card-v55{
+  min-height:0;
+  border-radius:30px;
+  border:1px solid #dbeafe;
+  background:linear-gradient(135deg,#f8fafc,#eff6ff);
+  display:grid;
+  grid-template-rows:minmax(0,1fr) auto auto auto;
+  place-items:center;
+  text-align:center;
+  padding:16px;
+  overflow:hidden;
+}
+
+.mini-image-frame-v55{
+  width:min(420px,80%);
+  height:min(280px,40vh);
+  display:grid;
+  place-items:center;
+}
+
+.mini-image-frame-v55 img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+}
+
+.mini-fallback-v55{
+  width:220px;
+  height:220px;
+  border-radius:40px;
+  display:grid;
+  place-items:center;
+  background:white;
+  border:2px dashed #bfdbfe;
+  color:#122b7a;
+  font-size:58px;
+  font-weight:1000;
+}
+
+.mini-word-v55{
+  color:#122b7a;
+  font-size:clamp(58px,7vw,102px);
+  font-weight:1000;
+  line-height:.9;
+  letter-spacing:-3px;
+  padding:4px 0;
+}
+
+.mini-hint-v55{
+  color:#64748b;
+  font-size:17px;
+  font-weight:900;
+  line-height:1.15;
+  margin-bottom:8px;
+}
+
+.mini-hear-v55{
+  padding:12px 28px !important;
+  font-size:16px !important;
+}
+
+.landing-mini-row-v55{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.landing-mini-row-v55 div{
+  background:#f8fbff;
+  border:1px solid #dbeafe;
+  border-radius:18px;
+  padding:12px;
+  text-align:center;
+}
+
+.landing-mini-row-v55 b{
+  display:block;
+  color:#122b7a;
+  font-size:15px;
+  line-height:1.1;
+}
+
+.landing-mini-row-v55 span{
+  color:#64748b;
+  font-size:12.5px;
+  font-weight:800;
+}
+
+@media(max-width:1050px){
+  .landing-v55{
+    grid-template-columns:1fr;
+    height:auto;
+    min-height:calc(100vh - 70px);
+  }
+  .landing-left-v55,
+  .landing-preview-v55{
+    min-height:560px;
+  }
+}
+
+@media(max-width:780px){
+  .landing-left-v55,
+  .landing-preview-v55{
+    padding:20px;
+  }
+  .landing-features-v55,
+  .landing-mini-row-v55{
+    grid-template-columns:1fr;
+  }
+  .landing-left-v55 h1{
+    font-size:54px !important;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="splash" id="splash"><div><div style="font-weight:1000;font-size:18px">Teacher Kevin's Learning Arcade</div><div style="font-size:58px;font-weight:1000;letter-spacing:-2px;margin-top:8px">Spell It!</div><div style="font-size:18px;font-weight:850">Loading lesson library...</div><div class="loader"></div></div></div>
+<div class="app"><header class="topbar"><div class="brand"><div class="logo">TK</div><div>Teacher Kevin's Learning Arcade</div></div><button class="pill" onclick="toggleFullscreen()">Fullscreen</button></header><main>
+<section class="screen active" id="homeScreen">
+  <div class="shell landing-v55">
+    <section class="card landing-left-v55">
+      <span class="kicker">V5.5 Landing Page Redesign</span>
+      <h1>SPELL IT!</h1>
+      <p class="tagline">Listen • Think • Spell • Learn</p>
+      <p class="desc">A classroom-ready vocabulary game with Study Mode, spelling practice, built-in lessons, and an offline teacher lesson builder.</p>
+
+      <div class="landing-actions-v55">
+        <button class="primary" onclick="showScreen('lessonScreen')">Start Learning</button>
+        <button class="secondary" onclick="showScreen('lessonScreen')">Lesson Library</button>
+        <button class="secondary" onclick="openBuilder()">Create Teacher Lesson</button>
+      </div>
+
+      <div class="landing-features-v55">
+        <div class="landing-feature-v55">
+          <b>12 Built-in Lessons</b>
+          <span>Weather, Animals, Fruits, and School Things</span>
+        </div>
+        <div class="landing-feature-v55">
+          <b>Study Mode First</b>
+          <span>Image, word, and audio support before practice</span>
+        </div>
+        <div class="landing-feature-v55">
+          <b>Spell It Practice</b>
+          <span>Listen, look, unscramble, and missing letters</span>
+        </div>
+        <div class="landing-feature-v55">
+          <b>Teacher Builder</b>
+          <span>Create local lessons with pasted or dropped images</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card landing-preview-v55">
+      <div class="preview-top-v55">
+        <span class="badge">Study Preview</span>
+        <span class="badge">Teacher Controlled</span>
+      </div>
+
+      <div class="mini-study-card-v55">
+        <div class="mini-image-frame-v55">
+          <img src="images/Animals/lesson-1/cat.png" alt="cat" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'">
+          <div class="mini-fallback-v55">CAT</div>
+        </div>
+        <div class="mini-word-v55">cat</div>
+        <div class="mini-hint-v55">Look, listen, and remember the word.</div>
+        <button class="primary mini-hear-v55" onclick="speechSynthesis.speak(new SpeechSynthesisUtterance('cat'))">Hear Word</button>
+      </div>
+
+      <div class="landing-mini-row-v55">
+        <div><b>Offline</b><span>No Firebase</span></div>
+        <div><b>Replayable</b><span>Use anytime</span></div>
+        <div><b>Projector Ready</b><span>Big visuals</span></div>
+      </div>
+    </section>
+  </div>
+</section>
+<section class="screen" id="lessonScreen"><div class="shell library-shell"><div class="library-head"><div class="library-title"><h2>Lesson Library</h2><p>Search, filter, preview, favorite, and play vocabulary lessons.</p></div><button class="secondary" onclick="showScreen('homeScreen')">Home</button></div><div class="stats-row"><div class="stat-card"><b id="builtInCount">7</b><span>Built-in Lessons</span></div><div class="stat-card"><b id="teacherCount">0</b><span>Teacher Lessons</span></div><div class="stat-card"><b id="wordCount">56</b><span>Total Words</span></div><div class="stat-card"><b id="favCount">0</b><span>Favorites</span></div></div><div class="library-panel"><aside class="card filters"><h3>Find Lessons</h3><input class="search" id="lessonSearch" placeholder="Search lessons..." oninput="renderLessonLibrary()"><div class="filter-group"><div class="filter-label">Filter</div><button class="filter-btn active" data-filter="all" onclick="setFilter('all')">All Lessons</button><button class="filter-btn" data-filter="built-in" onclick="setFilter('built-in')">Built-in Lessons</button><button class="filter-btn" data-filter="teacher" onclick="setFilter('teacher')">My Lessons</button><button class="filter-btn" data-filter="favorites" onclick="setFilter('favorites')">Favorites</button></div><div class="filter-group"><div class="filter-label">Sort</div><select class="sort-select" id="sortSelect" onchange="renderLessonLibrary()"><option value="az">A → Z</option><option value="za">Z → A</option><option value="most">Most Words</option><option value="least">Least Words</option><option value="recent">Recently Added</option></select></div><div class="filter-group"><div class="filter-label">Recently Played</div><div class="recent-list" id="recentList"></div></div></aside><section class="library-main"><div class="card library-toolbar"><div><span class="chip" id="resultCount">0 lessons</span></div><button class="secondary" onclick="openBuilder()">Create Teacher Lesson</button></div><div class="lesson-grid" id="lessonGrid"></div></section></div></div></section>
+<section class="screen" id="studyScreen"><div class="shell study-layout"><aside class="card study-side"><span class="kicker">Study Mode</span><h2 id="studySideTitle" style="margin:12px 0 4px;color:#122b7a">Lesson</h2><div class="meta" id="studySideMeta">0 words</div><div class="progress"><span id="studyProgressFill"></span></div><button class="primary" onclick="beginLessonGame()" style="width:100%;margin-top:8px">Play Spell It</button><button class="secondary" onclick="showScreen('lessonScreen')" style="width:100%;margin-top:10px">Lesson Library</button><div class="filter-group"><div class="filter-label">Vocabulary List</div><div class="word-list" id="studyWordList"></div></div></aside><section class="card study-main"><div class="study-top"><span class="badge" id="studyBadge">Word 1 / 10</span><span class="badge">Study → Practice</span></div><div class="study-card"><div><img class="study-img" id="studyImage" alt=""><div class="study-fallback" id="studyFallback">☀️</div><div class="study-word" id="studyWord">sunny</div><div class="study-hint">Look, listen, and remember the word.</div></div></div><div class="study-controls"><button class="small-round" onclick="prevStudyWord()">← Previous</button><button class="primary" onclick="speakStudyWord()">Hear Word</button><button class="small-round" onclick="nextStudyWord()">Next →</button><button class="secondary" onclick="beginLessonGame()">Play Lesson</button></div></section></div></section><section class="screen" id="gameScreen"><div class="shell game-layout"><aside class="card side"><h3 id="sideTitle">Lesson</h3><div class="meta" id="sideMeta">0 words</div><div class="progress"><span id="progressFill"></span></div><button class="mode active" onclick="setMode('listen')"><b>Listen & Spell</b><br><span class="meta">Hear the word, then type.</span></button><button class="mode" onclick="setMode('look')"><b>Look & Spell</b><br><span class="meta">Look at the picture, then type.</span></button><button class="mode" onclick="setMode('unscramble')"><b>Unscramble</b><br><span class="meta">Tap letters in order.</span></button><button class="mode" onclick="setMode('missing')"><b>Missing Letters</b><br><span class="meta">Complete the word.</span></button><button class="secondary" onclick="speakCurrent()" style="width:100%;margin-top:10px">Hear Again</button><button class="secondary" onclick="showScreen('lessonScreen')" style="width:100%;margin-top:10px">Lesson Library</button></aside><section class="card play-area"><div class="status"><span class="badge" id="questionBadge">Word 1 / 8</span><span class="badge" id="scoreBadge">Score: 0</span></div><div class="visual"><img class="word-img" id="wordImage" alt=""><div class="fallback" id="visualFallback">☀️</div></div><div class="prompt"><h2 id="gamePrompt">Spell the word.</h2><p id="hintText">Type your answer below.</p></div><div id="inputArea"></div><div class="feedback" id="feedback"></div><div class="answer-row"><button class="primary" onclick="checkAnswer()">Check</button><button class="secondary" onclick="skipWord()">Skip</button></div></section></div></section>
+<section class="screen" id="resultsScreen"><div class="shell"><div class="card results-card"><div><span class="kicker">Lesson Complete</span><div id="starResult" style="font-size:58px;margin:10px">⭐⭐⭐</div><h2 id="resultTitle">Excellent Work!</h2><p id="resultSub" class="tagline" style="font-size:22px">You mastered the words.</p><div class="actions" style="justify-content:center"><button class="primary" onclick="restartLesson()">Play Again</button><button class="secondary" onclick="showScreen('lessonScreen')">Lesson Library</button><button class="secondary" onclick="showScreen('homeScreen')">Home</button></div></div></div></div></section></main><footer class="footer">Teacher Kevin's Learning Arcade • Offline Compatible • Classroom Ready • Version 5.5 Landing Page Redesign</footer></div>
+<div class="modal" id="howModal"><div class="modal-card"><div class="modal-head"><h2>How to Play</h2><button class="close" onclick="closeModal('howModal')">×</button></div><p><b>Students:</b> Click START, choose a lesson, study the words first, then play Spell It.</p><p><b>Lesson Library:</b> Use search, filters, sorting, favorites, recently played, and preview before playing.</p><p><b>Image-ready folders:</b> Add PNG files like <b>images/weather/lesson-1/sunny.png</b> or <b>images/animals/final-challenge/cat.png</b>. Built-in lesson images use folder paths. Teacher lesson images are saved locally in this browser. If missing, the game uses emoji fallback.</p></div></div>
+<div class="modal" id="teacherModal"><div class="modal-card"><div class="modal-head"><h2>Teacher Lessons</h2><button class="close" onclick="closeModal('teacherModal')">×</button></div><p>This version uses local teacher lessons only. No admin code. No Firebase.</p><button class="primary" onclick="closeModal('teacherModal');openBuilder()">Create Teacher Lesson</button></div></div>
+<div class="modal" id="previewModal"><div class="modal-card"><div class="modal-head"><h2 id="previewTitle">Lesson Preview</h2><button class="close" onclick="closeModal('previewModal')">×</button></div><p id="previewMeta" class="meta"></p><div class="word-preview-grid" id="previewWords"></div><div class="actions"><button class="primary" id="previewPlayBtn">Play Lesson</button></div></div></div>
+<div class="modal" id="builderModal">
+  <div class="modal-card builder-card">
+    <div class="modal-head">
+      <div>
+        <h2 style="margin:0;color:#122b7a">Create Teacher Lesson</h2>
+        <p class="builder-note">Offline only. Lessons and pasted images are saved on this browser/device only.</p>
+      </div>
+      <button class="close" onclick="closeModal('builderModal')">×</button>
+    </div>
+    <div class="builder-grid">
+      <aside class="builder-panel">
+        <label>Lesson Title</label>
+        <input class="builder-input" id="builderTitle" placeholder="Example: My Animals Review">
+        <label>Fallback Emoji</label>
+        <input class="builder-input" id="builderFallback" placeholder="✨" value="✨">
+        <label>Quick Add Words</label>
+        <textarea class="builder-textarea" id="builderBulkWords" placeholder="Type one word per line, then click Add Words."></textarea>
+        <div class="builder-actions">
+          <button class="secondary" onclick="builderAddBulkWords()">Add Words</button>
+          <button class="secondary" onclick="builderAddWord()">+ One Word</button>
+        </div>
+        <div class="builder-note">
+          Recommended image: <b>1200 × 1200 px PNG</b> for best visual quality.<br>
+          Other sizes still work. You can browse, drag/drop, paste, crop, and save.
+        </div>
+        <div class="builder-actions">
+          <button class="primary" onclick="saveBuilderLesson()">Save Lesson</button>
+          <button class="secondary" onclick="resetBuilder()">Clear</button>
+        </div>
+      </aside>
+      <section class="builder-panel">
+        <div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap">
+          <h3 style="margin:0;color:#122b7a">Vocabulary Items</h3>
+          <span class="chip" id="builderCount">0 words</span>
+        </div>
+        <div class="word-editor-list" id="builderWordList"></div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="cropModal">
+  <div class="modal-card" style="width:min(720px,96vw)">
+    <div class="modal-head">
+      <h2 style="margin:0;color:#122b7a">Crop Image</h2>
+      <button class="close" onclick="closeModal('cropModal')">×</button>
+    </div>
+    <p class="builder-note">Simple classroom crop: the image will be centered into a square 1200 × 1200 PNG.</p>
+    <div class="crop-stage">
+      <div class="crop-box"><img id="cropPreview" alt=""></div>
+      <div class="builder-actions" style="justify-content:center">
+        <button class="primary" onclick="applyCrop()">Crop & Save</button>
+        <button class="secondary" onclick="closeModal('cropModal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+<script>
+const TEACHER_CODE="teacher";let activeFilter="all",currentLessonIndex=0;function fileName(w){return String(w).toLowerCase().trim().replace(/\s+/g,"-").replace(/[^a-z0-9-]/g,"")}function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+const builtInLessons=[{"id":"weather-lesson-1","title":"Weather Lesson 1","folder":"Weather/lesson-1","thumb":"images/thumbnails/weather.png","fallback":"🌤️","type":"built-in","created":1,"words":[["sunny","☀️"],["rainy","🌧️"],["cloudy","☁️"],["windy","💨"],["stormy","⛈️"],["snowy","❄️"],["hot","🔥"],["cold","🥶"],["warm","🌤️"],["cool","🍃"]]},{"id":"weather-lesson-2","title":"Weather Lesson 2","folder":"Weather/lesson-2","thumb":"images/thumbnails/weather.png","fallback":"🌤️","type":"built-in","created":2,"words":[["foggy","🌫️"],["wet","💧"],["dry","🏜️"],["rainbow","🌈"],["lightning","⚡"],["thunder","⛈️"],["umbrella","☂️"],["raincoat","🧥"],["sun","☀️"],["snowman","☃️"]]},{"id":"weather-final-challenge","title":"Weather Master Challenge","folder":"Weather/final-challenge","thumb":"images/thumbnails/weather.png","fallback":"🌤️","type":"built-in","created":3,"words":[["sunny","☀️"],["rainy","🌧️"],["cloudy","☁️"],["windy","💨"],["stormy","⛈️"],["snowy","❄️"],["hot","🔥"],["cold","🥶"],["warm","🌤️"],["cool","🍃"],["foggy","🌫️"],["wet","💧"],["dry","🏜️"],["rainbow","🌈"],["lightning","⚡"],["thunder","⛈️"],["umbrella","☂️"],["raincoat","🧥"],["sun","☀️"],["snowman","☃️"]]},{"id":"animals-lesson-1","title":"Animals Lesson 1","folder":"Animals/lesson-1","thumb":"images/thumbnails/animals.png","fallback":"🐾","type":"built-in","created":4,"words":[["cat","🐱"],["dog","🐶"],["bird","🐦"],["fish","🐟"],["rabbit","🐰"],["elephant","🐘"],["lion","🦁"],["monkey","🐵"],["tiger","🐯"],["bear","🐻"]]},{"id":"animals-lesson-2","title":"Animals Lesson 2","folder":"Animals/lesson-2","thumb":"images/thumbnails/animals.png","fallback":"🐾","type":"built-in","created":5,"words":[["horse","🐴"],["cow","🐮"],["pig","🐷"],["goat","🐐"],["duck","🦆"],["chicken","🐔"],["frog","🐸"],["turtle","🐢"],["snake","🐍"],["giraffe","🦒"]]},{"id":"animals-final-challenge","title":"Animals Master Challenge","folder":"Animals/final-challenge","thumb":"images/thumbnails/animals.png","fallback":"🐾","type":"built-in","created":6,"words":[["cat","🐱"],["dog","🐶"],["bird","🐦"],["fish","🐟"],["rabbit","🐰"],["elephant","🐘"],["lion","🦁"],["monkey","🐵"],["tiger","🐯"],["bear","🐻"],["horse","🐴"],["cow","🐮"],["pig","🐷"],["goat","🐐"],["duck","🦆"],["chicken","🐔"],["frog","🐸"],["turtle","🐢"],["snake","🐍"],["giraffe","🦒"]]},{"id":"fruits-lesson-1","title":"Fruits Lesson 1","folder":"Fruits/lesson-1","thumb":"images/thumbnails/fruits.png","fallback":"🍎","type":"built-in","created":7,"words":[["apple","🍎"],["banana","🍌"],["orange","🍊"],["grapes","🍇"],["watermelon","🍉"],["mango","🥭"],["pineapple","🍍"],["strawberry","🍓"],["pear","🍐"],["peach","🍑"]]},{"id":"fruits-lesson-2","title":"Fruits Lesson 2","folder":"Fruits/lesson-2","thumb":"images/thumbnails/fruits.png","fallback":"🍎","type":"built-in","created":8,"words":[["lemon","🍋"],["coconut","🥥"],["cherry","🍒"],["kiwi","🥝"],["avocado","🥑"],["papaya","🧡"],["dragon fruit","🐉"],["blueberry","🫐"],["raspberry","🔴"],["melon","🍈"]]},{"id":"fruits-final-challenge","title":"Fruits Master Challenge","folder":"Fruits/final-challenge","thumb":"images/thumbnails/fruits.png","fallback":"🍎","type":"built-in","created":9,"words":[["apple","🍎"],["banana","🍌"],["orange","🍊"],["grapes","🍇"],["watermelon","🍉"],["mango","🥭"],["pineapple","🍍"],["strawberry","🍓"],["pear","🍐"],["peach","🍑"],["lemon","🍋"],["coconut","🥥"],["cherry","🍒"],["kiwi","🥝"],["avocado","🥑"],["papaya","🧡"],["dragon fruit","🐉"],["blueberry","🫐"],["raspberry","🔴"],["melon","🍈"]]},{"id":"school-things-lesson-1","title":"School Things Lesson 1","folder":"school things/lesson-1","thumb":"images/thumbnails/school.png","fallback":"🎒","type":"built-in","created":10,"words":[["book","📘"],["notebook","📓"],["pencil","✏️"],["pen","🖊️"],["eraser","🧽"],["ruler","📏"],["bag","🎒"],["chair","🪑"],["desk","🏫"],["table","🪑"]]},{"id":"school-things-lesson-2","title":"School Things Lesson 2","folder":"school things/lesson-2","thumb":"images/thumbnails/school.png","fallback":"🎒","type":"built-in","created":11,"words":[["marker","🖍️"],["crayons","🖍️"],["scissors","✂️"],["glue","🧴"],["pencil case","✏️"],["whiteboard","⬜"],["calculator","🧮"],["paper","📄"],["sharpener","🔪"],["backpack","🎒"]]},{"id":"school-things-final-challenge","title":"School Things Master Challenge","folder":"school things/final-challenge","thumb":"images/thumbnails/school.png","fallback":"🎒","type":"built-in","created":12,"words":[["book","📘"],["notebook","📓"],["pencil","✏️"],["pen","🖊️"],["eraser","🧽"],["ruler","📏"],["bag","🎒"],["chair","🪑"],["desk","🏫"],["table","🪑"],["marker","🖍️"],["crayons","🖍️"],["scissors","✂️"],["glue","🧴"],["pencil case","✏️"],["whiteboard","⬜"],["calculator","🧮"],["paper","📄"],["sharpener","🔪"],["backpack","🎒"]]}].map(l=>({...l,words:l.words.map(([word,fallback])=>({word,image:`images/${l.folder}/${fileName(word)}.png`,fallback}))}));
+let lessons=[],currentLesson=builtInLessons[0],currentIndex=0,studyIndex=0,score=0,mode="listen",typed="";document.addEventListener("DOMContentLoaded",()=>{setTimeout(()=>document.getElementById("splash").classList.add("hide"),850);refreshLessons();renderLessonLibrary()});function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));document.getElementById(id).classList.add("active");if(id==="lessonScreen"){refreshLessons();renderLessonLibrary()}}function openModal(id){document.getElementById(id).classList.add("active")}function closeModal(id){document.getElementById(id).classList.remove("active")}function toggleFullscreen(){if(!document.fullscreenElement){document.documentElement.requestFullscreen?.()}else{document.exitFullscreen?.()}}function teacherGate(){const c=prompt("Enter Teacher Access Code:");if(c===TEACHER_CODE)openModal("teacherModal");else if(c!==null)alert("Incorrect teacher code.")}function getSavedTeacherLessons(){try{return JSON.parse(localStorage.getItem("tk_spell_lessons_v41")||"[]").map((l,i)=>({...l,type:"teacher",created:l.created||Date.now()+i,thumb:l.thumb||l.thumbnail,words:(l.words||[]).map(w=>typeof w==="string"?{word:w,image:"",fallback:l.fallback||"✨"}:{...w,image:w.image||"",fallback:w.fallback||l.fallback||"✨"})}))}catch(e){return[]}}function getFavorites(){try{return JSON.parse(localStorage.getItem("tk_spell_favorites_v43")||"[]")}catch(e){return[]}}function setFavorites(f){localStorage.setItem("tk_spell_favorites_v43",JSON.stringify(f))}function getRecent(){try{return JSON.parse(localStorage.getItem("tk_spell_recent_v43")||"[]")}catch(e){return[]}}function setRecent(r){localStorage.setItem("tk_spell_recent_v43",JSON.stringify(r.slice(0,5)))}function refreshLessons(){lessons=[...builtInLessons,...getSavedTeacherLessons()]}function setFilter(f){activeFilter=f;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.toggle("active",b.dataset.filter===f));renderLessonLibrary()}function getFilteredLessons(){const q=document.getElementById("lessonSearch")?.value.toLowerCase().trim()||"",favs=getFavorites();let arr=lessons.map((l,i)=>({...l,_index:i,_favorite:favs.includes(l.id)}));if(q)arr=arr.filter(l=>l.title.toLowerCase().includes(q)||l.words.some(w=>w.word.toLowerCase().includes(q)));if(activeFilter==="built-in")arr=arr.filter(l=>l.type==="built-in");if(activeFilter==="teacher")arr=arr.filter(l=>l.type==="teacher");if(activeFilter==="favorites")arr=arr.filter(l=>l._favorite);const sort=document.getElementById("sortSelect")?.value||"az";if(sort==="az")arr.sort((a,b)=>a.title.localeCompare(b.title));if(sort==="za")arr.sort((a,b)=>b.title.localeCompare(a.title));if(sort==="most")arr.sort((a,b)=>b.words.length-a.words.length);if(sort==="least")arr.sort((a,b)=>a.words.length-b.words.length);if(sort==="recent")arr.sort((a,b)=>(b.created||0)-(a.created||0));return arr}function renderLessonLibrary(){refreshLessons();const favs=getFavorites(),teacher=lessons.filter(l=>l.type==="teacher").length,words=lessons.reduce((s,l)=>s+l.words.length,0);document.getElementById("builtInCount").textContent=builtInLessons.length;document.getElementById("teacherCount").textContent=teacher;document.getElementById("wordCount").textContent=words;document.getElementById("favCount").textContent=favs.length;const arr=getFilteredLessons();document.getElementById("resultCount").textContent=`${arr.length} lesson${arr.length===1?"":"s"}`;const grid=document.getElementById("lessonGrid");if(!arr.length){grid.innerHTML=`<div class="empty"><div><h3>No lessons found.</h3><p>Try another search or open Teacher Edit to create your first custom lesson.</p><button class="secondary" onclick="openBuilder()">Create Teacher Lesson</button></div></div>`}else{grid.innerHTML=arr.map(l=>`<article class="lesson-card"><button class="fav-btn" title="Favorite" onclick="toggleFavorite('${escapeHtml(l.id)}')">${l._favorite?"⭐":"☆"}</button><div class="thumb"><img src="${escapeHtml(l.thumb||l.thumbnail||"")}" onerror="this.style.display='none';this.parentElement.textContent='${l.fallback||"✨"}'"></div><h3>${escapeHtml(l.title)}</h3><div class="lesson-meta"><span class="meta-pill">${l.words.length} Words</span><span class="meta-pill">${l.type==="built-in"?"Built-in Lesson":"Teacher Lesson"}</span></div><div class="card-actions"><button class="play" onclick="startLesson(${l._index})">Play</button><button class="preview" onclick="previewLesson(${l._index})">Preview</button></div>${l.type==="teacher"?`<div class="card-actions"><button class="preview" onclick="openBuilder(\'${escapeHtml(l.id)}\')">Edit</button><button class="preview" onclick="deleteTeacherLesson(\'${escapeHtml(l.id)}\')">Delete</button></div>`:""}</article>`).join("")}renderRecent()}function renderRecent(){const recent=getRecent(),box=document.getElementById("recentList");if(!recent.length){box.innerHTML=`<div class="meta">No recently played lessons yet.</div>`;return}box.innerHTML=recent.map(id=>{const idx=lessons.findIndex(l=>l.id===id),l=lessons[idx];return l?`<div class="recent-item" onclick="startLesson(${idx})">${escapeHtml(l.title)}</div>`:""}).join("")}function toggleFavorite(id){let f=getFavorites();f=f.includes(id)?f.filter(x=>x!==id):[...f,id];setFavorites(f);renderLessonLibrary()}function previewLesson(index){const lesson=lessons[index];document.getElementById("previewTitle").textContent=lesson.title;document.getElementById("previewMeta").textContent=`${lesson.words.length} words • ${lesson.type==="built-in"?"Built-in Lesson":"Teacher Lesson"}`;document.getElementById("previewWords").innerHTML=lesson.words.map(w=>`<div class="word-preview"><div class="wicon"><img src="${escapeHtml(w.image||"")}" onload="this.style.display='block';this.nextElementSibling.style.display='none'" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span>${w.fallback||"✨"}</span></div>${escapeHtml(w.word)}</div>`).join("");document.getElementById("previewPlayBtn").onclick=()=>{closeModal("previewModal");startLesson(index)};openModal("previewModal")}function addToRecent(id){let r=getRecent().filter(x=>x!==id);r.unshift(id);setRecent(r)}function startLesson(i){currentLessonIndex=i;currentLesson=lessons[i];currentIndex=0;studyIndex=0;score=0;typed="";addToRecent(currentLesson.id);showScreen("studyScreen");renderStudy()}function beginLessonGame(){currentIndex=0;score=0;typed="";showScreen("gameScreen");document.getElementById("sideTitle").textContent=currentLesson.title;document.getElementById("sideMeta").textContent=currentLesson.words.length+" words";renderQuestion()}function renderStudy(){let item=currentLesson.words[studyIndex];document.getElementById("studySideTitle").textContent=currentLesson.title;document.getElementById("studySideMeta").textContent=currentLesson.words.length+" words";document.getElementById("studyBadge").textContent=`Word ${studyIndex+1} / ${currentLesson.words.length}`;document.getElementById("studyProgressFill").style.width=((studyIndex+1)/currentLesson.words.length*100)+"%";document.getElementById("studyWord").textContent=item.word;let img=document.getElementById("studyImage"),fb=document.getElementById("studyFallback");fb.textContent=item.fallback||"✨";fb.style.display="block";img.style.display="none";img.onload=()=>{img.style.display="block";fb.style.display="none"};img.onerror=()=>{img.style.display="none";fb.style.display="block"};img.src=item.image||"";document.getElementById("studyWordList").innerHTML=currentLesson.words.map((w,i)=>`<button class="${i===studyIndex?"active":""}" onclick="goStudyWord(${i})">${i+1}. ${escapeHtml(w.word)}</button>`).join("")}function goStudyWord(i){studyIndex=i;renderStudy()}function nextStudyWord(){studyIndex=(studyIndex+1)%currentLesson.words.length;renderStudy()}function prevStudyWord(){studyIndex=(studyIndex-1+currentLesson.words.length)%currentLesson.words.length;renderStudy()}function speakStudyWord(){let w=currentLesson.words[studyIndex]?.word;if(!w||!("speechSynthesis" in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(w);u.rate=.82;u.pitch=1.05;speechSynthesis.speak(u)}function restartLesson(){currentIndex=0;score=0;typed="";showScreen("gameScreen");renderQuestion()}function setMode(m){mode=m;document.querySelectorAll(".mode").forEach(b=>b.classList.remove("active"));document.querySelectorAll(".mode")[{listen:0,look:1,unscramble:2,missing:3}[m]].classList.add("active");renderQuestion()}function renderQuestion(){if(currentIndex>=currentLesson.words.length)return showResults();let item=currentLesson.words[currentIndex];document.getElementById("questionBadge").textContent=`Word ${currentIndex+1} / ${currentLesson.words.length}`;document.getElementById("scoreBadge").textContent=`Score: ${score}`;document.getElementById("progressFill").style.width=(currentIndex/currentLesson.words.length*100)+"%";document.getElementById("feedback").textContent="";document.getElementById("feedback").className="feedback";renderVisual(item);let area=document.getElementById("inputArea");if(mode==="unscramble"){typed="";let letters=shuffle(item.word.replace(/\s+/g,"").split(""));document.getElementById("gamePrompt").textContent="Unscramble.";document.getElementById("hintText").textContent="Tap the letters in the correct order.";area.innerHTML=`<div class="answer-row"><input id="answerInput" class="answer" readonly placeholder="Tap letters..."></div><div class="letters">${letters.map(ch=>`<button class="letter" onclick="tapLetter(this,'${escapeHtml(ch)}')">${escapeHtml(ch.toUpperCase())}</button>`).join("")}</div>`}else{document.getElementById("gamePrompt").textContent=mode==="missing"?"Missing letters.":mode==="look"?"Look and spell.":"Listen and spell.";document.getElementById("hintText").textContent=mode==="missing"?makeMissing(item.word):(mode==="look"?"Use the picture clue.":"Hear the word, then type it.");area.innerHTML=`<div class="answer-row"><input id="answerInput" class="answer" autocomplete="off" placeholder="Type the word..."></div>`;}let input=document.getElementById("answerInput");if(input){input.focus();input.onkeydown=e=>{if(e.key==="Enter")checkAnswer()}}}function renderVisual(item){let img=document.getElementById("wordImage"),fb=document.getElementById("visualFallback");fb.textContent=item.fallback||"✨";fb.style.display="block";img.style.display="none";img.onload=()=>{img.style.display="block";fb.style.display="none"};img.onerror=()=>{img.style.display="none";fb.style.display="block"};img.src=item.image||""}function speakCurrent(){let w=currentLesson.words[currentIndex]?.word;if(!w||!("speechSynthesis" in window))return;speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(w);u.rate=.82;u.pitch=1.05;speechSynthesis.speak(u)}function norm(s){return String(s||"").toLowerCase().trim().replace(/\s+/g," ")}function checkAnswer(){let correct=norm(currentLesson.words[currentIndex].word),ans=norm(document.getElementById("answerInput")?.value),fb=document.getElementById("feedback");if(ans===correct){score++;fb.textContent="Correct! Great spelling!";fb.className="feedback good";burst();setTimeout(()=>{currentIndex++;renderQuestion()},750)}else{fb.textContent="Try again.";fb.className="feedback bad"}}function skipWord(){currentIndex++;renderQuestion()}function tapLetter(btn,ch){typed+=ch;btn.disabled=true;btn.style.opacity=.45;document.getElementById("answerInput").value=typed}function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function makeMissing(w){return w.split("").map((c,i)=>c===" "?" ":(i===0||i===w.length-1?c.toUpperCase():"_")).join(" ")}function showResults(){showScreen("resultsScreen");let total=currentLesson.words.length,p=Math.round(score/total*100),stars=p>=85?3:p>=60?2:p>0?1:0;document.getElementById("starResult").textContent="⭐".repeat(stars)||"✨";document.getElementById("resultTitle").textContent=p>=85?"Excellent Work!":p>=60?"Good Job!":"Keep Practicing!";document.getElementById("resultSub").textContent=`${score} / ${total} words mastered • ${p}% accuracy`;burst(38)}function burst(n=18){let wrap=document.getElementById("confetti"),colors=["#2563eb","#7c3aed","#16a34a","#f59e0b","#ef4444","#06b6d4"];for(let i=0;i<n;i++){let s=document.createElement("span");s.style.left=Math.random()*100+"vw";s.style.background=colors[Math.floor(Math.random()*colors.length)];s.style.animationDelay=Math.random()*.25+"s";wrap.appendChild(s);setTimeout(()=>s.remove(),1900)}}function createSampleTeacherLesson(){const sample={id:"teacher_sample_"+Date.now(),title:"My Custom Lesson",folder:"custom",thumb:"images/thumbnails/custom.png",thumbnail:"images/thumbnails/custom.png",fallback:"✨",type:"teacher",created:Date.now(),words:[{word:"star",image:"images/custom/star.png",fallback:"⭐"},{word:"moon",image:"images/custom/moon.png",fallback:"🌙"},{word:"book",image:"images/custom/book.png",fallback:"📘"}]};const raw=JSON.parse(localStorage.getItem("tk_spell_lessons_v41")||"[]");raw.push(sample);localStorage.setItem("tk_spell_lessons_v41",JSON.stringify(raw));closeModal("teacherModal");showScreen("lessonScreen");renderLessonLibrary()}
+
+/* === V5.5 Landing Page Redesign JS === */
+let builderWords = [];
+let editingTeacherLessonId = null;
+let cropTargetIndex = null;
+let cropSourceData = null;
+
+function openBuilder(editId){
+  editingTeacherLessonId = editId || null;
+  resetBuilder(false);
+  if(editingTeacherLessonId){
+    const saved = getSavedTeacherLessons().find(l => l.id === editingTeacherLessonId);
+    if(saved){
+      document.getElementById("builderTitle").value = saved.title || "";
+      document.getElementById("builderFallback").value = saved.fallback || "✨";
+      builderWords = (saved.words || []).map(w => ({word:w.word || "", image:w.image || "", fallback:w.fallback || "✨"}));
+    }
+  }
+  renderBuilderWords();
+  openModal("builderModal");
+}
+
+function resetBuilder(clearTitle=true){
+  builderWords = [];
+  if(clearTitle){
+    document.getElementById("builderTitle").value = "";
+    document.getElementById("builderFallback").value = "✨";
+    document.getElementById("builderBulkWords").value = "";
+    editingTeacherLessonId = null;
+  }
+  renderBuilderWords();
+}
+
+function builderAddBulkWords(){
+  const raw = document.getElementById("builderBulkWords").value.trim();
+  if(!raw) return;
+  raw.split(/\n+/).map(x=>x.trim()).filter(Boolean).forEach(w=>{
+    builderWords.push({word:w,image:"",fallback:document.getElementById("builderFallback").value || "✨"});
+  });
+  document.getElementById("builderBulkWords").value = "";
+  renderBuilderWords();
+}
+
+function builderAddWord(){
+  builderWords.push({word:"",image:"",fallback:document.getElementById("builderFallback").value || "✨"});
+  renderBuilderWords();
+}
+
+function builderRemoveWord(i){
+  builderWords.splice(i,1);
+  renderBuilderWords();
+}
+
+function renderBuilderWords(){
+  const box = document.getElementById("builderWordList");
+  const count = document.getElementById("builderCount");
+  if(!box || !count) return;
+  count.textContent = `${builderWords.length} word${builderWords.length===1?"":"s"}`;
+  if(!builderWords.length){
+    box.innerHTML = `<div class="empty" style="min-height:190px"><div><h3>No words yet.</h3><p>Add words on the left to begin.</p></div></div>`;
+    return;
+  }
+  box.innerHTML = builderWords.map((item,i)=>`
+    <div class="word-editor-row">
+      <input value="${escapeHtml(item.word)}" placeholder="word" oninput="builderWords[${i}].word=this.value">
+      <div>
+        <div class="image-drop" tabindex="0" 
+          onclick="document.getElementById('builderFile${i}').click()"
+          ondragover="event.preventDefault();this.style.background='#dbeafe'"
+          ondragleave="this.style.background='#eff6ff'"
+          ondrop="handleDropImage(event,${i})">
+          ${item.image ? `<img src="${item.image}" alt="">` : `<div>Drop / Paste / Choose Image<small>Best: 1200×1200 PNG</small></div>`}
+        </div>
+        <input class="file-hidden" type="file" id="builderFile${i}" accept="image/*" onchange="handleFileImage(event,${i})">
+        <div class="local-lesson-controls">
+          <button class="secondary" onclick="document.getElementById('builderFile${i}').click()">Choose</button>
+          <button class="secondary" onclick="openCrop(${i})" ${item.image?"":"disabled"}>Crop</button>
+          <button class="secondary" onclick="builderWords[${i}].image='';renderBuilderWords()" ${item.image?"":"disabled"}>Remove Image</button>
+        </div>
+      </div>
+      <button class="icon-danger" onclick="builderRemoveWord(${i})">×</button>
+    </div>`).join("");
+}
+
+function handleFileImage(e,i){
+  const file = e.target.files && e.target.files[0];
+  if(file) readImageFile(file, data => { builderWords[i].image = data; renderBuilderWords(); });
+}
+
+function handleDropImage(e,i){
+  e.preventDefault();
+  e.currentTarget.style.background = "#eff6ff";
+  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+  if(file && file.type.startsWith("image/")) readImageFile(file, data => { builderWords[i].image = data; renderBuilderWords(); });
+}
+
+document.addEventListener("paste", e=>{
+  const modal = document.getElementById("builderModal");
+  if(!modal || !modal.classList.contains("active")) return;
+  const items = e.clipboardData && e.clipboardData.items;
+  if(!items) return;
+  for(const item of items){
+    if(item.type && item.type.startsWith("image/")){
+      const file = item.getAsFile();
+      const target = Math.max(0, builderWords.findIndex(w=>!w.image));
+      if(target === -1 && builderWords.length === 0) builderAddWord();
+      const idx = target === -1 ? builderWords.length-1 : target;
+      readImageFile(file, data => { builderWords[idx].image = data; renderBuilderWords(); });
+      break;
+    }
+  }
+});
+
+function readImageFile(file, cb){
+  const reader = new FileReader();
+  reader.onload = () => cb(reader.result);
+  reader.readAsDataURL(file);
+}
+
+function openCrop(i){
+  if(!builderWords[i] || !builderWords[i].image) return;
+  cropTargetIndex = i;
+  cropSourceData = builderWords[i].image;
+  document.getElementById("cropPreview").src = cropSourceData;
+  openModal("cropModal");
+}
+
+function applyCrop(){
+  if(cropTargetIndex === null || !cropSourceData) return;
+  const img = new Image();
+  img.onload = ()=>{
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 1200;
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,1200,1200);
+    const scale = Math.min(1200 / img.width, 1200 / img.height);
+    const w = img.width * scale;
+    const h = img.height * scale;
+    const x = (1200 - w) / 2;
+    const y = (1200 - h) / 2;
+    ctx.drawImage(img, x, y, w, h);
+    builderWords[cropTargetIndex].image = canvas.toDataURL("image/png");
+    closeModal("cropModal");
+    renderBuilderWords();
+  };
+  img.src = cropSourceData;
+}
+
+function saveBuilderLesson(){
+  const title = document.getElementById("builderTitle").value.trim();
+  if(!title){ alert("Please enter a lesson title."); return; }
+  const words = builderWords.map(w=>({word:(w.word||"").trim(), image:w.image||"", fallback:w.fallback||document.getElementById("builderFallback").value||"✨"})).filter(w=>w.word);
+  if(!words.length){ alert("Please add at least one vocabulary word."); return; }
+  let raw = [];
+  try{ raw = JSON.parse(localStorage.getItem("tk_spell_lessons_v41") || "[]"); }catch(e){ raw = []; }
+  const lesson = {
+    id: editingTeacherLessonId || ("teacher_" + Date.now()),
+    title,
+    folder:"teacher",
+    thumb:"",
+    thumbnail:"",
+    fallback: document.getElementById("builderFallback").value || "✨",
+    type:"teacher",
+    created: Date.now(),
+    words
+  };
+  const idx = raw.findIndex(l=>l.id === lesson.id);
+  if(idx >= 0) raw[idx] = lesson; else raw.push(lesson);
+  try{
+    localStorage.setItem("tk_spell_lessons_v41", JSON.stringify(raw));
+  }catch(e){
+    alert("This lesson may be too large for browser storage. Try fewer or smaller images.");
+    return;
+  }
+  closeModal("builderModal");
+  showScreen("lessonScreen");
+  renderLessonLibrary();
+}
+
+function deleteTeacherLesson(id){
+  if(!confirm("Delete this teacher lesson from this browser?")) return;
+  let raw = [];
+  try{ raw = JSON.parse(localStorage.getItem("tk_spell_lessons_v41") || "[]"); }catch(e){ raw = []; }
+  raw = raw.filter(l=>l.id !== id);
+  localStorage.setItem("tk_spell_lessons_v41", JSON.stringify(raw));
+  renderLessonLibrary();
+}
+
+</script>
+</body>
+</html>

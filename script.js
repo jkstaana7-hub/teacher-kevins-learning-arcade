@@ -132,6 +132,18 @@ const gameData = [
     popular: true
   },
   {
+  title: "🔤 Spell It!",
+  type: "game",
+  flagship: true,
+  category: ["kindergarten", "primary", "teacher"],
+  keywords: "spell it spelling vocabulary phonics study mode teacher lesson builder kindergarten primary classroom game offline custom lessons",
+  link: "spell-it-v1/spell_it_final.html",
+  image: "images/spell-it-thumbnail.png",
+  description: "Study vocabulary, hear the word, and practice spelling with built-in lessons and a teacher lesson builder.",
+  recent: true,
+  popular: true
+},
+  {
     title: "🎙️ Conversation Master",
     type: "game",
     category: ["secondary", "teacher"],
@@ -333,6 +345,7 @@ const flagshipOrder = [
   "🏆 Classroom Jeopardy",
   "🐉 Monster Battle Quiz RPG",
   "🌊 Monster Battle Quiz RPG – Ocean Adventure",
+  "🔤 Spell It!",
   "📖 Reading Quest",
   "🛍️ Shopping Superstar!",
   "🎁 Give or Keep",

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Adjective Swipe Showdown – V2.2 Arcade Title Screen</title>
+<title>Adjective Swipe Showdown – V2.4 Center Hero Hand Fix</title>
 <style>
   :root{
     --bg1:#172554; --bg2:#2563eb; --gold:#ffd54f; --ink:#101936; --white:#fff;
@@ -348,6 +348,105 @@ body{
       50%{transform:translateX(12px) scale(1.05);}
     }
     
+
+/* ===== V2.4 IMPLEMENTATION FIX: CENTER HERO HAND LAYOUT ===== */
+.swipeArenaScreen{padding:14px 18px 18px}
+.swipeArenaScreen .topbar{min-height:88px}
+.swipeArenaScreen .titleWrap h1{font-size:clamp(42px,5vw,82px);letter-spacing:-2px}
+.swipeTopbar .subtitle{text-transform:uppercase;color:#fff176!important;font-size:clamp(20px,2.2vw,34px)}
+.swipeArenaScreen .scoreboard{margin:8px 0 10px}
+.swipeArenaWrap{
+  flex:1;position:relative;min-height:0;margin-top:4px;border-radius:42px;
+  border:8px dashed rgba(255,255,255,.78);overflow:hidden;
+  box-shadow:0 14px 0 rgba(0,0,0,.22),inset 0 0 55px rgba(255,255,255,.22);
+}
+.swipeArenaWrap:before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at center,rgba(255,255,255,.55),transparent 28%),
+    linear-gradient(90deg,rgba(255,0,0,.72),rgba(255,174,0,.33) 43%,rgba(0,229,255,.35) 57%,rgba(0,64,255,.78));
+  pointer-events:none;
+}
+.swipeArenaWrap:after{
+  content:"";position:absolute;inset:-24%;
+  background:
+    linear-gradient(115deg,transparent 46%,rgba(255,255,255,.26) 47%,transparent 50%),
+    linear-gradient(245deg,transparent 46%,rgba(255,255,255,.16) 47%,transparent 50%);
+  background-size:150px 150px;opacity:.55;pointer-events:none;
+}
+.swipeInstruction{
+  position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:7;text-align:center;
+  background:rgba(15,23,42,.66);border:3px solid rgba(255,255,255,.78);border-radius:20px;
+  padding:6px 22px;box-shadow:0 5px 0 rgba(0,0,0,.24);
+}
+.swipeInstructionMain{font-size:clamp(16px,1.8vw,30px);font-weight:900;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.25);letter-spacing:1px}
+.swipeInstructionSub{font-size:clamp(11px,1.1vw,18px);font-weight:900;color:#fde047}
+.gameShowLane{
+  position:absolute!important;inset:0!important;border:none!important;background:transparent!important;
+  display:grid!important;grid-template-columns:1fr 1fr!important;padding:0!important;border-radius:0!important;z-index:1;
+}
+.arenaZone{
+  position:relative;display:flex;align-items:flex-end;pointer-events:none;
+  transition:filter .16s ease,background .16s ease,transform .16s ease;
+  padding-bottom:clamp(26px,5vh,62px);
+}
+.leftZone{
+  justify-content:flex-start;padding-left:clamp(28px,5vw,80px);
+  background:radial-gradient(circle at 18% 72%,rgba(255,255,255,.42),transparent 20%),linear-gradient(90deg,rgba(220,38,38,.72),rgba(249,115,22,.30),transparent);
+}
+.rightZone{
+  justify-content:flex-end;padding-right:clamp(28px,5vw,80px);
+  background:radial-gradient(circle at 82% 72%,rgba(255,255,255,.42),transparent 20%),linear-gradient(270deg,rgba(37,99,235,.78),rgba(6,182,212,.30),transparent);
+}
+.gameShowLane .left,.gameShowLane .right{
+  font-size:clamp(50px,6.2vw,110px)!important;line-height:.9;font-weight:900;color:white!important;
+  letter-spacing:-2px;text-shadow:0 8px 0 rgba(0,0,0,.38),0 0 30px rgba(255,255,255,.36)!important;opacity:1!important;
+}
+.gameShowLane .left{filter:drop-shadow(0 0 28px rgba(255,40,40,.92))}
+.gameShowLane .right{filter:drop-shadow(0 0 28px rgba(0,174,255,.95))}
+.gameShowLane.dragLeft .leftZone,.gameShowLane.tutorialLeft .leftZone{
+  background:radial-gradient(circle at 25% 70%,rgba(255,255,255,.68),transparent 24%),linear-gradient(90deg,rgba(255,0,0,.96),rgba(249,115,22,.46),transparent);
+  filter:saturate(1.75) brightness(1.28);
+}
+.gameShowLane.dragRight .rightZone,.gameShowLane.tutorialRight .rightZone{
+  background:radial-gradient(circle at 75% 70%,rgba(255,255,255,.68),transparent 24%),linear-gradient(270deg,rgba(0,76,255,.98),rgba(6,182,212,.46),transparent);
+  filter:saturate(1.75) brightness(1.28);
+}
+.handDragOnly{
+  position:absolute!important;left:50%!important;top:50%!important;
+  width:min(760px,52vw)!important;height:min(760px,64vh)!important;
+  transform:translate(-50%,-50%)!important;
+  background:transparent!important;border:none!important;box-shadow:none!important;z-index:6!important;
+}
+.handDragOnly:before,.handDragOnly .swipeMe,.handDragOnly .swipeHint{display:none!important}
+.handDragOnly .swipeIndicator{width:100%!important;height:100%!important;display:grid!important;place-items:center!important}
+.handDragOnly .swipeHand{
+  width:100%!important;height:100%!important;max-width:100%!important;max-height:100%!important;object-fit:contain!important;
+  animation:heroHandPulse 1.75s ease-in-out infinite!important;
+  filter:drop-shadow(0 22px 18px rgba(0,0,0,.36)) drop-shadow(0 0 38px rgba(255,255,255,.80)) drop-shadow(0 0 28px rgba(0,229,255,.70))!important;
+}
+@keyframes heroHandPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.065)}}
+.swipeCard.tutorialWiggle{animation:centerHeroTutorial 1.35s ease-in-out 1!important}
+@keyframes centerHeroTutorial{
+  0%,100%{transform:translate(-50%,-50%) translateX(0) rotate(0deg)}
+  25%{transform:translate(-50%,-50%) translateX(-95px) rotate(-7deg)}
+  50%{transform:translate(-50%,-50%) translateX(0) rotate(0deg)}
+  75%{transform:translate(-50%,-50%) translateX(95px) rotate(7deg)}
+}
+@media(max-width:900px){
+  .swipeArenaScreen .topbar{min-height:76px}.swipeArenaWrap{border-radius:28px}.arenaZone{padding-bottom:24px}
+  .leftZone{padding-left:18px}.rightZone{padding-right:18px}
+  .gameShowLane .left,.gameShowLane .right{font-size:clamp(36px,10vw,70px)!important}
+  .handDragOnly{width:min(560px,68vw)!important;height:min(560px,48vh)!important}
+  .swipeInstruction{top:10px;padding:5px 16px}
+}
+@media(max-height:720px){
+  .swipeArenaScreen .topbar{min-height:74px}.swipeArenaScreen .scoreboard{margin:6px 0}.swipeArenaWrap{margin-top:4px}
+  .handDragOnly{width:min(620px,46vw)!important;height:min(620px,52vh)!important}
+  .gameShowLane .left,.gameShowLane .right{font-size:clamp(42px,5.4vw,84px)!important}
+  .swipeInstruction{top:8px}
+}
+
 </style>
 </head>
 <body>
@@ -400,7 +499,7 @@ body{
 </section>
 
 <section id="board" class="screen">
-  <div class="topbar"><div class="titleWrap"><h1>Adjective Swipe Showdown</h1><div class="subtitle">Choose a mystery tile • V2.0 Color Burst Game Show</div></div><div class="btnRow"><button class="btn" onclick="showScreen('welcome')">Home</button><button class="btn" onclick="openEditor()">Edit Questions</button><button class="btn" onclick="toggleFull()">Fullscreen</button><button class="btn" onclick="resetGame()">Reset</button></div></div>
+  <div class="topbar"><div class="titleWrap"><h1>Adjective Swipe Showdown</h1><div class="subtitle">Choose a mystery tile • V2.4 Center Hero Hand Fix</div></div><div class="btnRow"><button class="btn" onclick="showScreen('welcome')">Home</button><button class="btn" onclick="openEditor()">Edit Questions</button><button class="btn" onclick="toggleFull()">Fullscreen</button><button class="btn" onclick="resetGame()">Reset</button></div></div>
   <div id="scoreboard" class="scoreboard"></div>
   <div class="panel"><div class="boardHeader"><div class="boardTitle">Question Board</div><div id="turnPill" class="turnPill">Team A's Turn</div></div><div id="questionGrid" class="questionGrid"></div></div>
 </section>
@@ -411,10 +510,39 @@ body{
   <div class="questionCard"><div class="sentenceBox"><div id="stealLine" class="stealLine hidden"></div><div id="numBadge" class="numBadge">1</div><div class="promptLine">Tap one word.</div><div id="words" class="words"></div><div id="message" class="message"></div></div></div>
 </section>
 
-<section id="swipe" class="screen">
-  <div class="topbar"><div class="titleWrap"><h1>Swipe Challenge</h1><div id="swipeSub" class="subtitle">Swipe left or right</div></div><div class="btnRow"><button class="btn" onclick="toggleFull()">Fullscreen</button></div></div>
+
+<section id="swipe" class="screen swipeArenaScreen">
+  <div class="topbar swipeTopbar">
+    <div class="titleWrap">
+      <h1>Swipe Challenge</h1>
+      <div id="swipeSub" class="subtitle">Team A's Swipe</div>
+    </div>
+    <div class="btnRow"><button class="btn" onclick="toggleFull()">Fullscreen</button></div>
+  </div>
+
   <div id="swipeScoreboard" class="scoreboard"></div>
-  <div class="swipeArea"><div id="swipeLane" class="lane"><span class="left">KEEP<br>LEFT</span><span class="right">GIVE<br>RIGHT</span></div><div id="swipeCard" class="swipeCard"><div class="swipeIndicator"><img src="images/swipe_hand.png" alt="Swipe Hand" class="swipeHand" onerror="this.parentElement.innerHTML='<div class=\'swipeFallback\'>SWIPE</div>';"></div><div class="swipeMe"></div><div class="swipeHint"></div></div></div>
+
+  <div class="swipeArenaWrap">
+    <div class="swipeInstruction">
+      <div class="swipeInstructionMain">SWIPE THE HAND</div>
+      <div class="swipeInstructionSub">KEEP LEFT • GIVE RIGHT</div>
+    </div>
+
+    <div id="swipeLane" class="lane gameShowLane">
+      <div class="arenaZone leftZone">
+        <span class="zoneText left">KEEP<br>LEFT</span>
+      </div>
+      <div class="arenaZone rightZone">
+        <span class="zoneText right">GIVE<br>RIGHT</span>
+      </div>
+    </div>
+
+    <div id="swipeCard" class="swipeCard handDragOnly">
+      <div class="swipeIndicator">
+        <img src="images/swipe_hand.png" alt="Swipe Hand" class="swipeHand" onerror="this.parentElement.innerHTML='<div class=\'swipeFallback\'>SWIPE</div>';">
+      </div>
+    </div>
+  </div>
 </section>
 
 <section id="result" class="screen">
@@ -476,12 +604,12 @@ function openQuestion(i,isSteal=false,answerTeam=turn){currentQ=i; stealMode=isS
 function cleanWord(w){return w.toLowerCase().replace(/^[^a-z]+|[^a-z]+$/g,'');}
 function renderWords(){const q=questions[currentQ]; const words=q.s.split(/\s+/); const wrap=document.getElementById('words'); wrap.innerHTML=''; words.forEach(raw=>{const btn=document.createElement('button'); btn.className='word'; btn.textContent=raw; btn.onclick=()=>checkWord(btn,raw); wrap.appendChild(btn);});}
 function checkWord(btn,raw){const correct=questions[currentQ].a.trim().toLowerCase(); document.querySelectorAll('.word').forEach(w=>w.disabled=true); if(cleanWord(raw)===cleanWord(correct)){btn.classList.add('correct'); document.getElementById('message').textContent='Correct! Get ready to swipe!'; setTimeout(()=>openSwipe(),800);} else {btn.classList.add('wrong'); if(!stealMode){originalTeam=turn; const stealTeam=(turn+1)%teams.length; document.getElementById('message').textContent=`Wrong! ${teams[stealTeam]} gets one steal chance.`; setTimeout(()=>openQuestion(currentQ,true,stealTeam),1100);} else {document.getElementById('message').textContent='Wrong steal. No points. Next question.'; used.push(currentQ); turn=(originalTeam+1)%teams.length; setTimeout(()=>{renderBoard();showScreen('board')},1200);} }}
-function openSwipe(){pendingSurprise=surpriseDeck[Math.floor(Math.random()*surpriseDeck.length)]; const card=document.getElementById('swipeCard'); card.style.transform='translate(0,0) rotate(0deg)'; card.style.opacity='1'; card.style.boxShadow='0 20px 0 rgba(0,0,0,.28)'; card.classList.remove('dragging','tutorialWiggle'); document.getElementById('swipeSub').textContent=teams[activeAnswerTeam]+' swipes the mystery card'; syncScores(); showScreen('swipe'); runSwipeTutorial();}
+function openSwipe(){pendingSurprise=surpriseDeck[Math.floor(Math.random()*surpriseDeck.length)]; const card=document.getElementById('swipeCard'); card.style.transform='translate(-50%,-50%) rotate(0deg)'; card.style.opacity='1'; card.style.boxShadow='0 20px 0 rgba(0,0,0,.28)'; card.classList.remove('dragging','tutorialWiggle'); document.getElementById('swipeSub').textContent=teams[activeAnswerTeam]+"'S SWIPE"; syncScores(); showScreen('swipe'); runSwipeTutorial();}
 function runSwipeTutorial(){const card=document.getElementById('swipeCard'); const lane=document.getElementById('swipeLane'); if(!card||!lane)return; card.classList.remove('tutorialWiggle'); lane.classList.remove('tutorialLeft','tutorialRight'); void card.offsetWidth; card.classList.add('tutorialWiggle'); setTimeout(()=>lane.classList.add('tutorialLeft'),180); setTimeout(()=>{lane.classList.remove('tutorialLeft'); lane.classList.add('tutorialRight')},760); setTimeout(()=>{lane.classList.remove('tutorialRight'); card.classList.remove('tutorialWiggle')},1450);}
 const card=document.getElementById('swipeCard'); let drag=false,startX=0,startY=0,dx=0,dy=0;
-card.addEventListener('pointerdown',e=>{card.classList.remove('tutorialWiggle'); document.getElementById('swipeLane')?.classList.remove('tutorialLeft','tutorialRight'); drag=true; startX=e.clientX; startY=e.clientY; dx=dy=0; card.setPointerCapture(e.pointerId); card.classList.add('dragging');});
-card.addEventListener('pointermove',e=>{if(!drag)return; dx=e.clientX-startX; dy=e.clientY-startY; card.style.transform=`translate(${dx}px,${dy}px) rotate(${dx/13}deg)`; card.style.boxShadow= dx<0 ? '0 20px 0 rgba(0,0,0,.28), 0 0 60px rgba(248,113,113,.9)' : dx>0 ? '0 20px 0 rgba(0,0,0,.28), 0 0 60px rgba(96,165,250,.95)' : '0 20px 0 rgba(0,0,0,.28)';});
-card.addEventListener('pointerup',e=>{if(!drag)return; drag=false; card.classList.remove('dragging'); if(Math.abs(dx)>150){const dir=dx<0?'left':'right'; card.style.transition='transform .45s ease, opacity .45s ease'; card.style.transform=`translate(${dir==='left'?-1200:1200}px,${dy}px) rotate(${dir==='left'?-45:45}deg)`; card.style.opacity='0'; setTimeout(()=>{card.style.transition=''; card.style.opacity='1'; resolveSwipe(dir)},450);} else {card.style.transform='translate(0,0) rotate(0deg)'; card.style.boxShadow='0 20px 0 rgba(0,0,0,.28)';}});
+card.addEventListener('pointerdown',e=>{card.classList.remove('tutorialWiggle'); document.getElementById('swipeLane')?.classList.remove('tutorialLeft','tutorialRight','dragLeft','dragRight'); drag=true; startX=e.clientX; startY=e.clientY; dx=dy=0; card.setPointerCapture(e.pointerId); card.classList.add('dragging');});
+card.addEventListener('pointermove',e=>{if(!drag)return; dx=e.clientX-startX; dy=e.clientY-startY; const lane=document.getElementById('swipeLane'); lane?.classList.toggle('dragLeft',dx<-40); lane?.classList.toggle('dragRight',dx>40); card.style.transform=`translate(-50%,-50%) translate(${dx}px,${dy}px) rotate(${dx/18}deg)`; card.style.filter= dx<0 ? 'drop-shadow(0 0 42px rgba(255,40,40,.95))' : dx>0 ? 'drop-shadow(0 0 42px rgba(0,190,255,.95))' : 'drop-shadow(0 22px 18px rgba(0,0,0,.30))';});
+card.addEventListener('pointerup',e=>{if(!drag)return; drag=false; card.classList.remove('dragging'); document.getElementById('swipeLane')?.classList.remove('dragLeft','dragRight'); if(Math.abs(dx)>150){const dir=dx<0?'left':'right'; card.style.transition='transform .45s ease, opacity .45s ease'; card.style.transform=`translate(-50%,-50%) translate(${dir==='left'?-1200:1200}px,${dy}px) rotate(${dir==='left'?-45:45}deg)`; card.style.opacity='0'; setTimeout(()=>{card.style.transition=''; card.style.opacity='1'; resolveSwipe(dir)},450);} else {card.style.transform='translate(-50%,-50%) rotate(0deg)'; card.style.boxShadow='0 20px 0 rgba(0,0,0,.28)';}});
 function resolveSwipe(dir){pendingDirection=dir; document.getElementById('resultTitle').textContent=pendingSurprise.text; document.getElementById('recipientBox').classList.add('hidden'); document.getElementById('nextBtn').classList.remove('hidden'); if(dir==='left'){applySurprise(activeAnswerTeam,activeAnswerTeam); document.getElementById('resultSub').textContent=`${teams[activeAnswerTeam]} kept the surprise.`; } else {const others=teams.map((_,i)=>i).filter(i=>i!==activeAnswerTeam); if(others.length===1){applySurprise(others[0],activeAnswerTeam); document.getElementById('resultSub').textContent=`${teams[activeAnswerTeam]} gave the surprise to ${teams[others[0]]}.`; } else {document.getElementById('resultSub').textContent=`${teams[activeAnswerTeam]} gave the surprise. Choose the receiving team.`; chooseRecipient(others); }} syncScores(); showScreen('result'); launchConfetti();}
 
 function launchConfetti(){

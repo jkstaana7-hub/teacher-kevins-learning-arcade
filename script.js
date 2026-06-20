@@ -200,6 +200,17 @@ const gameData = [
     popular: true
   },
   {
+    title: "🎯 Adjective Swipe Showdown",
+    type: "game",
+    category: ["primary", "secondary"],
+    keywords: "adjective swipe showdown grammar vocabulary parts of speech adjectives english classroom game",
+    link: "games/adjective_swipe_showdown_final.html",
+    image: "images/adjective-swipe-showdown-thumbnail.png",
+    description: "Swipe your way to victory by identifying the correct adjective in the sentence.",
+    recent: false,
+    popular: false
+  },
+  {
     title: "🔍 Word Search Generator",
     type: "tool",
     category: ["teacher"],
@@ -461,6 +472,16 @@ function renderHomeSections() {
 }
 
 function handleMainSearch() {
+  const searchText = getMainSearchText();
+
+  if (searchText.trim() !== "") {
+    renderGrid("featuredGamesGrid", allResources, null, searchText);
+    renderGrid("teacherToolsGrid", [], null, searchText);
+    renderGrid("worksheetsGrid", [], null, searchText);
+    renderGrid("recentGrid", [], null, searchText);
+    return;
+  }
+
   renderHomeSections();
 }
 
@@ -550,10 +571,21 @@ function renderSectionPopupContent() {
   const popupGrid = document.getElementById("popupGrid");
   if (!popupGrid) return;
 
-  const items = getSectionItems(activeSectionPopup);
   const searchText = getPopupSearchText();
 
-  const filteredItems = items.filter(item => itemMatchesSearch(item, searchText));
+let items;
+
+if (searchText.trim() !== "") {
+  // Search ALL resources
+  items = allResources.filter(item =>
+    itemMatchesSearch(item, searchText)
+  );
+} else {
+  // Normal popup view
+  items = getSectionItems(activeSectionPopup);
+}
+
+const filteredItems = items;
 
   popupGrid.innerHTML = filteredItems.length
     ? filteredItems.map(createResourceCard).join("")
